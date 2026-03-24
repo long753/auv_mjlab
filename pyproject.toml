@@ -1,10 +1,11 @@
 [project]
 name = "auv-mjlab"
 version = "0.1.0"
-description = "Add your description here"
+description = "AUV motion control system based on RL"
 readme = "README.md"
 authors = [
     { name = "long753", email = "cl2848077709@outlook.com" }
+    { name = "wenlinlong220", email = "wenlinlong@outlook.com" }
 ]
 requires-python = ">=3.11"
 dependencies = [
@@ -13,6 +14,10 @@ dependencies = [
 
 [project.scripts]
 auv-mjlab = "auv_mjlab:main"
+
+# 让 mjlab 发现你的任务包
+[project.entry-points."mjlab.tasks"]
+auv_mjlab = "auv_mjlab.tasks"
 
 [build-system]
 requires = ["uv_build>=0.10.12,<0.11.0"]
