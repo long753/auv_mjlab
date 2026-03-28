@@ -195,70 +195,74 @@
       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10" mass="0.36" rgba="0.0 0.75 1.0 1"/>
       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10" rgba="0.0 0.75 1.0 1"/>
 
-      <!-- 上推进器（增加 hinge 关节） -->
-      <body name="body_servo_up" pos="0.07629058 0.00222789 -0.11788090" euler="0 1.570796326795 0" childclass="auv_base">
+<body name="body_servo_up" pos="0.07629058 0.00222789 -0.11788090" euler="0 1.570796326795 0" childclass="auv_base">
         <joint name="joint_servo_up" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.0001"/>
+        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1"/>
         <body name="body_servo_up_prop" pos="0 0 0" childclass="auv_base">
-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____up_1__tui_jin_qi__1" mass="0.0001"/>
+          <joint name="joint_prop_up" type="hinge" axis="0 0 1" damping="0.01" armature="0.001"/>
+          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____up_1__tui_jin_qi__1" mass="0.01"/>
           <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____up_1__tui_jin_qi__1"/>
         </body>
       </body>
 
-      <!-- 下推进器（增加 hinge 关节） -->
       <body name="body_servo_down" pos="-0.07365844 0.00168283 -0.11788090" euler="0 -1.570796326795 -3.1415926" childclass="auv_base">
         <joint name="joint_servo_down" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.0001"/>
+        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1"/>
         <body name="body_servo_down_prop" pos="0 0 0" childclass="auv_base">
-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____down_1__tui_jin_qi__1" mass="0.0001"/>
+          <joint name="joint_prop_down" type="hinge" axis="0 0 1" damping="0.01" armature="0.001"/>
+          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____down_1__tui_jin_qi__1" mass="0.01"/>
           <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____down_1__tui_jin_qi__1"/>
         </body>
       </body>
 
-      <!-- 左推进器（增加 hinge 关节） -->
       <body name="body_servo_left" pos="0.00063929 0.07524704 -0.11788090" euler="-1.570796326795 0 1.570796326795" childclass="auv_base">
         <joint name="joint_servo_left" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.0001"/>
+        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1"/>
         <body name="body_servo_left_prop" pos="0 0 0" childclass="auv_base">
-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____left_1__tui_jin_qi__1" mass="0.0001"/>
+          <joint name="joint_prop_left" type="hinge" axis="0 0 1" damping="0.01" armature="0.001"/>
+          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____left_1__tui_jin_qi__1" mass="0.01"/>
           <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____left_1__tui_jin_qi__1"/>
         </body>
       </body>
 
-      <!-- 右推进器（增加 hinge 关节） -->
       <body name="body_servo_right" pos="0.00327143 -0.07470197 -0.11788090" euler="1.570796326795 0 -1.570796326795" childclass="auv_base">
         <joint name="joint_servo_right" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.0001"/>
+        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1"/>
         <body name="body_servo_right_prop" pos="0 0 0" childclass="auv_base">
-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____right_1__tui_jin_qi__1" mass="0.0001"/>
+          <joint name="joint_prop_right" type="hinge" axis="0 0 1" damping="0.01" armature="0.001"/>
+          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____right_1__tui_jin_qi__1" mass="0.01"/>
           <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____right_1__tui_jin_qi__1"/>
         </body>
       </body>
     </body>
 
-    <!-- 物体示例 -->
-    <body name="object" pos="0 0 0.02">
-      <joint name="obj_joint" type="free"/>
-      <geom name="object" type="box" rgba="1 0 0 1" size="0.02 0.02 0.02" mass="0.01" class="friction"/>
-    </body>
-
     <site name="world_z" pos="0 0 0"/>
   </worldbody>
+
   <equality>
-    <!-- down = -up -->
     <joint joint1="joint_servo_down" joint2="joint_servo_up" polycoef="0 1 0 0 0"/>
-    <!-- right = left -->
     <joint joint1="joint_servo_right" joint2="joint_servo_left" polycoef="0 -1 0 0 0"/>
   </equality>
+
   <contact>
     <exclude body1="base" body2="body_servo_left"/>
     <exclude body1="base" body2="body_servo_right"/>
     <exclude body1="base" body2="body_servo_up"/>
     <exclude body1="base" body2="body_servo_down"/>
   </contact>
+
+  <actuator>
+    <position name="servo_v_cmd" joint="joint_servo_up" kp="20" ctrlrange="-1.57 1.57"/>
+    <position name="servo_h_cmd" joint="joint_servo_left" kp="20" ctrlrange="-1.57 1.57"/>
+    
+    <motor name="thrust_up"    joint="joint_prop_up" gear="2"/>
+    <motor name="thrust_down"  joint="joint_prop_down" gear="2"/>
+    <motor name="thrust_left"  joint="joint_prop_left" gear="2"/>
+    <motor name="thrust_right" joint="joint_prop_right" gear="2"/>
+  </actuator>
 
 </mujoco>

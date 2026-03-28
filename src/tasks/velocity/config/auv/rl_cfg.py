@@ -1,9 +1,12 @@
 """RL configuration for CQU AUV velocity task."""
+
 from mjlab.rl import (
   RslRlModelCfg,
   RslRlOnPolicyRunnerCfg,
   RslRlPpoAlgorithmCfg,
 )
+
+
 def cqu_auv_ppo_runner_cfg() -> RslRlOnPolicyRunnerCfg:
   """Create PPO runner configuration for CQU AUV velocity task."""
   return RslRlOnPolicyRunnerCfg(

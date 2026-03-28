@@ -21,6 +21,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
   sys.path.insert(0, str(PROJECT_ROOT))
   
+
 @dataclass(frozen=True)
 class TrainConfig:
   env: ManagerBasedRlEnvCfg
@@ -40,10 +41,14 @@ class TrainConfig:
     env_cfg = load_env_cfg(task_id)
     agent_cfg = load_rl_cfg(task_id)
     return TrainConfig(env=env_cfg, agent=agent_cfg)
+  
+  
 def _setup_wandb_env(cfg: TrainConfig) -> None:
   os.environ.setdefault("WANDB_MODE", cfg.wandb_mode)
   if cfg.wandb_silent:
     os.environ.setdefault("WANDB_SILENT", "true")
+
+
 def run_train(task_id: str, cfg: TrainConfig, log_dir: Path) -> None:
   _setup_wandb_env(cfg)
   cuda_visible = os.environ.get("CUDA_VISIBLE_DEVICES", "")
@@ -131,6 +136,8 @@ def run_train(task_id: str, cfg: TrainConfig, log_dir: Path) -> None:
     init_at_random_ep_len=True,
   )
   env.close()
+
+
 def launch_training(task_id: str, args: TrainConfig | None = None):
   args = args or TrainConfig.from_task(task_id)
   # Create log directory once before launching workers.
@@ -172,12 +179,15 @@ def launch_training(task_id: str, args: TrainConfig | None = None):
       backend=None,  # Let rsl_rl handle process group initialization.
       copy_env_vars=torchrunx.DEFAULT_ENV_VARS_FOR_COPY + ("MUJOCO*",),
     ).run(run_train, task_id, args, log_dir)
+
+
 def main():
   # Parse first argument to choose the task.
   # Import tasks to populate the registry.
   import mjlab.tasks  # noqa: F401
   import src.tasks  # noqa: F401
   import src.tasks.velocity.config.auv  # noqa: F401  # force AUV task registration
+
   all_tasks = list_tasks()
   chosen_task, remaining_args = tyro.cli(
     tyro.extras.literal_type_from_choices(all_tasks),
@@ -185,6 +195,7 @@ def main():
     return_unknown_args=True,
     config=mjlab.TYRO_FLAGS,
   )
+
   args = tyro.cli(
     TrainConfig,
     args=remaining_args,
@@ -193,6 +204,9 @@ def main():
     config=mjlab.TYRO_FLAGS,
   )
   del remaining_args
+  
   launch_training(task_id=chosen_task, args=args)
+
+  
 if __name__ == "__main__":
   main()

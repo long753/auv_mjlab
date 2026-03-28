@@ -1,5 +1,4 @@
 import os
-
 import wandb
 
 from mjlab.rl import RslRlVecEnvWrapper
@@ -26,3 +25,4 @@ class VelocityOnPolicyRunner(MjlabOnPolicyRunner):
     attach_metadata_to_onnx(onnx_path, metadata)
     if self.logger.logger_type in ["wandb"]:
       wandb.save(policy_path + filename, base_path=os.path.dirname(policy_path))
+ 
