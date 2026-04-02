@@ -21,6 +21,12 @@ from mjlab.envs.mdp.actions import JointPositionActionCfg
 from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
 import src.tasks.velocity.mdp as mdp
 from src.assets.robots import get_auv_robot_cfg
+from src.assets.robots.auv.auv_constants import (
+    AUV_VOLUME,
+    AUV_MASS,
+    AUV_INERTIA,
+    AUV_COM_TO_COB_OFFSET,
+)
 
 
 def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
@@ -40,22 +46,21 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     # 2. 动作空间 (Actions)
     # ==========================
     actions: dict[str, ActionTermCfg] = {
-        "joint_pos": JointPositionActionCfg(
-            entity_name="robot",
-            actuator_names=('joint_servo_up',        # 舵机角度（竖轴）
-                            'joint_servo_left'),      # 舵机角度（横轴）
-            scale=1.5,                               # 舵机角度范围
-            use_default_offset=True,
-        ),
-
-        "thrusters": JointPositionActionCfg( 
-            entity_name="robot",
-            actuator_names=('joint_prop_up',         # 上侧推进器推力
-                            'joint_prop_down',       # 上侧推进器推力
-                            'joint_prop_left',       # 上侧推进器推力
-                            'joint_prop_right'),     # 上侧推进器推力
-            scale=200,                                # 推进器推力范围
-            use_default_offset=False,
+        "joint_pos": mdp.AuvThrusterAllocationActionCfg(
+            entity_name="robot",                                # 机器人实体的名称
+            servo_joint_names=["servo_v_cmd", "servo_h_cmd"],   # 舵机空间
+            thruster_joint_names=[                              # 推进器空间
+                "thruster_up_z",
+                "thruster_up_y",
+                "thruster_down_z",
+                "thruster_down_y",
+                "thruster_left_z",
+                "thruster_left_x",
+                "thruster_right_z",
+                "thruster_right_x",
+            ],
+            max_servo_angle=math.pi/2, 
+            max_thrust=10.0,
         )
     }
 
@@ -71,9 +76,9 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
             heading_command=True,
             heading_control_stiffness=0.5,
             ranges=UniformVelocityCommandCfg.Ranges(
-                lin_vel_x=(-1.0, 2.0), # 前后速度范围
-                lin_vel_y=(-1.0, 1.0), # 侧向速度范围
-                ang_vel_z=(-1.0, 1.0), # 偏航角速度范围
+                lin_vel_x=(-1.0, 2.0), #
+                lin_vel_y=(-1.0, 1.0), 
+                ang_vel_z=(-1.0, 1.0), 
                 heading=(-math.pi, math.pi),
             ),
         )
@@ -121,43 +126,13 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     # 5. 奖励函数 (Rewards)
     # ==========================
     rewards = {
-        # --- 核心目标奖励 ---
-        "track_linear_velocity": RewardTermCfg(
-            func=mdp.track_linear_velocity,
-            weight=1.0,
-            params={"command_name": "twist", "std": math.sqrt(0.25)},
-        ),
-        "track_angular_velocity": RewardTermCfg(
-            func=mdp.track_angular_velocity,
-            weight=1.0,
-            params={"command_name": "twist", "std": math.sqrt(0.5)},
-        ),
-        # --- 惩罚项 ---
-        "body_orientation_l2": RewardTermCfg(
-            func=mdp.body_orientation_l2,
-            weight=-1.0,
-            params={"asset_cfg": SceneEntityCfg("robot", body_names=("base",))},
-        ),
-        "body_ang_vel": RewardTermCfg(
-            func=mdp.body_angular_velocity_penalty,
-            weight=-0.05,
-            params={"asset_cfg": SceneEntityCfg("robot", body_names=("base",))},
-        ),
-        "action_rate_l2": RewardTermCfg(
-            func=mdp.action_rate_l2, weight=-0.01
-        ),
-        "action_rate_l2": RewardTermCfg(
-            func=mdp.action_rate_l2, 
-            weight=-0.01
-        ),
-        "action_l2": RewardTermCfg(
-            func=mdp.action_l2, 
-            weight=-0.005
-        ),
-        "dof_vel_z": RewardTermCfg(
-            func=mdp.base_lin_vel_penalty, 
-            weight=-0.05,
-            params={"axis": 2} 
+        "align_z_with_velocity": RewardTermCfg(
+            func=mdp.align_z_with_velocity,  # 函数引用
+            weight=1.0,                      # 奖励权重
+            params={
+                "command_name": "twist",     # 命令名称（对应 velocity_command）
+                "std": 0.5,                  # 指数奖励宽度参数
+            },
         ),
     }
 
@@ -165,7 +140,7 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     # 6. 事件 (Events) 
     # ==========================
     events = {
-        # 1. 原有的关节重置
+        # 关节重置
         "reset_robot_joints": EventTermCfg(
             func=mdp.reset_joints_by_offset,
             mode="reset",
@@ -175,13 +150,19 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
                 "asset_cfg": SceneEntityCfg("robot", joint_names=("joint_servo_(up|left)", "joint_prop_.*")),
             },
         ),
-        # 2. 模拟水流扰动：每隔一定步数随机推一下机身
-        "push_robot": EventTermCfg(
-            func=mdp.push_by_setting_velocity,
-            mode="interval",
-            interval_range_s=(5.0, 10.0), # 每 5-10 秒推一次
-            params={"velocity_range": {"x": (-0.5, 0.5), "y": (-0.5, 0.5), "z": (-0.2, 0.2)}},
-        ),
+        # "hydrodynamic_forces": EventTermCfg(
+        #     func=mdp.apply_hydrodynamic_forces,
+        #     mode="step",
+        #     params={
+        #         "water_density": 1000.0,
+        #         "water_viscosity": 0.0009,
+        #         "volume": AUV_VOLUME,
+        #         "com_to_cob_offset": tuple(AUV_COM_TO_COB_OFFSET.tolist()),
+        #         "mass": AUV_MASS,
+        #         "inertia": tuple(AUV_INERTIA.tolist()),
+        #         "debug": False,  # 关闭调试输出
+        #     },
+        # ),
     }
 
     # ==========================
@@ -219,8 +200,8 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
             elevation=-15.0
         ),
         sim=SimulationCfg(
-            nconmax=1024,
-            njmax=2048,
+            nconmax=2048,
+            njmax=4096,
             contact_sensor_maxmatch=128,
             mujoco=MujocoCfg(
                 timestep=0.005,

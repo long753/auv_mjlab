@@ -1,0 +1,689 @@
+--- git commit ---
+918e3539880e88af62f69cd33325231a88b8da74
+
+
+--- git status ---
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   README.md
+	modified:   pyproject.toml
+	modified:   src/assets/robots/auv/auv_constants.py
+	modified:   src/assets/robots/auv/xmls/auv.xml
+	modified:   src/tasks/velocity/config/auv/env_cfgs.py
+	modified:   src/tasks/velocity/mdp/__init__.py
+	modified:   src/tasks/velocity/mdp/rewards.py
+	modified:   src/tasks/velocity/rl/runner.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	logs/
+	src/auv_mjlab
+	src/tasks/velocity/mdp/hydrodynamics.py
+	src/tasks/velocity/mdp/thruster_allocation.py
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/README.md b/README.md
+index d66b523..8e1564a 100644
+--- a/README.md
++++ b/README.md
+@@ -168,6 +168,13 @@ vncviewer 10.253.33.188:1
+ ```
+ 
+ **VNC 密码**: 147258
++。如果遇到如下错误，关闭代理进入
++```
++Wed Apr  1 18:35:26 2026
++ DecodeManager: Detected 20 CPU core(s)
++ DecodeManager: Creating 4 decoder thread(s)
++ CConn:       Connected to host 10.253.33.188 port 5901
++```
+ 
+ ---
+ 
+diff --git a/pyproject.toml b/pyproject.toml
+index f24832d..bd48da2 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -4,8 +4,8 @@ version = "0.1.0"
+ description = "AUV motion control system based on RL"
+ readme = "README.md"
+ authors = [
+-    { name = "long753", email = "cl2848077709@outlook.com" }
+-    { name = "wenlinlong220", email = "wenlinlong@outlook.com" }
++    { name = "long753", email = "cl2848077709@outlook.com" },
++    { name = "wenlinlong220", email = "wenlinlong@outlook.com" },
+ ]
+ requires-python = ">=3.11"
+ dependencies = [
+@@ -17,7 +17,7 @@ auv-mjlab = "auv_mjlab:main"
+ 
+ # 让 mjlab 发现你的任务包
+ [project.entry-points."mjlab.tasks"]
+-auv_mjlab = "auv_mjlab.tasks"
++auv_mjlab = "src.tasks"
+ 
+ [build-system]
+ requires = ["uv_build>=0.10.12,<0.11.0"]
+diff --git a/src/assets/robots/auv/auv_constants.py b/src/assets/robots/auv/auv_constants.py
+index abd4d35..70d3fa3 100644
+--- a/src/assets/robots/auv/auv_constants.py
++++ b/src/assets/robots/auv/auv_constants.py
+@@ -1,5 +1,13 @@
+ """AUV constants (mjlab style)."""
++import sys
+ from pathlib import Path
++
++# 添加项目根目录到sys.path以便直接运行此脚本
++current_dir = Path(__file__).parent
++project_root = current_dir.parent.parent.parent.parent  # src/assets/robots/auv -> 项目根目录
++if str(project_root) not in sys.path:
++    sys.path.insert(0, str(project_root))
++
+ import mujoco
+ from src import SRC_PATH
+ from mjlab.actuator import BuiltinPositionActuatorCfg, BuiltinMotorActuatorCfg
+@@ -59,6 +67,16 @@ INIT_STATE = EntityCfg.InitialStateCfg(
+     joint_vel={".*": 0.0},
+ )
+ 
++# Hydrodynamic parameters
++# AUV近似为圆柱体：直径0.3m，长度1.5m
++AUV_VOLUME = 0.106  # m³ (π * R² * L = 3.1416 * 0.15² * 1.5)
++AUV_MASS = 100.0  # kg (合理质量)
++# 惯性张量对角线元素 (kg·m²)：基于圆柱体计算
++# I_xx = I_yy = (1/12) * M * (3R² + L²) = (1/12) * 100 * (0.0675 + 2.25) ≈ 19.3
++# I_zz = (1/2) * M * R² = 0.5 * 100 * 0.0225 = 1.125
++AUV_INERTIA = np.array([19.3, 19.3, 1.125])  # [I_xx, I_yy, I_zz]
++AUV_COM_TO_COB_OFFSET = np.array([0.0, 0.0, 0.05])  # m, 质心到浮心的偏移（假设浮心稍高于质心）
++
+ # 4. 关节与执行器聚合
+ AUV_ARTICULATION = EntityArticulationInfoCfg(
+     actuators=(
+@@ -81,13 +99,91 @@ if __name__ == "__main__":
+     import time
+     import mujoco.viewer as viewer
+     from mjlab.entity.entity import Entity
++    import torch
++    import numpy as np
++    from src.tasks.velocity.mdp.hydrodynamics import HydrodynamicForceModels
++    from mjlab.utils.lab_api.math import quat_apply
+     
++    # 创建机器人实体
+     robot = Entity(get_auv_robot_cfg())
+     model = robot.spec.compile()
+-    data = mujoco.Data(model) 
++    data = mujoco.Data(model)
++    
++    # 水动力参数
++    water_density = 1000.0  # kg/m³
++    water_viscosity = 0.0009  # Pa·s (MuJoCo默认值)
++    g_mag = 9.81  # 重力加速度
++    
++    # 创建水动力模型
++    device = torch.device('cpu')
++    force_model = HydrodynamicForceModels(num_envs=1, device=device, debug=True)
++    
++    # 准备常量张量
++    volume_tensor = torch.tensor([[AUV_VOLUME]], dtype=torch.float32, device=device)
++    mass_tensor = torch.tensor([[AUV_MASS]], dtype=torch.float32, device=device)
++    inertia_tensor = torch.tensor([AUV_INERTIA], dtype=torch.float32, device=device)
++    com_to_cob_offset_tensor = torch.tensor([AUV_COM_TO_COB_OFFSET], dtype=torch.float32, device=device)
++    
++    # 根身体索引（假设为0）
++    root_body_id = 0
+     
+     with viewer.launch_passive(model, data) as v:
++        step_count = 0
+         while v.is_running():
++            # 获取根身体状态
++            # 位置 (未使用)
++            # pos = data.xpos[root_body_id].copy()
++            
++            # 四元数 (w, x, y, z) - MuJoCo使用(x, y, z, w)格式，需要转换
++            mujoco_quat = data.xquat[root_body_id].copy()  # [x, y, z, w]
++            quat_w = torch.tensor([[mujoco_quat[3], mujoco_quat[0], mujoco_quat[1], mujoco_quat[2]]], 
++                                  dtype=torch.float32, device=device)
++            
++            # 线速度和角速度 (世界坐标系)
++            linvel_w = torch.tensor([data.cvel[root_body_id][3:6]], dtype=torch.float32, device=device)  # 线速度部分
++            angvel_w = torch.tensor([data.cvel[root_body_id][0:3]], dtype=torch.float32, device=device)  # 角速度部分
++            
++            # 计算浮力
++            buoyancy_force, buoyancy_torque = force_model.calculate_buoyancy_forces(
++                quat_w, water_density, volume_tensor, g_mag, com_to_cob_offset_tensor
++            )
++            
++            # 计算阻力和粘性力
++            f_d, g_d, f_v, g_v = force_model.calculate_density_and_viscosity_forces(
++                quat_w, linvel_w, angvel_w,
++                inertia_tensor, water_viscosity, water_density, mass_tensor
++            )
++            
++            # 总力和扭矩 (刚体坐标系)
++            total_force_b = buoyancy_force + f_d + f_v
++            total_torque_b = buoyancy_torque + g_d + g_v
++            
++            # 添加重力 (世界坐标系向下，需要转换到刚体坐标系)
++            gravity_force_w = torch.tensor([[0.0, 0.0, -AUV_MASS * g_mag]], dtype=torch.float32, device=device)
++            gravity_force_b = quat_apply(quat_w, gravity_force_w)  # 转换到刚体系
++            total_force_b += gravity_force_b
++            
++            # 转换为numpy数组
++            total_force_np = total_force_b[0].cpu().numpy()
++            total_torque_np = total_torque_b[0].cpu().numpy()
++            
++            # 施加外力到MuJoCo (身体局部坐标系)
++            data.xfrc_applied[root_body_id][:3] = total_force_np
++            data.xfrc_applied[root_body_id][3:6] = total_torque_np
++            
++            # 每100步打印调试信息
++            if step_count % 100 == 0:
++                print(f"Step {step_count}:")
++                print(f"  姿态四元数: {mujoco_quat}")
++                print(f"  线速度: {linvel_w[0].cpu().numpy()}")
++                print(f"  角速度: {angvel_w[0].cpu().numpy()}")
++                print(f"  总力 (刚体系): {total_force_np}")
++                print(f"  总扭矩 (刚体系): {total_torque_np}")
++                print(f"  位置 z: {data.xpos[root_body_id][2]:.3f}")
++                print()
++            
++            # 仿真步进
+             mujoco.mj_step(model, data)
+             v.sync()
+-            time.sleep(model.opt.timestep)
+\ No newline at end of file
++            time.sleep(model.opt.timestep)
++            step_count += 1
+\ No newline at end of file
+diff --git a/src/assets/robots/auv/xmls/auv.xml b/src/assets/robots/auv/xmls/auv.xml
+index 4930513..a64994e 100644
+--- a/src/assets/robots/auv/xmls/auv.xml
++++ b/src/assets/robots/auv/xmls/auv.xml
+@@ -195,12 +195,17 @@
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10" mass="0.36" rgba="0.0 0.75 1.0 1"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10" rgba="0.0 0.75 1.0 1"/>
+ 
++<site name="thrust_up_site" pos="0.07629058 0.00222789 -0.11788090" type="sphere" size="0.01" rgba="1 0 0 0.5"/>
++<site name="thrust_down_site" pos="-0.07365844 0.00168283 -0.11788090" type="sphere" size="0.01" rgba="0 1 0 0.5"/>
++<site name="thrust_left_site" pos="0.00063929 0.07524704 -0.11788090" type="sphere" size="0.01" rgba="0 0 1 0.5"/>
++<site name="thrust_right_site" pos="0.00327143 -0.07470197 -0.11788090" type="sphere" size="0.01" rgba="1 1 0 0.5"/>
++
+ <body name="body_servo_up" pos="0.07629058 0.00222789 -0.11788090" euler="0 1.570796326795 0" childclass="auv_base">
+         <joint name="joint_servo_up" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
+         <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1"/>
+         <body name="body_servo_up_prop" pos="0 0 0" childclass="auv_base">
+-          <joint name="joint_prop_up" type="hinge" axis="0 0 1" damping="0.01" armature="0.001"/>
++          <joint name="joint_prop_up" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
+           <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____up_1__tui_jin_qi__1" mass="0.01"/>
+           <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____up_1__tui_jin_qi__1"/>
+         </body>
+@@ -211,7 +216,7 @@
+         <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1"/>
+         <body name="body_servo_down_prop" pos="0 0 0" childclass="auv_base">
+-          <joint name="joint_prop_down" type="hinge" axis="0 0 1" damping="0.01" armature="0.001"/>
++          <joint name="joint_prop_down" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
+           <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____down_1__tui_jin_qi__1" mass="0.01"/>
+           <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____down_1__tui_jin_qi__1"/>
+         </body>
+@@ -222,7 +227,7 @@
+         <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1"/>
+         <body name="body_servo_left_prop" pos="0 0 0" childclass="auv_base">
+-          <joint name="joint_prop_left" type="hinge" axis="0 0 1" damping="0.01" armature="0.001"/>
++          <joint name="joint_prop_left" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
+           <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____left_1__tui_jin_qi__1" mass="0.01"/>
+           <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____left_1__tui_jin_qi__1"/>
+         </body>
+@@ -233,7 +238,7 @@
+         <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1"/>
+         <body name="body_servo_right_prop" pos="0 0 0" childclass="auv_base">
+-          <joint name="joint_prop_right" type="hinge" axis="0 0 1" damping="0.01" armature="0.001"/>
++          <joint name="joint_prop_right" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
+           <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____right_1__tui_jin_qi__1" mass="0.01"/>
+           <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____right_1__tui_jin_qi__1"/>
+         </body>
+@@ -259,10 +264,54 @@
+     <position name="servo_v_cmd" joint="joint_servo_up" kp="20" ctrlrange="-1.57 1.57"/>
+     <position name="servo_h_cmd" joint="joint_servo_left" kp="20" ctrlrange="-1.57 1.57"/>
+     
+-    <motor name="thrust_up"    joint="joint_prop_up" gear="2"/>
+-    <motor name="thrust_down"  joint="joint_prop_down" gear="2"/>
+-    <motor name="thrust_left"  joint="joint_prop_left" gear="2"/>
+-    <motor name="thrust_right" joint="joint_prop_right" gear="2"/>
++    <!-- 上推进器 -->
++    <general name="thruster_up_z" 
++            site="thrust_up_site" 
++            gaintype="fixed"   gainprm="1 0 0 0 0 0"
++            biastype="affine"  biasprm="0 0 0 0 0 0"
++            gear="0 0 1 0 0 0" ctrllimited="false"/>
++    <general name="thruster_up_y" 
++            site="thrust_up_site" 
++            gaintype="fixed"   gainprm="1 0 0 0 0 0"
++            biastype="affine"  biasprm="0 0 0 0 0 0"
++            gear="0 -1 0 0 0 0" ctrllimited="false"/>
++    
++    <!-- 下推进器 -->
++    <general name="thruster_down_z" 
++            site="thrust_down_site" 
++            gaintype="fixed"   gainprm="1 0 0 0 0 0"
++            biastype="affine"  biasprm="0 0 0 0 0 0"
++            gear="0 0 1 0 0 0" ctrllimited="false"/>
++    <general name="thruster_down_y" 
++            site="thrust_down_site" 
++            gaintype="fixed"   gainprm="1 0 0 0 0 0"
++            biastype="affine"  biasprm="0 0 0 0 0 0"
++            gear="0 1 0 0 0 0" ctrllimited="false"/>
++
++    <!-- 左推进器 -->
++    <general name="thruster_left_z" 
++            site="thrust_left_site" 
++            gaintype="fixed"   gainprm="1 0 0 0 0 0"
++            biastype="affine"  biasprm="0 0 0 0 0 0"
++            gear="0 0 1 0 0 0" ctrllimited="false"/>
++    <general name="thruster_left_x" 
++            site="thrust_left_site" 
++            gaintype="fixed"   gainprm="1 0 0 0 0 0"
++            biastype="affine"  biasprm="0 0 0 0 0 0"
++            gear="1 0 0 0 0 0" ctrllimited="false"/>
++    
++    <!-- 右推进器 -->
++    <general name="thruster_right_z" 
++            site="thrust_right_site" 
++            gaintype="fixed"   gainprm="1 0 0 0 0 0"
++            biastype="affine"  biasprm="0 0 0 0 0 0"
++            gear="0 0 1 0 0 0" ctrllimited="false" />
++    <!-- 右推进器 -->
++    <general name="thruster_right_x" 
++            site="thrust_right_site" 
++            gaintype="fixed"   gainprm="1 0 0 0 0 0"
++            biastype="affine"  biasprm="0 0 0 0 0 0"
++            gear="1 0 0 0 0 0" ctrllimited="false"/>
+   </actuator>
+ 
+ </mujoco>
+\ No newline at end of file
+diff --git a/src/tasks/velocity/config/auv/env_cfgs.py b/src/tasks/velocity/config/auv/env_cfgs.py
+index cce9706..6741943 100644
+--- a/src/tasks/velocity/config/auv/env_cfgs.py
++++ b/src/tasks/velocity/config/auv/env_cfgs.py
+@@ -21,6 +21,12 @@ from mjlab.envs.mdp.actions import JointPositionActionCfg
+ from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
+ import src.tasks.velocity.mdp as mdp
+ from src.assets.robots import get_auv_robot_cfg
++from src.assets.robots.auv.auv_constants import (
++    AUV_VOLUME,
++    AUV_MASS,
++    AUV_INERTIA,
++    AUV_COM_TO_COB_OFFSET,
++)
+ 
+ 
+ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+@@ -40,22 +46,21 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+     # 2. 动作空间 (Actions)
+     # ==========================
+     actions: dict[str, ActionTermCfg] = {
+-        "joint_pos": JointPositionActionCfg(
+-            entity_name="robot",
+-            actuator_names=('joint_servo_up',        # 舵机角度（竖轴）
+-                            'joint_servo_left'),      # 舵机角度（横轴）
+-            scale=1.5,                               # 舵机角度范围
+-            use_default_offset=True,
+-        ),
+-
+-        "thrusters": JointPositionActionCfg( 
+-            entity_name="robot",
+-            actuator_names=('joint_prop_up',         # 上侧推进器推力
+-                            'joint_prop_down',       # 上侧推进器推力
+-                            'joint_prop_left',       # 上侧推进器推力
+-                            'joint_prop_right'),     # 上侧推进器推力
+-            scale=200,                                # 推进器推力范围
+-            use_default_offset=False,
++        "joint_pos": mdp.AuvThrusterAllocationActionCfg(
++            entity_name="robot",                                # 机器人实体的名称
++            servo_joint_names=["servo_v_cmd", "servo_h_cmd"],   # 舵机空间
++            thruster_joint_names=[                              # 推进器空间
++                "thruster_up_z",
++                "thruster_up_y",
++                "thruster_down_z",
++                "thruster_down_y",
++                "thruster_left_z",
++                "thruster_left_x",
++                "thruster_right_z",
++                "thruster_right_x",
++            ],
++            max_servo_angle=math.pi/2, 
++            max_thrust=10.0,
+         )
+     }
+ 
+@@ -71,9 +76,9 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+             heading_command=True,
+             heading_control_stiffness=0.5,
+             ranges=UniformVelocityCommandCfg.Ranges(
+-                lin_vel_x=(-1.0, 2.0), # 前后速度范围
+-                lin_vel_y=(-1.0, 1.0), # 侧向速度范围
+-                ang_vel_z=(-1.0, 1.0), # 偏航角速度范围
++                lin_vel_x=(-1.0, 2.0), #
++                lin_vel_y=(-1.0, 1.0), 
++                ang_vel_z=(-1.0, 1.0), 
+                 heading=(-math.pi, math.pi),
+             ),
+         )
+@@ -121,43 +126,13 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+     # 5. 奖励函数 (Rewards)
+     # ==========================
+     rewards = {
+-        # --- 核心目标奖励 ---
+-        "track_linear_velocity": RewardTermCfg(
+-            func=mdp.track_linear_velocity,
+-            weight=1.0,
+-            params={"command_name": "twist", "std": math.sqrt(0.25)},
+-        ),
+-        "track_angular_velocity": RewardTermCfg(
+-            func=mdp.track_angular_velocity,
+-            weight=1.0,
+-            params={"command_name": "twist", "std": math.sqrt(0.5)},
+-        ),
+-        # --- 惩罚项 ---
+-        "body_orientation_l2": RewardTermCfg(
+-            func=mdp.body_orientation_l2,
+-            weight=-1.0,
+-            params={"asset_cfg": SceneEntityCfg("robot", body_names=("base",))},
+-        ),
+-        "body_ang_vel": RewardTermCfg(
+-            func=mdp.body_angular_velocity_penalty,
+-            weight=-0.05,
+-            params={"asset_cfg": SceneEntityCfg("robot", body_names=("base",))},
+-        ),
+-        "action_rate_l2": RewardTermCfg(
+-            func=mdp.action_rate_l2, weight=-0.01
+-        ),
+-        "action_rate_l2": RewardTermCfg(
+-            func=mdp.action_rate_l2, 
+-            weight=-0.01
+-        ),
+-        "action_l2": RewardTermCfg(
+-            func=mdp.action_l2, 
+-            weight=-0.005
+-        ),
+-        "dof_vel_z": RewardTermCfg(
+-            func=mdp.base_lin_vel_penalty, 
+-            weight=-0.05,
+-            params={"axis": 2} 
++        "align_z_with_velocity": RewardTermCfg(
++            func=mdp.align_z_with_velocity,  # 函数引用
++            weight=1.0,                      # 奖励权重
++            params={
++                "command_name": "twist",     # 命令名称（对应 velocity_command）
++                "std": 0.5,                  # 指数奖励宽度参数
++            },
+         ),
+     }
+ 
+@@ -165,7 +140,7 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+     # 6. 事件 (Events) 
+     # ==========================
+     events = {
+-        # 1. 原有的关节重置
++        # 关节重置
+         "reset_robot_joints": EventTermCfg(
+             func=mdp.reset_joints_by_offset,
+             mode="reset",
+@@ -175,13 +150,19 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+                 "asset_cfg": SceneEntityCfg("robot", joint_names=("joint_servo_(up|left)", "joint_prop_.*")),
+             },
+         ),
+-        # 2. 模拟水流扰动：每隔一定步数随机推一下机身
+-        "push_robot": EventTermCfg(
+-            func=mdp.push_by_setting_velocity,
+-            mode="interval",
+-            interval_range_s=(5.0, 10.0), # 每 5-10 秒推一次
+-            params={"velocity_range": {"x": (-0.5, 0.5), "y": (-0.5, 0.5), "z": (-0.2, 0.2)}},
+-        ),
++        # "hydrodynamic_forces": EventTermCfg(
++        #     func=mdp.apply_hydrodynamic_forces,
++        #     mode="step",
++        #     params={
++        #         "water_density": 1000.0,
++        #         "water_viscosity": 0.0009,
++        #         "volume": AUV_VOLUME,
++        #         "com_to_cob_offset": tuple(AUV_COM_TO_COB_OFFSET.tolist()),
++        #         "mass": AUV_MASS,
++        #         "inertia": tuple(AUV_INERTIA.tolist()),
++        #         "debug": False,  # 关闭调试输出
++        #     },
++        # ),
+     }
+ 
+     # ==========================
+@@ -219,8 +200,8 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+             elevation=-15.0
+         ),
+         sim=SimulationCfg(
+-            nconmax=1024,
+-            njmax=2048,
++            nconmax=2048,
++            njmax=4096,
+             contact_sensor_maxmatch=128,
+             mujoco=MujocoCfg(
+                 timestep=0.005,
+diff --git a/src/tasks/velocity/mdp/__init__.py b/src/tasks/velocity/mdp/__init__.py
+index 34c31c1..0d010ef 100644
+--- a/src/tasks/velocity/mdp/__init__.py
++++ b/src/tasks/velocity/mdp/__init__.py
+@@ -1,6 +1,8 @@
+ from mjlab.envs.mdp import *  # noqa: F401, F403
+ from .curriculums import *  # noqa: F403
++from .hydrodynamics import *  # noqa: F403
+ from .observations import *  # noqa: F403
+ from .rewards import *  # noqa: F403
+ from .terminations import *  # noqa: F403
++from .thruster_allocation import *  # noqa: F403
+ from .velocity_command import *  # noqa: F403
+diff --git a/src/tasks/velocity/mdp/rewards.py b/src/tasks/velocity/mdp/rewards.py
+index 449b88a..95adc64 100644
+--- a/src/tasks/velocity/mdp/rewards.py
++++ b/src/tasks/velocity/mdp/rewards.py
+@@ -5,7 +5,7 @@ from mjlab.entity import Entity
+ from mjlab.managers.reward_manager import RewardTermCfg
+ from mjlab.managers.scene_entity_config import SceneEntityCfg
+ from mjlab.sensor import BuiltinSensor, ContactSensor
+-from mjlab.utils.lab_api.math import quat_apply_inverse
++from mjlab.utils.lab_api.math import quat_apply_inverse, quat_apply
+ from mjlab.utils.lab_api.string import (
+   resolve_matching_names_values,
+ )
+@@ -17,93 +17,44 @@ if TYPE_CHECKING:
+ _DEFAULT_ASSET_CFG = SceneEntityCfg("robot")
+ 
+ 
+-def track_linear_velocity(
+-  env: ManagerBasedRlEnv,
+-  std: float,
+-  command_name: str,
+-  asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
++def align_z_with_velocity(
++    env: ManagerBasedRlEnv,
++    command_name: str,
++    asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
++    std: float = 0.5,  # 用于指数形式的宽度参数
+ ) -> torch.Tensor:
+-  """跟踪期望的基座线速度 (XY平面跟踪，Z轴期望为0)"""
+-  asset: Entity = env.scene[asset_cfg.name]
+-  command = env.command_manager.get_command(command_name)
+-  assert command is not None, f"Command '{command_name}' not found."
+-  actual = asset.data.root_link_lin_vel_b
+-  xy_error = torch.sum(torch.square(command[:, :2] - actual[:, :2]), dim=1)
+-  z_error = torch.square(actual[:, 2])
+-  lin_vel_error = xy_error + (2 * z_error)
+-  return torch.exp(-lin_vel_error / std**2)
+-
+-
+-def track_angular_velocity(
+-  env: ManagerBasedRlEnv,
+-  std: float,
+-  command_name: str,
+-  asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+-) -> torch.Tensor:
+-  """跟踪期望的偏航角速度 (Z轴期望跟踪，XY轴角速度期望为0)"""
+-  asset: Entity = env.scene[asset_cfg.name]
+-  command = env.command_manager.get_command(command_name)
+-  assert command is not None, f"Command '{command_name}' not found."
+-  actual = asset.data.root_link_ang_vel_b
+-  z_error = torch.square(command[:, 2] - actual[:, 2])
+-  xy_error = torch.sum(torch.square(actual[:, :2]), dim=1)
+-  ang_vel_error = z_error + (0.05 * xy_error)
+-  return torch.exp(-ang_vel_error / std**2)
+-
+-
+-def body_orientation_l2(
+-  env: ManagerBasedRlEnv,
+-  asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+-) -> torch.Tensor:
+-  """惩罚非水平的机身姿态，保持 AUV 平稳 (基于重力向量投影)"""
+-  asset: Entity = env.scene[asset_cfg.name]
+-  if asset_cfg.body_ids:
+-    body_quat_w = asset.data.body_link_quat_w[:, asset_cfg.body_ids, :]  # [B, N, 4]
+-    body_quat_w = body_quat_w.squeeze(1)  # [B, 4]
+-    gravity_w = asset.data.gravity_vec_w  # [3]
+-    projected_gravity_b = quat_apply_inverse(body_quat_w, gravity_w)  # [B, 3]
+-    xy_squared = torch.sum(torch.square(projected_gravity_b[:, :2]), dim=1)
+-  else:
+-    xy_squared = torch.sum(torch.square(asset.data.projected_gravity_b[:, :2]), dim=1)
+-  return xy_squared
+-
+-
+-def body_angular_velocity_penalty(
+-  env: ManagerBasedRlEnv,
+-  asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+-) -> torch.Tensor:
+-  """惩罚机身在 Roll 和 Pitch 轴的角速度 (防止晃动)"""
+-  asset: Entity = env.scene[asset_cfg.name]
+-  ang_vel = asset.data.body_link_ang_vel_w[:, asset_cfg.body_ids, :]
+-  ang_vel = ang_vel.squeeze(1)
+-  ang_vel_xy = ang_vel[:, :2]  # Don't penalize z-angular velocity.
+-  return torch.sum(torch.square(ang_vel_xy), dim=1)
+-
+-
+-def base_lin_vel_penalty(
+-  env: ManagerBasedRlEnv, 
+-  axis: int, 
+-  asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG
+-) -> torch.Tensor:
+-    """惩罚特定轴向的线速度 (如 Z轴，防止上下窜动)"""
+-    # 直接像 track_linear_velocity 那样从底层数据中获取线速度，安全且高效
+-    asset: Entity = env.scene[asset_cfg.name]
+-    lin_vel = asset.data.root_link_lin_vel_b
++    """奖励机器人的z轴指向期望速度方向
+     
+-    # 计算对应轴向的平方惩罚
+-    return torch.square(lin_vel[:, axis])
+-
+-
+-def action_l2(
+-  env: ManagerBasedRlEnv, 
+-  asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG
+-) -> torch.Tensor:
+-    """惩罚动作的绝对幅值，鼓励节能"""
+-    return torch.sum(torch.square(env.action_manager.action), dim=1)
+-
++    参数:
++        mode: 奖励计算模式
++            - "dot_product": 直接使用点积 [-1, 1]
++            - "angle": 使用归一化角度 [0, 1]
++            - "exponential": 使用指数形式 (0, 1]
++    """
++    # 获取资产和命令
++    asset = env.scene[asset_cfg.name]
++    command = env.command_manager.get_command(command_name)
++    
++    vel_command_b = command[:, :]   # [num_envs, 3]   
++    vel_norm = torch.norm(vel_command_b, dim=1, keepdim=True)
++    
++    # 处理零速度情况
++    vel_dir_b = torch.where(
++        vel_norm > 1e-6,
++        vel_command_b / vel_norm,
++        torch.zeros_like(vel_command_b)
++    )
++    
++    # 将速度方向转换到世界坐标系
++    root_quat_w = asset.data.root_link_quat_w
++    vel_dir_w = quat_apply(root_quat_w, vel_dir_b)
++    
++    # 获取z轴在世界坐标系中的方向
++    z_axis_b = torch.tensor([[0.0, 0.0, 1.0]], device=env.device).repeat(env.num_envs, 1)
++    z_axis_w = quat_apply(root_quat_w, z_axis_b)
++    
++    # 计算对齐度
++    alignment = torch.sum(z_axis_w * vel_dir_w, dim=1)  # 点积
+ 
+-def action_rate_l2(
+-  env: ManagerBasedRlEnv, asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG
+-) -> torch.Tensor:
+-  """惩罚动作的变化率，防止电机高频抖动"""
+-  return torch.sum(torch.square(env.action_manager.action - env.action_manager.prev_action), dim=1)
+\ No newline at end of file
++    angle = torch.acos(torch.clamp(alignment, -0.9999, 0.9999))
++    return torch.exp(-angle**2 / (2 * std**2))  # (0, 1]
+\ No newline at end of file
+diff --git a/src/tasks/velocity/rl/runner.py b/src/tasks/velocity/rl/runner.py
+index bfc09f4..a9ab1a7 100644
+--- a/src/tasks/velocity/rl/runner.py
++++ b/src/tasks/velocity/rl/runner.py
+@@ -7,6 +7,7 @@ from mjlab.rl.exporter_utils import (
+   get_base_metadata,
+ )
+ from mjlab.rl.runner import MjlabOnPolicyRunner
++from mjlab.envs.mdp.actions import JointPositionAction
+ 
+ 
+ class VelocityOnPolicyRunner(MjlabOnPolicyRunner):
+@@ -17,12 +18,30 @@ class VelocityOnPolicyRunner(MjlabOnPolicyRunner):
+     policy_path = path.split("model")[0]
+     filename = "policy.onnx"
+     self.export_policy_to_onnx(policy_path, filename)
+-    run_name: str = (
+-      wandb.run.name if self.logger.logger_type == "wandb" and wandb.run else "local"
+-    )  # type: ignore[assignment]
++    if self.logger.logger_type == "wandb" and wandb.run:
++        run_name = wandb.run.name
++    else:
++        run_name = "local"
+     onnx_path = os.path.join(policy_path, filename)
+-    metadata = get_base_metadata(self.env.unwrapped, run_name)
+-    attach_metadata_to_onnx(onnx_path, metadata)
++    
++    # 自定义metadata获取，避免JointPositionAction假设
++    env = self.env.unwrapped
++    robot = env.scene["robot"]
++    metadata = {
++        "run_name": run_name,
++        "policy_type": "auv_thruster_allocation",
++        "robot_name": "auv",
++        "action_dim": 6,
++        "observation_dim": 26,
++        "num_actuators": len(robot.actuator_names),
++        "actuator_names": list(robot.actuator_names),
++    }
++    
++    try:
++        attach_metadata_to_onnx(onnx_path, metadata)
++    except Exception as e:
++        print(f"Warning: Failed to attach metadata: {e}")
++    
+     if self.logger.logger_type in ["wandb"]:
+       wandb.save(policy_path + filename, base_path=os.path.dirname(policy_path))
+  
+\ No newline at end of file

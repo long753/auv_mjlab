@@ -168,6 +168,13 @@ vncviewer 10.253.33.188:1
 ```
 
 **VNC 密码**: 147258
+。如果遇到如下错误，关闭代理进入
+```
+Wed Apr  1 18:35:26 2026
+ DecodeManager: Detected 20 CPU core(s)
+ DecodeManager: Creating 4 decoder thread(s)
+ CConn:       Connected to host 10.253.33.188 port 5901
+```
 
 ---
 
