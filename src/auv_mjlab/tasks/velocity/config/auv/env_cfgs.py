@@ -47,20 +47,16 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     # ==========================
     actions: dict[str, ActionTermCfg] = {
         "joint_pos": mdp.AuvThrusterAllocationActionCfg(
-            entity_name="robot",                                # 机器人实体的名称
-            servo_joint_names=["servo_v_cmd", "servo_h_cmd"],   # 舵机空间
-            thruster_joint_names=[                              # 推进器空间
-                "thruster_up_z",
-                "thruster_up_y",
-                "thruster_down_z",
-                "thruster_down_y",
-                "thruster_left_z",
-                "thruster_left_x",
-                "thruster_right_z",
-                "thruster_right_x",
+            entity_name="robot",
+            servo_joint_names=["joint_servo_up", "joint_servo_left"],  # 舵机
+            thruster_joint_names=[                                     # 推进器
+                "thrust_up_site",
+                "thrust_down_site",
+                "thrust_left_site",
+                "thrust_right_site",
             ],
             max_servo_angle=math.pi/2, 
-            max_thrust=10.0,
+            max_thrust=50.0,
         )
     }
 
@@ -76,7 +72,7 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
             heading_command=True,
             heading_control_stiffness=0.5,
             ranges=UniformVelocityCommandCfg.Ranges(
-                lin_vel_x=(-1.0, 2.0), #
+                lin_vel_x=(-1.0, 2.0),
                 lin_vel_y=(-1.0, 1.0), 
                 ang_vel_z=(-1.0, 1.0), 
                 heading=(-math.pi, math.pi),
@@ -94,16 +90,19 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
         "projected_gravity": ObservationTermCfg(func=mdp.projected_gravity),                            # 重量投影
         "actions": ObservationTermCfg(func=mdp.last_action),                                            # 上一帧action
         
-        "joint_pos": ObservationTermCfg(                 # 舵机转角
+        # 仅观测主动控制的两个舵机转角
+        "joint_pos": ObservationTermCfg(                 
             func=mdp.joint_pos_rel,
             params={"asset_cfg": SceneEntityCfg("robot", joint_names=(
                 'joint_servo_up','joint_servo_left'
             ))},
         ),
-        "joint_vel": ObservationTermCfg(                # 舵机和推进器速度
+        # 观测所有活动关节的速度（包含舵机和螺旋桨叶片）
+        "joint_vel": ObservationTermCfg(                
             func=mdp.joint_vel_rel,
             params={"asset_cfg": SceneEntityCfg("robot", joint_names=(
-                'joint_servo_up','joint_servo_left','joint_prop_up','joint_prop_down','joint_prop_left','joint_prop_right'
+                'joint_servo_up','joint_servo_left',
+                'joint_prop_up','joint_prop_down','joint_prop_left','joint_prop_right'
             ))},
         ),
     }
@@ -147,9 +146,11 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
             params={
                 "position_range": (0.0, 0.0),
                 "velocity_range": (0.0, 0.0),
-                "asset_cfg": SceneEntityCfg("robot", joint_names=("joint_servo_(up|left)", "joint_prop_.*")),
+                # 使用正则表达式匹配所有的舵机关节(包含上下左右)和推进器关节
+                "asset_cfg": SceneEntityCfg("robot", joint_names=("joint_servo_.*", "joint_prop_.*")),
             },
         ),
+        # 水动力学
         # "hydrodynamic_forces": EventTermCfg(
         #     func=mdp.apply_hydrodynamic_forces,
         #     mode="step",
@@ -160,7 +161,10 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
         #         "com_to_cob_offset": tuple(AUV_COM_TO_COB_OFFSET.tolist()),
         #         "mass": AUV_MASS,
         #         "inertia": tuple(AUV_INERTIA.tolist()),
-        #         "debug": False,  # 关闭调试输出
+        #         "max_force_limit": 5000.0,
+        #         "max_torque_limit": 1000.0,
+        #         "neutral_buoyancy": False,
+        #         "debug": False,
         #     },
         # ),
     }

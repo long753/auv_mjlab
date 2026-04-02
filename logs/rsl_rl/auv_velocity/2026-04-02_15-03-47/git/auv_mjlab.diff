@@ -1,0 +1,1315 @@
+--- git commit ---
+667c465e9634504e7967c52126da7eb9b7da9501
+
+
+--- git status ---
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   src/auv_mjlab/assets/robots/auv/auv_constants.py
+	modified:   src/auv_mjlab/assets/robots/auv/xmls/auv.xml
+	modified:   src/auv_mjlab/tasks/velocity/config/auv/env_cfgs.py
+	modified:   src/auv_mjlab/tasks/velocity/mdp/hydrodynamics.py
+	modified:   src/auv_mjlab/tasks/velocity/mdp/thruster_allocation.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	logs/rsl_rl/auv_velocity/2026-04-02_15-00-55/
+	logs/rsl_rl/auv_velocity/2026-04-02_15-03-47/
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/src/auv_mjlab/assets/robots/auv/auv_constants.py b/src/auv_mjlab/assets/robots/auv/auv_constants.py
+index e226ac6..e7ea1fb 100644
+--- a/src/auv_mjlab/assets/robots/auv/auv_constants.py
++++ b/src/auv_mjlab/assets/robots/auv/auv_constants.py
+@@ -1,20 +1,20 @@
+ """AUV constants (mjlab style)."""
+ import sys
+ from pathlib import Path
+-
+-# 添加项目根目录到sys.path以便直接运行此脚本
++import numpy as np
++import mujoco
+ current_dir = Path(__file__).parent
+ project_root = current_dir.parent.parent.parent.parent  # src/assets/robots/auv -> 项目根目录
++
++
+ if str(project_root) not in sys.path:
+     sys.path.insert(0, str(project_root))
+ 
+-import mujoco
+ from src.auv_mjlab import SRC_PATH
+ from mjlab.actuator import BuiltinPositionActuatorCfg, BuiltinMotorActuatorCfg
+ from mjlab.entity import EntityArticulationInfoCfg, EntityCfg
+ from mjlab.utils.os import update_assets
+-
+-import numpy as np
++from mjlab.actuator.actuator import TransmissionType
+ 
+ # 1. 路径与资产配置
+ AUV_XML: Path = SRC_PATH / "assets" / "robots" / "auv" / "xmls" / "auv.xml"
+@@ -25,35 +25,36 @@ def get_assets(meshdir: str) -> dict[str, bytes]:
+     update_assets(assets, AUV_XML.parent / "assets", meshdir)
+     return assets
+ 
++
+ def get_spec() -> mujoco.MjSpec:
+     spec = mujoco.MjSpec.from_file(str(AUV_XML))
+     spec.assets = get_assets(spec.meshdir)
+     return spec
+ 
+-
+ # 2. 执行器配置 (Actuator config)
+ # --- 舵机配置 (位置控制) ---
+-AUV_ACTUATOR_SERVO_UD = BuiltinPositionActuatorCfg(
+-    target_names_expr=("joint_servo_up",),
++AUV_ACTUATOR_SERVOS = BuiltinPositionActuatorCfg(
++    target_names_expr=(
++        "joint_servo_up",
++        "joint_servo_left",
++    ),
+     stiffness=20.0,
+     damping=4.0,
+     effort_limit=10.0,    
+     armature=0.03,
+ )
+ 
+-AUV_ACTUATOR_SERVO_LR = BuiltinPositionActuatorCfg(
+-    target_names_expr=("joint_servo_left",),
+-    stiffness=20.0,
+-    damping=4.0,
+-    effort_limit=10.0,
+-    armature=0.03,
+-)
+-
+ # --- 推进器配置 (电机/推力控制) ---
+ AUV_ACTUATOR_THRUSTERS = BuiltinMotorActuatorCfg(
+-    target_names_expr=("joint_prop_.*",), 
+-    gear=0.1,
+-    effort_limit=20.0,  
++    target_names_expr=(
++        "thrust_up_site",
++        "thrust_down_site",
++        "thrust_left_site",
++        "thrust_right_site",
++    ),
++    transmission_type=TransmissionType.SITE,  
++    effort_limit=50.0,
++    gear=1.0,   
+ )
+ 
+ # 3. 初始状态
+@@ -62,27 +63,22 @@ INIT_STATE = EntityCfg.InitialStateCfg(
+     joint_pos={
+         "joint_servo_up": 0.0,
+         "joint_servo_left": 0.0,
+-        "joint_prop_.*": 0.0,
++        # 推进器叶片关节被 range="0 0" 锁定，不需要初始化位姿
+     },
+     joint_vel={".*": 0.0},
+ )
+ 
+ # Hydrodynamic parameters
+-# AUV近似为圆柱体：直径0.3m，长度1.5m
+-AUV_VOLUME = 0.106  # m³ (π * R² * L = 3.1416 * 0.15² * 1.5)
+-AUV_MASS = 100.0  # kg (合理质量)
+-# 惯性张量对角线元素 (kg·m²)：基于圆柱体计算
+-# I_xx = I_yy = (1/12) * M * (3R² + L²) = (1/12) * 100 * (0.0675 + 2.25) ≈ 19.3
+-# I_zz = (1/2) * M * R² = 0.5 * 100 * 0.0225 = 1.125
++AUV_VOLUME = 0.106  # m³
++AUV_MASS = 100.0  # kg
+ AUV_INERTIA = np.array([19.3, 19.3, 1.125])  # [I_xx, I_yy, I_zz]
+-AUV_COM_TO_COB_OFFSET = np.array([0.0, 0.0, 0.05])  # m, 质心到浮心的偏移（假设浮心稍高于质心）
++AUV_COM_TO_COB_OFFSET = np.array([0.0, 0.0, 0.05])  # m, 质心到浮心的偏移
+ 
+ # 4. 关节与执行器聚合
+ AUV_ARTICULATION = EntityArticulationInfoCfg(
+     actuators=(
+-        AUV_ACTUATOR_SERVO_UD,
+-        AUV_ACTUATOR_SERVO_LR,
+-        AUV_ACTUATOR_THRUSTERS, # 确保推进器已被注册
++        AUV_ACTUATOR_SERVOS,
++        AUV_ACTUATOR_THRUSTERS,
+     ),
+     soft_joint_pos_limit_factor=1.0,
+ )
+@@ -90,7 +86,7 @@ AUV_ARTICULATION = EntityArticulationInfoCfg(
+ def get_auv_robot_cfg() -> EntityCfg:
+     return EntityCfg(
+         init_state=INIT_STATE,
+-        collisions=(),
++        collisions=(), # AUV 外壳碰撞未精细定义前先置空
+         spec_fn=get_spec,
+         articulation=AUV_ARTICULATION,
+     )
+@@ -100,9 +96,8 @@ if __name__ == "__main__":
+     import mujoco.viewer as viewer
+     from mjlab.entity.entity import Entity
+     import torch
+-    import numpy as np
+     from src.tasks.velocity.mdp.hydrodynamics import HydrodynamicForceModels
+-    from mjlab.utils.lab_api.math import quat_apply
++    from mjlab.utils.lab_api.math import quat_apply, quat_apply_inverse
+     
+     # 创建机器人实体
+     robot = Entity(get_auv_robot_cfg())
+@@ -111,78 +106,62 @@ if __name__ == "__main__":
+     
+     # 水动力参数
+     water_density = 1000.0  # kg/m³
+-    water_viscosity = 0.0009  # Pa·s (MuJoCo默认值)
++    water_viscosity = 0.0009  # Pa·s
+     g_mag = 9.81  # 重力加速度
+     
+-    # 创建水动力模型
+     device = torch.device('cpu')
+     force_model = HydrodynamicForceModels(num_envs=1, device=device, debug=True)
+     
+-    # 准备常量张量
+     volume_tensor = torch.tensor([[AUV_VOLUME]], dtype=torch.float32, device=device)
+     mass_tensor = torch.tensor([[AUV_MASS]], dtype=torch.float32, device=device)
+     inertia_tensor = torch.tensor([AUV_INERTIA], dtype=torch.float32, device=device)
+     com_to_cob_offset_tensor = torch.tensor([AUV_COM_TO_COB_OFFSET], dtype=torch.float32, device=device)
+     
+-    # 根身体索引（假设为0）
+     root_body_id = 0
+     
+     with viewer.launch_passive(model, data) as v:
+         step_count = 0
+         while v.is_running():
+-            # 获取根身体状态
+-            # 位置 (未使用)
+-            # pos = data.xpos[root_body_id].copy()
+-            
+-            # 四元数 (w, x, y, z) - MuJoCo使用(x, y, z, w)格式，需要转换
+-            mujoco_quat = data.xquat[root_body_id].copy()  # [x, y, z, w]
+-            quat_w = torch.tensor([[mujoco_quat[3], mujoco_quat[0], mujoco_quat[1], mujoco_quat[2]]], 
+-                                  dtype=torch.float32, device=device)
++            # MuJoCo 四元数格式为 (w, x, y, z)，与 mjlab 一致，无需重排
++            mujoco_quat = data.xquat[root_body_id].copy()  
++            quat_w = torch.tensor([mujoco_quat], dtype=torch.float32, device=device)
+             
+-            # 线速度和角速度 (世界坐标系)
+-            linvel_w = torch.tensor([data.cvel[root_body_id][3:6]], dtype=torch.float32, device=device)  # 线速度部分
+-            angvel_w = torch.tensor([data.cvel[root_body_id][0:3]], dtype=torch.float32, device=device)  # 角速度部分
++            linvel_w = torch.tensor([data.cvel[root_body_id][3:6]], dtype=torch.float32, device=device)
++            angvel_w = torch.tensor([data.cvel[root_body_id][0:3]], dtype=torch.float32, device=device)
+             
+-            # 计算浮力
+             buoyancy_force, buoyancy_torque = force_model.calculate_buoyancy_forces(
+                 quat_w, water_density, volume_tensor, g_mag, com_to_cob_offset_tensor
+             )
+             
+-            # 计算阻力和粘性力
+             f_d, g_d, f_v, g_v = force_model.calculate_density_and_viscosity_forces(
+                 quat_w, linvel_w, angvel_w,
+                 inertia_tensor, water_viscosity, water_density, mass_tensor
+             )
+             
+-            # 总力和扭矩 (刚体坐标系)
+             total_force_b = buoyancy_force + f_d + f_v
+             total_torque_b = buoyancy_torque + g_d + g_v
+             
+-            # 添加重力 (世界坐标系向下，需要转换到刚体坐标系)
+-            gravity_force_w = torch.tensor([[0.0, 0.0, -AUV_MASS * g_mag]], dtype=torch.float32, device=device)
+-            gravity_force_b = quat_apply(quat_w, gravity_force_w)  # 转换到刚体系
+-            total_force_b += gravity_force_b
++            # 将力和扭矩从刚体坐标系转换到世界坐标系 (body → world)
++            # xfrc_applied 需要世界坐标系的力和扭矩
++            total_force_w = quat_apply(quat_w, total_force_b)
++            total_torque_w = quat_apply(quat_w, total_torque_b)
++            # 注意：不再手动添加重力，MuJoCo 已自动施加重力
+             
+-            # 转换为numpy数组
+-            total_force_np = total_force_b[0].cpu().numpy()
+-            total_torque_np = total_torque_b[0].cpu().numpy()
++            total_force_np = total_force_w[0].cpu().numpy()
++            total_torque_np = total_torque_w[0].cpu().numpy()
+             
+-            # 施加外力到MuJoCo (身体局部坐标系)
+             data.xfrc_applied[root_body_id][:3] = total_force_np
+             data.xfrc_applied[root_body_id][3:6] = total_torque_np
+             
+-            # 每100步打印调试信息
+             if step_count % 100 == 0:
+                 print(f"Step {step_count}:")
+                 print(f"  姿态四元数: {mujoco_quat}")
+                 print(f"  线速度: {linvel_w[0].cpu().numpy()}")
+                 print(f"  角速度: {angvel_w[0].cpu().numpy()}")
+-                print(f"  总力 (刚体系): {total_force_np}")
+-                print(f"  总扭矩 (刚体系): {total_torque_np}")
+-                print(f"  位置 z: {data.xpos[root_body_id][2]:.3f}")
+-                print()
++                print(f"  总力 (世界系): {total_force_np}")
++                print(f"  总扭矩 (世界系): {total_torque_np}")
++                print(f"  位置 z: {data.xpos[root_body_id][2]:.3f}\n")
+             
+-            # 仿真步进
+             mujoco.mj_step(model, data)
+             v.sync()
+             time.sleep(model.opt.timestep)
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/auv.xml b/src/auv_mjlab/assets/robots/auv/xmls/auv.xml
+index d269df6..719596c 100644
+--- a/src/auv_mjlab/assets/robots/auv/xmls/auv.xml
++++ b/src/auv_mjlab/assets/robots/auv/xmls/auv.xml
+@@ -1,11 +1,11 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <mujoco model="auv">
++  <compiler meshdir="assets" angle="radian" autolimits="true"/>
++
+   <option timestep="0.01" gravity="0 0 0" integrator="implicitfast" density="1000" viscosity="0.0009">
+     <flag />
+   </option>
+ 
+-  <compiler meshdir="assets" angle="radian" autolimits="true"/>
+-
+   <visual>
+     <global realtime="1"/>
+     <quality shadowsize="1024" numslices="8" offsamples="0"/>
+@@ -13,8 +13,26 @@
+     <rgba fog="1 1 1 1" haze="1 1 1 1"/>
+   </visual>
+ 
++  <default>
++    <default class="auv_base">
++      <default class="visual">
++        <geom type="mesh" contype="0" conaffinity="0" density="0" group="2"/>
++      </default>
++      <default class="collision">
++        <geom priority="1" condim="6" group="3"/>
++      </default>
++      <site rgba="1 0 0 1" group="5"/>
++    </default>
++
++    <default class="friction">
++      <geom condim="4" friction="0.9 0.5 0.1" solimp="0.9 0.95 0.001 0.5 2" solref="0.02 1"/>
++    </default>
++    <default class="fluid">
++      <geom fluidshape="ellipsoid" fluidcoef="1.2 1.0 1.2 0.1 0.1"/>
++    </default>
++  </default>
++
+   <asset>
+-    <!-- 所有网格定义保持不变 -->
+     <mesh file="ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3.stl"/>
+     <mesh file="ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1.stl"/>
+     <mesh file="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2.stl"/>
+@@ -56,8 +74,7 @@
+     <mesh file="ji_chu_zhuang_pei____left_1__tui_jin_qi__1.stl"/>
+     <mesh file="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1.stl"/>
+     <mesh file="ji_chu_zhuang_pei____right_1__tui_jin_qi__1.stl"/>
+-
+-    <!-- 纹理与材质保持不变 -->
++    
+     <texture name="sky" type="skybox" file="assets/desert.png" gridsize="3 4" gridlayout=".U..LFRB.D.."/>
+     <texture name="ground" type="2d" builtin="checker" rgb1="0.1 0.1 0.1" rgb2="0.9 0.9 0.9" width="256" height="256" mark="cross" markrgb="0.8 0.8 0.8"/>
+     <material name="ground" texture="ground" reflectance="0" texrepeat="1 1" texuniform="true"/>
+@@ -68,140 +85,84 @@
+     <material name="carbon_fiber_matte" texture="carbon_texture" texuniform="true" texrepeat="12 6" rgba="0.15 0.15 0.15 1" specular="0.4" shininess="0.5" reflectance="0.1"/>
+   </asset>
+ 
+-  <default>
+-    <default class="auv_base">
+-      <default class="visual">
+-        <geom type="mesh" contype="0" conaffinity="0" density="0" group="2"/>
+-      </default>
+-      <default class="collision">
+-        <geom priority="1" condim="6" group="3"/>
+-      </default>
+-      <site rgba="1 0 0 1" group="5"/>
+-    </default>
+-
+-    <default class="friction">
+-      <geom condim="4" friction="0.9 0.5 0.1" solimp="0.9 0.95 0.001 0.5 2" solref="0.02 1"/>
+-    </default>
+-    <default class="fluid">
+-      <geom fluidshape="ellipsoid" fluidcoef="1.2 1.0 1.2 0.1 0.1"/>
+-    </default>
+-  </default>
+-
+   <worldbody>
+     <light type="directional" pos="30 30 30" dir="0 -1 -1" diffuse="0.5 0.5 0.5" ambient="0.3 0.3 0.3" specular="0.5 0.5 0.5"/>
+     <geom name="ground" type="plane" material="ground" pos="0 0 0" size="5 5 0.1" class="friction"/>
++    <site name="world_z" pos="0 0 0"/>
+ 
+     <body name="base" pos="0 0 1" childclass="auv_base">
+       <freejoint name="base"/>
+ 
+-      <!-- 基础部件：每个部件创建两个geom，视觉（仅渲染）和碰撞（带质量） -->
+-      <!-- 1 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3" mass="0.0158"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3"/>
+-      <!-- 2 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1" mass="0.094174"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1"/>
+-      <!-- 3 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2" mass="1" material="acrylic_hull"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2" material="acrylic_hull"/>
+-      <!-- 4 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1" mass="0.118807" material="carbon_fiber_matte"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1" material="carbon_fiber_matte"/>
+-      <!-- 5 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1" mass="0.18051" material="acrylic_hull"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1" material="acrylic_hull"/>
+-      <!-- 6 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__1" mass="0.0682515" material="carbon_fiber"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__1" material="carbon_fiber"/>
+-      <!-- 7 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__2" mass="0.0682515" material="carbon_fiber"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__2" material="carbon_fiber"/>
+-      <!-- 8 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__3" mass="0.0682515" material="carbon_fiber"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__3" material="carbon_fiber"/>
+-      <!-- 9 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__4" mass="0.0682515" material="carbon_fiber"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__4" material="carbon_fiber"/>
+-      <!-- 10 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1" mass="0.6" material="acrylic_hull"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1" material="acrylic_hull"/>
+-      <!-- 11 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1" mass="0.053667608"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1"/>
+-      <!-- 12 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4" mass="0.053667608"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4"/>
+-      <!-- 13 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5" mass="0.053667608"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5"/>
+-      <!-- 14 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6" mass="0.053667608"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6"/>
+-      <!-- 15 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7" mass="0.053667608"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7"/>
+-      <!-- 16 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2" mass="0.135"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2"/>
+-      <!-- 17 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1" mass="0.00155358"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1"/>
+-      <!-- 18 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1" mass="0.120"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1"/>
+-      <!-- 19 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2" mass="0.120"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2"/>
+-      <!-- 20 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jian_xiu_gai__1" mass="0.02507244" rgba="0.65 0.65 0.68 1"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jian_xiu_gai__1" rgba="0.65 0.65 0.68 1"/>
+-      <!-- 21 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1" mass="0.03"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1"/>
+-      <!-- 22 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2" mass="0.03"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2"/>
+-      <!-- 23 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1" mass="0.032"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1"/>
+-      <!-- 24 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2" mass="0.032"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2"/>
+-      <!-- 25 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3" mass="0.032"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3"/>
+-      <!-- 26 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4" mass="0.032"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4"/>
+-      <!-- 27 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1" mass="0.032"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1"/>
+-      <!-- 28 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2" mass="0.032"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2"/>
+-      <!-- 29 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1" mass="0.03"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1"/>
+-      <!-- 30 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2" mass="0.03"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2"/>
+-      <!-- 31 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1" mass="0.36"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1"/>
+-      <!-- 32 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2" mass="0.36"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2"/>
+-      <!-- 33 -->
+       <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10" mass="0.36" rgba="0.0 0.75 1.0 1"/>
+       <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10" rgba="0.0 0.75 1.0 1"/>
+ 
+-<site name="thrust_up_site" pos="0.07629058 0.00222789 -0.11788090" type="sphere" size="0.01" rgba="1 0 0 0.5"/>
+-<site name="thrust_down_site" pos="-0.07365844 0.00168283 -0.11788090" type="sphere" size="0.01" rgba="0 1 0 0.5"/>
+-<site name="thrust_left_site" pos="0.00063929 0.07524704 -0.11788090" type="sphere" size="0.01" rgba="0 0 1 0.5"/>
+-<site name="thrust_right_site" pos="0.00327143 -0.07470197 -0.11788090" type="sphere" size="0.01" rgba="1 1 0 0.5"/>
+-
+-<body name="body_servo_up" pos="0.07629058 0.00222789 -0.11788090" euler="0 1.570796326795 0" childclass="auv_base">
++      <body name="body_servo_up" pos="0.07629058 0.00222789 -0.11788090" euler="0 1.570796326795 0" childclass="auv_base">
+         <joint name="joint_servo_up" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
++        <site name="thrust_up_site" pos="0 0 0" type="sphere" size="0.01" rgba="1 0 0 0.5"/>
+         <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1"/>
+         <body name="body_servo_up_prop" pos="0 0 0" childclass="auv_base">
+@@ -213,6 +174,7 @@
+ 
+       <body name="body_servo_down" pos="-0.07365844 0.00168283 -0.11788090" euler="0 -1.570796326795 -3.1415926" childclass="auv_base">
+         <joint name="joint_servo_down" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
++        <site name="thrust_down_site" pos="0 0 0" type="sphere" size="0.01" rgba="0 1 0 0.5"/>
+         <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1"/>
+         <body name="body_servo_down_prop" pos="0 0 0" childclass="auv_base">
+@@ -224,6 +186,7 @@
+ 
+       <body name="body_servo_left" pos="0.00063929 0.07524704 -0.11788090" euler="-1.570796326795 0 1.570796326795" childclass="auv_base">
+         <joint name="joint_servo_left" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
++        <site name="thrust_left_site" pos="0 0 0" type="sphere" size="0.01" rgba="0 0 1 0.5"/>
+         <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1"/>
+         <body name="body_servo_left_prop" pos="0 0 0" childclass="auv_base">
+@@ -235,6 +198,7 @@
+ 
+       <body name="body_servo_right" pos="0.00327143 -0.07470197 -0.11788090" euler="1.570796326795 0 -1.570796326795" childclass="auv_base">
+         <joint name="joint_servo_right" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
++        <site name="thrust_right_site" pos="0 0 0" type="sphere" size="0.01" rgba="1 1 0 0.5"/>
+         <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+         <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1"/>
+         <body name="body_servo_right_prop" pos="0 0 0" childclass="auv_base">
+@@ -244,16 +208,13 @@
+         </body>
+       </body>
+     </body>
+-
+-    <site name="world_z" pos="0 0 0"/>
+   </worldbody>
+ 
+   <equality>
+-    <joint joint1="joint_servo_down" joint2="joint_servo_up" polycoef="0 1 0 0 0"/>
+-    <joint joint1="joint_servo_right" joint2="joint_servo_left" polycoef="0 -1 0 0 0"/>
++    <joint joint1="joint_servo_down" joint2="joint_servo_up" polycoef="0 -1 0 0 0"/>
++    <joint joint1="joint_servo_right" joint2="joint_servo_left" polycoef="0 1 0 0 0"/>
+   </equality>
+ 
+-
+   <contact>
+     <exclude body1="base" body2="body_servo_left"/>
+     <exclude body1="base" body2="body_servo_right"/>
+@@ -261,60 +222,11 @@
+     <exclude body1="base" body2="body_servo_down"/>
+   </contact>
+ 
+-  <actuator>
+-    <!-- 舵机 -->
+-    <position name="servo_v_cmd" joint="joint_servo_up" kp="20" ctrlrange="-1.57 1.57"/>
+-    <position name="servo_h_cmd" joint="joint_servo_left" kp="20" ctrlrange="-1.57 1.57"/>
+-    
+-    
+-    <!-- 上推进器 -->
+-    <general name="thruster_up_z" 
+-            site="thrust_up_site" 
+-            gaintype="fixed"   gainprm="1 0 0 0 0 0"
+-            biastype="affine"  biasprm="0 0 0 0 0 0"
+-            gear="0 0 1 0 0 0" ctrllimited="false"/>
+-    <general name="thruster_up_y" 
+-            site="thrust_up_site" 
+-            gaintype="fixed"   gainprm="1 0 0 0 0 0"
+-            biastype="affine"  biasprm="0 0 0 0 0 0"
+-            gear="0 -1 0 0 0 0" ctrllimited="false"/>
+-    
+-    <!-- 下推进器 -->
+-    <general name="thruster_down_z" 
+-            site="thrust_down_site" 
+-            gaintype="fixed"   gainprm="1 0 0 0 0 0"
+-            biastype="affine"  biasprm="0 0 0 0 0 0"
+-            gear="0 0 1 0 0 0" ctrllimited="false"/>
+-    <general name="thruster_down_y" 
+-            site="thrust_down_site" 
+-            gaintype="fixed"   gainprm="1 0 0 0 0 0"
+-            biastype="affine"  biasprm="0 0 0 0 0 0"
+-            gear="0 1 0 0 0 0" ctrllimited="false"/>
+-
+-    <!-- 左推进器 -->
+-    <general name="thruster_left_z" 
+-            site="thrust_left_site" 
+-            gaintype="fixed"   gainprm="1 0 0 0 0 0"
+-            biastype="affine"  biasprm="0 0 0 0 0 0"
+-            gear="0 0 1 0 0 0" ctrllimited="false"/>
+-    <general name="thruster_left_x" 
+-            site="thrust_left_site" 
+-            gaintype="fixed"   gainprm="1 0 0 0 0 0"
+-            biastype="affine"  biasprm="0 0 0 0 0 0"
+-            gear="1 0 0 0 0 0" ctrllimited="false"/>
+-    
+-    <!-- 右推进器 -->
+-    <general name="thruster_right_z" 
+-            site="thrust_right_site" 
+-            gaintype="fixed"   gainprm="1 0 0 0 0 0"
+-            biastype="affine"  biasprm="0 0 0 0 0 0"
+-            gear="0 0 1 0 0 0" ctrllimited="false" />
+-    <!-- 右推进器 -->
+-    <general name="thruster_right_x" 
+-            site="thrust_right_site" 
+-            gaintype="fixed"   gainprm="1 0 0 0 0 0"
+-            biastype="affine"  biasprm="0 0 0 0 0 0"
+-            gear="1 0 0 0 0 0" ctrllimited="false"/>
+-  </actuator>
++  <!-- <actuator>
++    <motor name="act_thruster_up" site="thrust_up_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
++    <motor name="act_thruster_down" site="thrust_down_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
++    <motor name="act_thruster_left" site="thrust_left_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
++    <motor name="act_thruster_right" site="thrust_right_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
++  </actuator> -->
+ 
+ </mujoco>
+\ No newline at end of file
+diff --git a/src/auv_mjlab/tasks/velocity/config/auv/env_cfgs.py b/src/auv_mjlab/tasks/velocity/config/auv/env_cfgs.py
+index 3cd1d6f..41e2c43 100644
+--- a/src/auv_mjlab/tasks/velocity/config/auv/env_cfgs.py
++++ b/src/auv_mjlab/tasks/velocity/config/auv/env_cfgs.py
+@@ -47,20 +47,16 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+     # ==========================
+     actions: dict[str, ActionTermCfg] = {
+         "joint_pos": mdp.AuvThrusterAllocationActionCfg(
+-            entity_name="robot",                                # 机器人实体的名称
+-            servo_joint_names=["servo_v_cmd", "servo_h_cmd"],   # 舵机空间
+-            thruster_joint_names=[                              # 推进器空间
+-                "thruster_up_z",
+-                "thruster_up_y",
+-                "thruster_down_z",
+-                "thruster_down_y",
+-                "thruster_left_z",
+-                "thruster_left_x",
+-                "thruster_right_z",
+-                "thruster_right_x",
++            entity_name="robot",
++            servo_joint_names=["joint_servo_up", "joint_servo_left"],  # 舵机
++            thruster_joint_names=[                                     # 推进器
++                "thrust_up_site",
++                "thrust_down_site",
++                "thrust_left_site",
++                "thrust_right_site",
+             ],
+             max_servo_angle=math.pi/2, 
+-            max_thrust=10.0,
++            max_thrust=50.0,
+         )
+     }
+ 
+@@ -76,7 +72,7 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+             heading_command=True,
+             heading_control_stiffness=0.5,
+             ranges=UniformVelocityCommandCfg.Ranges(
+-                lin_vel_x=(-1.0, 2.0), #
++                lin_vel_x=(-1.0, 2.0),
+                 lin_vel_y=(-1.0, 1.0), 
+                 ang_vel_z=(-1.0, 1.0), 
+                 heading=(-math.pi, math.pi),
+@@ -94,16 +90,19 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+         "projected_gravity": ObservationTermCfg(func=mdp.projected_gravity),                            # 重量投影
+         "actions": ObservationTermCfg(func=mdp.last_action),                                            # 上一帧action
+         
+-        "joint_pos": ObservationTermCfg(                 # 舵机转角
++        # 仅观测主动控制的两个舵机转角
++        "joint_pos": ObservationTermCfg(                 
+             func=mdp.joint_pos_rel,
+             params={"asset_cfg": SceneEntityCfg("robot", joint_names=(
+                 'joint_servo_up','joint_servo_left'
+             ))},
+         ),
+-        "joint_vel": ObservationTermCfg(                # 舵机和推进器速度
++        # 观测所有活动关节的速度（包含舵机和螺旋桨叶片）
++        "joint_vel": ObservationTermCfg(                
+             func=mdp.joint_vel_rel,
+             params={"asset_cfg": SceneEntityCfg("robot", joint_names=(
+-                'joint_servo_up','joint_servo_left','joint_prop_up','joint_prop_down','joint_prop_left','joint_prop_right'
++                'joint_servo_up','joint_servo_left',
++                'joint_prop_up','joint_prop_down','joint_prop_left','joint_prop_right'
+             ))},
+         ),
+     }
+@@ -147,7 +146,8 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+             params={
+                 "position_range": (0.0, 0.0),
+                 "velocity_range": (0.0, 0.0),
+-                "asset_cfg": SceneEntityCfg("robot", joint_names=("joint_servo_(up|left)", "joint_prop_.*")),
++                # 使用正则表达式匹配所有的舵机关节(包含上下左右)和推进器关节
++                "asset_cfg": SceneEntityCfg("robot", joint_names=("joint_servo_.*", "joint_prop_.*")),
+             },
+         ),
+         # "hydrodynamic_forces": EventTermCfg(
+diff --git a/src/auv_mjlab/tasks/velocity/mdp/hydrodynamics.py b/src/auv_mjlab/tasks/velocity/mdp/hydrodynamics.py
+index bb7e028..dee63b8 100644
+--- a/src/auv_mjlab/tasks/velocity/mdp/hydrodynamics.py
++++ b/src/auv_mjlab/tasks/velocity/mdp/hydrodynamics.py
+@@ -8,12 +8,10 @@
+ 
+ from __future__ import annotations
+ from dataclasses import dataclass
+-from typing import TYPE_CHECKING, Tuple, Sequence
++from typing import TYPE_CHECKING, Tuple
+ from mjlab.utils.lab_api.math import (
+-    quat_conjugate, 
+     quat_apply, 
+     quat_apply_inverse,  
+-    matrix_from_quat      
+ )
+ from mjlab.managers.scene_entity_config import SceneEntityCfg
+ import numpy as np 
+@@ -65,8 +63,8 @@ class HydrodynamicForceModels:
+             print(f"root_quats shape: {root_quats_w.shape}, buoyancy_vectors shape: {buoyancy_directions_w.shape}")
+ 
+         # 将浮力方向转换到刚体坐标系
+-        # 使用四元数将世界系向量转换到本体系
+-        buoyancy_directions_b = quat_apply(root_quats_w, buoyancy_directions_w)
++        # 使用四元数逆变换将世界系向量转换到本体系 (world → body)
++        buoyancy_directions_b = quat_apply_inverse(root_quats_w, buoyancy_directions_w)
+ 
+         # 计算在浮心处的浮力（阿基米德原理）
+         # 浮力 = 密度 * 体积 * 重力加速度 * 方向
+@@ -227,11 +225,10 @@ class HydrodynamicForceModels:
+             g_v: 粘性扭矩 [num_envs, 3]
+         """
+ 
+-        # 将速度从世界坐标系转换到刚体坐标系
+-        # 使用与浮力计算相同的转换：quat_apply(root_quats_w, v_world)
+-        root_linvels_b = quat_apply(root_quats_w, root_linvels_w)
++        # 将速度从世界坐标系转换到刚体坐标系 (world → body)
++        root_linvels_b = quat_apply_inverse(root_quats_w, root_linvels_w)
+         # 将角速度转换到本体系
+-        root_angvels_b = quat_apply(root_quats_w, root_angvels_w)
++        root_angvels_b = quat_apply_inverse(root_quats_w, root_angvels_w)
+   
+         # 计算二次阻力（密度相关）
+         f_d, g_d = self.calculate_quadratic_drag_forces(root_linvels_b, root_angvels_b, inertias, masses, water_rho)
+@@ -317,42 +314,25 @@ def apply_hydrodynamic_forces(
+     max_torque = 1000.0  # N·m
+     total_force = torch.clamp(total_force, -max_force, max_force)
+     total_torque = torch.clamp(total_torque, -max_torque, max_torque)
+-    # 将力和扭矩从刚体坐标系转换到世界坐标系
++    # 将力和扭矩从刚体坐标系转换到世界坐标系 (body → world)
+     total_force_w = quat_apply(root_quats_w, total_force)
+     total_torque_w = quat_apply(root_quats_w, total_torque)
+-    # 添加重力（重量）力（世界坐标系，方向向下）
+-    g_mag = 9.81
+-    weight_force_w = torch.zeros_like(total_force_w)
+-    weight_force_w[:, 2] = -masses.squeeze(1) * g_mag
+-    total_force_w += weight_force_w
++    # 注意：不再手动添加重力，MuJoCo 仿真引擎已自动施加重力
+     
+     if env_ids is None:
+         env_ids = torch.arange(num_envs, device=device)
+     
+-    # 获取机器人实体
+-    asset = env.scene[asset_cfg.name]
+-    # 确定应用力的身体索引（默认为根身体，索引0）
+-    body_ids = asset_cfg.body_ids
+-    if body_ids is None:
+-        body_ids = [0]
+-    
+-    # 计算身体数量
+-    if isinstance(body_ids, slice):
+-        # 如果是slice(None)，应用所有身体
+-        num_bodies = asset.data.body_link_pos_w.shape[1]
+-    else:
+-        num_bodies = len(body_ids)  # type: ignore
+-    
+-    # 扩展维度以匹配 (num_envs, num_bodies, 3)
+-    total_force_w_expanded = total_force_w.unsqueeze(1).repeat(1, num_bodies, 1)
+-    total_torque_w_expanded = total_torque_w.unsqueeze(1).repeat(1, num_bodies, 1)
++    # 只施加到根 body（索引0），避免对所有 body 重复施力
++    # 扩展维度以匹配 (num_envs, 1, 3)
++    total_force_w_expanded = total_force_w.unsqueeze(1)
++    total_torque_w_expanded = total_torque_w.unsqueeze(1)
+     
+     # 施加外力到仿真
+     asset.write_external_wrench_to_sim(
+         forces=total_force_w_expanded,
+         torques=total_torque_w_expanded,
+         env_ids=env_ids,
+-        body_ids=body_ids
++        body_ids=[0]
+     )
+     
+     # 调试信息
+@@ -361,356 +341,129 @@ def apply_hydrodynamic_forces(
+         print(f"世界坐标系力={total_force_w.mean(dim=0)}, 扭矩={total_torque_w.mean(dim=0)}")
+ 
+ 
+-def apply_specific_force_torque(
+-    env: "ManagerBasedRlEnv",
+-    env_ids: torch.Tensor,
+-    forces: torch.Tensor,  # [num_envs, 3]
+-    torques: torch.Tensor, # [num_envs, 3]
+-    asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG
+-) -> None:
+-    """施加特定的力和扭矩到机器人
+-    
+-    这是一个辅助函数，用于施加计算得到的水动力。
+-    假设输入的力和扭矩已经在世界坐标系中。
+-    """
+-    # 获取机器人实体
+-    asset = env.scene[asset_cfg.name]
+-    # 确定应用力的身体索引（默认为根身体，索引0）
+-    body_ids = asset_cfg.body_ids
+-    if body_ids is None:
+-        body_ids = [0]
+-    
+-    # 计算身体数量
+-    if isinstance(body_ids, slice):
+-        # 如果是slice(None)，应用所有身体
+-        num_bodies = asset.data.body_link_pos_w.shape[1]
+-    else:
+-        # body_ids is Sequence[int]
+-        num_bodies = len(body_ids)  # type: ignore
+-    
+-    # 扩展维度以匹配 (num_envs, num_bodies, 3)
+-    forces_expanded = forces.unsqueeze(1).repeat(1, num_bodies, 1)
+-    torques_expanded = torques.unsqueeze(1).repeat(1, num_bodies, 1)
+-    
+-    # 施加外力到仿真
+-    asset.write_external_wrench_to_sim(
+-        forces=forces_expanded,
+-        torques=torques_expanded,
+-        env_ids=env_ids,
+-        body_ids=body_ids
++if __name__ == "__main__":
++    """单元测试"""
++
++    def assert_close(name: str, actual: torch.Tensor, expected: torch.Tensor,
++                     atol: float = 1e-3, rtol: float = 1e-4) -> bool:
++        """比较两个张量，使用混合容差（绝对+相对），打印结果"""
++        passed = torch.allclose(actual, expected, atol=atol, rtol=rtol)
++        if passed:
++            max_diff = (actual - expected).abs().max().item()
++            print(f"  ✓ {name} 通过 (最大差值: {max_diff:.2e})")
++        else:
++            print(f"  ✗ {name} 失败")
++            print(f"    计算值:\n{actual}")
++            print(f"    期望值:\n{expected}")
++            print(f"    差值:\n{actual - expected}")
++        return passed
++
++    # ========== 设置 ==========
++    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
++    water_rho = 997.0       # 水密度 (kg/m³)
++    water_beta = 0.001306   # 水粘度 (Pa·s)
++    g_mag = 9.81            # 重力加速度 (m/s²)
++    num_envs = 4
++
++    com_to_cob_offset = torch.tensor([[0.0, 0.0, 0.3]], dtype=torch.float, device=device).repeat(num_envs, 1)
++    volume = 1.0
++    volume_tensor = torch.tensor([[volume]], dtype=torch.float, device=device).repeat(num_envs, 1)
++    mass = 100.0
++    masses = torch.tensor([[mass]], dtype=torch.float, device=device).repeat(num_envs, 1)
++    inertias = torch.tensor([[19.3, 19.3, 1.125]], dtype=torch.float, device=device).repeat(num_envs, 1)
++
++    model = HydrodynamicForceModels(num_envs, device, debug=False)
++
++    # ========== 测试1: 浮力 ==========
++    print("\n===== 测试1: 浮力计算 (calculate_buoyancy_forces) =====")
++
++    # 四元数 [w, x, y, z]
++    root_quats = torch.tensor([
++        [1.0, 0.0, 0.0, 0.0],              # 无旋转
++        [0.7071068, 0.7071068, 0.0, 0.0],   # 绕X轴90°
++        [0.7071068, 0.0, 0.7071068, 0.0],   # 绕Y轴90°
++        [0.7071068, 0.0, 0.0, 0.7071068],   # 绕Z轴90°
++    ], device=device)
++
++    F = volume * water_rho * g_mag  # 浮力大小
++    T = 0.3 * F                     # 扭矩大小 (r=0.3)
++
++    # 期望浮力 (本体系): quat_apply_inverse(q, [0,0,1]) * F
++    expected_forces = torch.tensor([
++        [0.0, 0.0, F],    # 无旋转: [0,0,1]
++        [0.0, F, 0.0],    # X90°: R_x^T * [0,0,1] = [0,1,0]
++        [-F, 0.0, 0.0],   # Y90°: R_y^T * [0,0,1] = [-1,0,0]
++        [0.0, 0.0, F],    # Z90°: R_z^T * [0,0,1] = [0,0,1]
++    ], device=device)
++
++    # 期望扭矩 (本体系): r × F, 其中 r=[0,0,0.3]
++    # [0,0,0.3] × [Fx,Fy,Fz] = [-0.3*Fy, 0.3*Fx, 0]
++    expected_torques = torch.tensor([
++        [0.0, 0.0, 0.0],    # r × [0,0,F] = [0,0,0]
++        [-T, 0.0, 0.0],     # r × [0,F,0] = [-T,0,0]
++        [0.0, -T, 0.0],     # r × [-F,0,0] = [0,-T,0]
++        [0.0, 0.0, 0.0],    # r × [0,0,F] = [0,0,0]
++    ], device=device)
++
++    b_force, b_torque = model.calculate_buoyancy_forces(
++        root_quats, water_rho, volume_tensor, g_mag, com_to_cob_offset
+     )
++    assert_close("浮力", b_force, expected_forces)
++    assert_close("浮力扭矩", b_torque, expected_torques)
+ 
++    # ========== 测试2: 零速度时阻力为零 ==========
++    print("\n===== 测试2: 零速度阻力 (应为零) =====")
+ 
+-def apply_thruster_forces(
+-    env: "ManagerBasedRlEnv",
+-    env_ids: torch.Tensor | None,
+-    asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+-    action_name: str = "thrusters",  # 动作管理器中的推进器动作名称
+-    max_thrust: float = 100.0,  # 最大推力（牛顿）
+-    debug: bool = False
+-) -> None:
+-    """计算并施加推进器推力到机器人base
+-    
+-    基于四个推进器的姿态和动作值，计算推进器推力并施加到机器人base上。
+-    推进器推力方向为推进器body局部坐标系的-Z轴（假设推进器向前推）。
+-    
+-    参数:
+-        env: RL环境
+-        env_ids: 环境ID
+-        thrust_actions: 推进器动作值 [num_envs, 4]，顺序为 [up, down, left, right]
+-        asset_cfg: 资产配置
+-        debug: 调试模式
+-    """
+-    # 获取机器人实体
+-    asset = env.scene[asset_cfg.name]
+-    
+-    # 改为使用舵机body（推力作用点）
+-    thruster_body_names = [
+-        "body_servo_up",      # 上舵机位置
+-        "body_servo_down",    # 下舵机位置  
+-        "body_servo_left",    # 左舵机位置
+-        "body_servo_right",   # 右舵机位置
+-    ]
+-    
+-    # 获取body索引
+-    body_indices = []
+-    for body_name in thruster_body_names:
+-        # 查找body索引
+-        try:
+-            idx = asset.spec.body_names.index(body_name)
+-            body_indices.append(idx)
+-        except ValueError:
+-            if debug:
+-                print(f"警告: 未找到body '{body_name}'，可用body: {asset.spec.body_names}")
+-            # 如果找不到，尝试使用默认索引（假设顺序相同）
+-            pass
+-    
+-    # 如果通过名称找不到，使用假设的索引（0, 1, 2, 3）
+-    if len(body_indices) != 4:
+-        if debug:
+-            print(f"使用默认body索引 [0, 1, 2, 3]")
+-        body_indices = [0, 1, 2, 3]  # 假设四个推进器body是前四个
+-    
+-    num_envs = env.num_envs
+-    device = torch.device(env.device) if isinstance(env.device, str) else env.device
+-    
+-    if env_ids is None:
+-        env_ids = torch.arange(num_envs, device=device)
+-    
+-    # 获取推进器body的姿态（世界坐标系）
+-    # body_link_pos_w: [num_envs, num_bodies, 3]
+-    # body_link_quat_w: [num_envs, num_bodies, 4]
+-    thruster_pos_w = asset.data.body_link_pos_w[:, body_indices, :]  # [num_envs, 4, 3]
+-    thruster_quat_w = asset.data.body_link_quat_w[:, body_indices, :]  # [num_envs, 4, 4]
+-    
+-    # 从动作管理器获取推进器动作值
+-    # 假设推进器动作是完整动作向量的最后4个维度
+-    try:
+-        # 获取完整动作向量
+-        # 注意: env.action_manager.action 应该在process_action之后包含当前动作
+-        full_action = env.action_manager.action
+-        if full_action is None:
+-            if debug:
+-                print("警告: 动作管理器中没有动作值，使用零动作")
+-            thrust_action_values = torch.zeros((num_envs, 4), device=device)
+-        else:
+-            # 获取动作维度
+-            action_dim = full_action.shape[1]
+-            if action_dim >= 4:
+-                # 取最后4个元素作为推进器动作
+-                thrust_action_values = full_action[:, -4:]
+-            else:
+-                if debug:
+-                    print(f"错误: 动作维度 {action_dim} 小于4，无法提取推进器动作")
+-                thrust_action_values = torch.zeros((num_envs, 4), device=device)
+-    except Exception as e:
+-        if debug:
+-            print(f"获取推进器动作值时出错: {e}, 使用零动作")
+-        thrust_action_values = torch.zeros((num_envs, 4), device=device)
+-    
+-    # 推进器推力系数（将动作值转换为牛顿）
+-    # 动作值范围假设为 [-1, 1]，对应推力 [-max_thrust, max_thrust]
+-    thrust_magnitudes = thrust_action_values * max_thrust  # [num_envs, 4]
+-    
+-    # 推进器推力方向（推进器局部坐标系中的方向）
+-    # 假设推进器推力沿着局部-Z轴方向（向前推）
+-    local_thrust_direction = torch.tensor([0.0, 0.0, -1.0], device=device)  # 局部-Z轴
+-    local_thrust_direction = local_thrust_direction.unsqueeze(0).unsqueeze(0)  # [1, 1, 3]
+-    
+-    # 初始化总力和扭矩
+-    total_force_w = torch.zeros((num_envs, 3), device=device)
+-    total_torque_w = torch.zeros((num_envs, 3), device=device)
+-    
+-    # 对每个推进器计算力和扭矩
+-    for i in range(4):
+-        # 获取当前推进器的四元数
+-        quat_w = thruster_quat_w[:, i, :]  # [num_envs, 4]
+-        
+-        # 将推力方向从局部坐标系转换到世界坐标系
+-        thrust_dir_w = quat_apply(quat_w, local_thrust_direction)  # [num_envs, 3]
+-        
+-        # 计算推力向量（世界坐标系）
+-        thrust_mag = thrust_magnitudes[:, i].unsqueeze(1)  # [num_envs, 1]
+-        thrust_vector_w = thrust_dir_w * thrust_mag  # [num_envs, 3]
+-        
+-        # 获取推力作用点（世界坐标系）
+-        thrust_point_w = thruster_pos_w[:, i, :]  # [num_envs, 3]
+-        
+-        # 获取base位置（假设base是第一个body）
+-        base_pos_w = asset.data.body_link_pos_w[:, 0, :]  # [num_envs, 3]
+-        
+-        # 计算相对于base的力臂
+-        r = thrust_point_w - base_pos_w  # [num_envs, 3]
+-        
+-        # 计算扭矩：τ = r × F
+-        # 使用叉积计算扭矩
+-        torque_w = torch.cross(r, thrust_vector_w, dim=1)  # [num_envs, 3]
+-        
+-        # 累加到总力和扭矩
+-        total_force_w += thrust_vector_w
+-        total_torque_w += torque_w
+-        
+-        if debug and i == 0 and env_ids[0] == 0:
+-            print(f"推进器 {i}: 动作值={thrust_action_values[0, i]:.3f}, 推力大小={thrust_mag[0, 0]:.1f} N")
+-            print(f"  局部推力方向: {local_thrust_direction[0, 0].cpu().numpy()}")
+-            print(f"  世界推力方向: {thrust_dir_w[0].cpu().numpy()}")
+-            print(f"  推力点位置: {thrust_point_w[0].cpu().numpy()}")
+-            print(f"  力臂 r: {r[0].cpu().numpy()}")
+-    
+-    if debug and env_ids[0] == 0:
+-        print(f"总推进器力: {total_force_w[0].cpu().numpy()}")
+-        print(f"总推进器扭矩: {total_torque_w[0].cpu().numpy()}")
+-    
+-    # 施加力和扭矩到base
+-    # 扩展维度以匹配 (num_envs, num_bodies, 3)
+-    total_force_w_expanded = total_force_w.unsqueeze(1)  # [num_envs, 1, 3]
+-    total_torque_w_expanded = total_torque_w.unsqueeze(1)  # [num_envs, 1, 3]
+-    
+-    # 施加到base（索引0）
+-    asset.write_external_wrench_to_sim(
+-        forces=total_force_w_expanded,
+-        torques=total_torque_w_expanded,
+-        env_ids=env_ids,
+-        body_ids=[0]  # 施加到base
++    zero_vel = torch.zeros((num_envs, 3), device=device)
++    identity_quat = torch.tensor([[1.0, 0.0, 0.0, 0.0]], device=device).repeat(num_envs, 1)
++
++    f_d, g_d, f_v, g_v = model.calculate_density_and_viscosity_forces(
++        identity_quat, zero_vel, zero_vel, inertias, water_beta, water_rho, masses
+     )
++    zeros = torch.zeros((num_envs, 3), device=device)
++    assert_close("二次阻力", f_d, zeros)
++    assert_close("二次阻力扭矩", g_d, zeros)
++    assert_close("粘性力", f_v, zeros)
++    assert_close("粘性扭矩", g_v, zeros)
+ 
++    # ========== 测试3: 阻力方向性 ==========
++    print("\n===== 测试3: 阻力方向性 (力应与速度方向相反) =====")
+ 
+-if __name__ == "__main__":
+-    """单元测试"""
+-    # 设置计算设备
+-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+-    
+-    # 物理参数
+-    water_rho = 997.0  # 水密度 (kg/m³)
+-    water_beta = 0.001306  # 水粘度 (Pa·s) @ 50°F
+-    g_mag = 9.81  # 重力加速度 (m/s²)
+-    num_envs = 4  # 测试环境数量
+-    com_to_cob_offset = torch.tensor([0.0, 0.0, 0.3], dtype=torch.float, device=device, requires_grad=False).reshape(1,3).repeat(num_envs, 1) 
+-    volume = 1.0  # 刚体体积 (m³)，中性浮力
+-    volume_tensor = torch.tensor([volume], dtype=torch.float, device=device).reshape(1,1).repeat(num_envs, 1)
+-
+-    # 创建水动力模型实例
+-    forceModel = HydrodynamicForceModels(num_envs, device, True)
+-
+-    # 测试浮力计算的四元数（注意：这里使用[w, x, y, z]格式）
+-    # 使用标准旋转四元数
+-    root_quats = torch.tensor([
+-        [1.0, 0.0, 0.0, 0.0],  # 无旋转（单位四元数）
+-        [0.7071068, 0.7071068, 0.0, 0.0],  # 绕X轴90度
+-        [0.7071068, 0.0, 0.7071068, 0.0],  # 绕Y轴90度
+-        [0.7071068, 0.0, 0.0, 0.7071068],  # 绕Z轴90度
+-    ]).to(device)
+-
+-    # 预期的浮力结果（在刚体坐标系中）
+-    # 基于标准旋转计算
+-    buoyancy_magnitude = volume * water_rho * g_mag
+-    true_b_forces = torch.tensor([
+-        [0.0, 0.0, buoyancy_magnitude],  # 无旋转：浮力向上 [0,0,1]
+-        [0.0, -buoyancy_magnitude, 0.0],  # X旋转90°：浮力在-Y方向 [0,-1,0]
+-        [buoyancy_magnitude, 0.0, 0.0],  # Y旋转90°：浮力在+X方向 [1,0,0]
+-        [0.0, 0.0, buoyancy_magnitude],  # Z旋转90°：浮力仍向上 [0,0,1]（绕Z轴旋转不影响Z方向）
+-    ]).to(device)
+-
+-    # 预期的浮力扭矩结果 τ = r × F
+-    # r = [0, 0, 0.3] (com_to_cob_offset)
+-    torque_magnitude = 0.3 * water_rho * g_mag * volume
+-    true_b_torques = torch.tensor([
+-        [0.0, 0.0, 0.0],  # 无旋转：r × [0,0,F] = [0,0,0]
+-        [torque_magnitude, 0.0, 0.0],  # X旋转90°：r × [0,-F,0] = [0.3*F, 0, 0]
+-        [0.0, torque_magnitude, 0.0],  # Y旋转90°：r × [F,0,0] = [0, 0.3*F, 0]
+-        [0.0, 0.0, 0.0],  # Z旋转90°：r × [0,0,F] = [0,0,0]
+-    ]).to(device)
++    forward_vel_w = torch.tensor([[1.0, 0.0, 0.0]], device=device).repeat(num_envs, 1)
++    zero_angvel = torch.zeros((num_envs, 3), device=device)
+ 
+-    # 计算浮力
+-    b_force, b_torque = forceModel.calculate_buoyancy_forces(root_quats, water_rho, volume_tensor, g_mag, com_to_cob_offset)
++    f_d, g_d, f_v, g_v = model.calculate_density_and_viscosity_forces(
++        identity_quat, forward_vel_w, zero_angvel, inertias, water_beta, water_rho, masses
++    )
+ 
+-    # 验证浮力计算结果（使用混合误差检查）
+-    b_force_np = b_force.cpu().numpy()
+-    true_b_forces_np = true_b_forces.cpu().numpy()
+-    
+-    # 计算绝对误差
+-    force_abs_error = np.abs(b_force_np - true_b_forces_np)
+-    
+-    # 对于期望值接近0的情况，使用绝对误差；否则使用相对误差
+-    zero_threshold = 1e-6
+-    force_errors = np.zeros_like(force_abs_error)
+-    
+-    for i in range(force_abs_error.shape[0]):
+-        for j in range(force_abs_error.shape[1]):
+-            if np.abs(true_b_forces_np[i, j]) > zero_threshold:
+-                # 相对误差（百分比）
+-                force_errors[i, j] = force_abs_error[i, j] / np.abs(true_b_forces_np[i, j])
+-            else:
+-                # 绝对误差（当期望值为0时）
+-                force_errors[i, j] = force_abs_error[i, j]
+-    
+-    # 不同的容差：相对误差使用1e-4，绝对误差使用1e-3
+-    max_error = force_errors.max()
+-    if max_error > 1e-4:  # 检查是否超过相对容差
+-        # 但对于期望值为0的情况，使用更宽松的绝对容差
+-        zero_mask = np.abs(true_b_forces_np) <= zero_threshold
+-        if np.any(zero_mask):
+-            # 检查期望值为0的情况的绝对误差
+-            zero_abs_errors = force_abs_error[zero_mask]
+-            if zero_abs_errors.max() > 1e-3:  # 绝对容差1e-3
+-                print(f"浮力计算错误: 最大误差 {max_error:.2e}")
+-                print(f"期望值为0处的最大绝对误差: {zero_abs_errors.max():.6e}")
+-                print(f"计算值:\n {b_force}")
+-                print(f"期望值:\n {true_b_forces}")
+-            else:
+-                # 期望值为0的情况通过，检查非零值的相对误差
+-                non_zero_mask = np.abs(true_b_forces_np) > zero_threshold
+-                if np.any(non_zero_mask):
+-                    non_zero_rel_errors = force_errors[non_zero_mask]
+-                    if non_zero_rel_errors.max() > 1e-4:
+-                        print(f"浮力计算错误: 非零期望值处最大相对误差 {non_zero_rel_errors.max():.2%}")
+-                        print(f"计算值:\n {b_force}")
+-                        print(f"期望值:\n {true_b_forces}")
+-                    else:
+-                        print(f"浮力测试通过! 非零值最大相对误差: {non_zero_rel_errors.max():.2%}")
+-                else:
+-                    print(f"浮力测试通过! 最大绝对误差: {zero_abs_errors.max():.6e}")
+-        else:
+-            print(f"浮力计算错误: 最大相对误差 {max_error:.2%}")
+-            print(f"计算值:\n {b_force}")
+-            print(f"期望值:\n {true_b_forces}")
+-    else:
+-        print(f"浮力测试通过! 最大误差: {max_error:.2e}")
++    # 阻力 x 分量应为负（与正向速度相反）
++    drag_x_negative = (f_d[:, 0] < 0).all().item()
++    viscous_x_negative = (f_v[:, 0] < 0).all().item()
++    # y, z 分量应为零（速度只有 x 分量）
++    drag_yz_zero = torch.allclose(f_d[:, 1:], zeros[:, 1:], atol=1e-6)
++    viscous_yz_zero = torch.allclose(f_v[:, 1:], zeros[:, 1:], atol=1e-6)
+ 
+-    # 验证扭矩计算结果
+-    b_torque_np = b_torque.cpu().numpy()
+-    true_b_torques_np = true_b_torques.cpu().numpy()
+-    
+-    torque_abs_error = np.abs(b_torque_np - true_b_torques_np)
+-    
+-    torque_errors = np.zeros_like(torque_abs_error)
+-    for i in range(torque_abs_error.shape[0]):
+-        for j in range(torque_abs_error.shape[1]):
+-            if np.abs(true_b_torques_np[i, j]) > zero_threshold:
+-                torque_errors[i, j] = torque_abs_error[i, j] / np.abs(true_b_torques_np[i, j])
+-            else:
+-                torque_errors[i, j] = torque_abs_error[i, j]
+-    
+-    max_torque_error = torque_errors.max()
+-    if max_torque_error > 1e-4:
+-        zero_mask = np.abs(true_b_torques_np) <= zero_threshold
+-        if np.any(zero_mask):
+-            zero_abs_errors = torque_abs_error[zero_mask]
+-            if zero_abs_errors.max() > 1e-3:
+-                print(f"扭矩计算错误: 最大误差 {max_torque_error:.2e}")
+-                print(f"期望值为0处的最大绝对误差: {zero_abs_errors.max():.6e}")
+-                print(f"计算值:\n {b_torque}")
+-                print(f"期望值:\n {true_b_torques}")
+-            else:
+-                non_zero_mask = np.abs(true_b_torques_np) > zero_threshold
+-                if np.any(non_zero_mask):
+-                    non_zero_rel_errors = torque_errors[non_zero_mask]
+-                    if non_zero_rel_errors.max() > 1e-4:
+-                        print(f"扭矩计算错误: 非零期望值处最大相对误差 {non_zero_rel_errors.max():.2%}")
+-                        print(f"计算值:\n {b_torque}")
+-                        print(f"期望值:\n {true_b_torques}")
+-                    else:
+-                        print(f"扭矩测试通过! 非零值最大相对误差: {non_zero_rel_errors.max():.2%}")
+-                else:
+-                    print(f"扭矩测试通过! 最大绝对误差: {zero_abs_errors.max():.6e}")
+-        else:
+-            print(f"扭矩计算错误: 最大相对误差 {max_torque_error:.2%}")
+-            print(f"计算值:\n {b_torque}")
+-            print(f"期望值:\n {true_b_torques}")
++    if drag_x_negative and drag_yz_zero:
++        print(f"  ✓ 二次阻力方向正确 (f_d_x={f_d[0, 0]:.4f} N)")
+     else:
+-        print(f"扭矩测试通过! 最大误差: {max_torque_error:.2e}")
++        print(f"  ✗ 二次阻力方向错误: {f_d[0]}")
+ 
+-    # 以下是阻力测试的框架（实际测试需要提供惯性张量）
+-    root_linvels = torch.tensor([
+-        [0.0, 0.0, 0.0],
+-        [0.0, 0.0, 0.0],
+-    ], device=device).unsqueeze(0)  # 添加批次维度
+-    
+-    root_angvels = torch.tensor([
+-        [0.0, 0.0, 0.0],
+-        [0.0, 0.0, 0.0],
+-    ], device=device).unsqueeze(0)
+-    
+-    # 实际测试时需要提供真实的惯性张量
+-    # inertias = ... 
+-    # f_d, g_d, f_v, g_v = forceModel.calculate_density_and_viscosity_forces(...)
+\ No newline at end of file
++    if viscous_x_negative and viscous_yz_zero:
++        print(f"  ✓ 粘性力方向正确 (f_v_x={f_v[0, 0]:.6f} N)")
++    else:
++        print(f"  ✗ 粘性力方向错误: {f_v[0]}")
++
++    # ========== 测试4: body→world→body 往返一致性 ==========
++    print("\n===== 测试4: 坐标变换往返一致性 =====")
++
++    test_vec = torch.tensor([[1.0, 2.0, 3.0]], device=device).repeat(num_envs, 1)
++    for i, label in enumerate(["无旋转", "X90°", "Y90°", "Z90°"]):
++        q = root_quats[i:i+1].repeat(num_envs, 1)
++        # body → world → body 应该还原
++        v_world = quat_apply(q, test_vec)
++        v_body = quat_apply_inverse(q, v_world)
++        ok = torch.allclose(v_body, test_vec, atol=1e-5)
++        status = "✓" if ok else "✗"
++        print(f"  {status} {label}: 往返误差 {(v_body - test_vec).abs().max().item():.2e}")
++
++    print("\n===== 所有测试完成 =====")
+diff --git a/src/auv_mjlab/tasks/velocity/mdp/thruster_allocation.py b/src/auv_mjlab/tasks/velocity/mdp/thruster_allocation.py
+index 904513f..46ba8a7 100644
+--- a/src/auv_mjlab/tasks/velocity/mdp/thruster_allocation.py
++++ b/src/auv_mjlab/tasks/velocity/mdp/thruster_allocation.py
+@@ -18,59 +18,31 @@ def allocate_thruster_forces(
+ ) -> tuple[torch.Tensor, torch.Tensor]:
+     """
+     将 6 维策略动作映射为：
+-    - 2 维舵机角目标
+-    - 8 维推进器分量力
++    - 2 维舵机角目标 (上/下联动舵机, 左/右联动舵机)
++    - 4 维推进器推力 (up, down, left, right)
++
++    由于推力点的 Site 已经挂载在舵机连杆上，MuJoCo 会自动处理推力的空间向量分解，
++    因此无需在 Python 中使用三角函数进行推力拆分。
+ 
+     动作:
+-        actions[:, 0] -> theta12_norm
+-        actions[:, 1] -> theta34_norm
+-        actions[:, 2] -> F1_norm
+-        actions[:, 3] -> F2_norm
+-        actions[:, 4] -> F3_norm
+-        actions[:, 5] -> F4_norm
++        actions[:, 0:2] -> 舵机控制
++        actions[:, 2:6] -> 推进器控制
+ 
+     返回:
+         servo_targets: [num_envs, 2]
+-        thrust_targets: [num_envs, 8]
++        thrust_targets: [num_envs, 4]
+     """
+-    # 舵机角（确保数值稳定）
+-    theta12 = actions[:, 0].clamp(-1.0, 1.0) * max_servo_angle
+-    theta34 = actions[:, 1].clamp(-1.0, 1.0) * max_servo_angle
+-
+-    # 推力（确保数值稳定）
+-    F1 = actions[:, 2].clamp(-1.0, 1.0) * max_thrust
+-    F2 = actions[:, 3].clamp(-1.0, 1.0) * max_thrust
+-    F3 = actions[:, 4].clamp(-1.0, 1.0) * max_thrust
+-    F4 = actions[:, 5].clamp(-1.0, 1.0) * max_thrust
+-
+-    sin12 = torch.sin(theta12)
+-    cos12 = torch.cos(theta12)
+-    sin34 = torch.sin(theta34)
+-    cos34 = torch.cos(theta34)
+-
+-    # 舵机输出
+-    servo_targets = torch.stack([theta12, theta34], dim=-1)
+-
+-    # 推进器分量（顺序需与 actuator_names 对齐）
+-    thrust_targets = torch.stack(
+-        [
+-            F1 * cos12,      # up_z
+-            F1 * sin12,      # up_y
+-            F2 * cos12,      # down_z
+-            F2 * sin12,      # down_y
+-            F3 * cos34,      # left_z
+-            F3 * sin34,      # left_x
+-            F4 * cos34,      # right_z
+-            F4 * sin34,      # right_x
+-        ],
+-        dim=-1,
+-    )
++    # 舵机角目标映射 [-1, 1] -> [-max_servo_angle, max_servo_angle]
++    servo_targets = actions[:, 0:2].clamp(-1.0, 1.0) * max_servo_angle
++
++    # 推进器推力目标映射 [-1, 1] -> [-max_thrust, max_thrust]
++    thrust_targets = actions[:, 2:6].clamp(-1.0, 1.0) * max_thrust
+ 
+     return servo_targets, thrust_targets
+ 
+ 
+ class AuvThrusterAllocationAction(ActionTerm):
+-    """6维动作 -> thruster_allocation -> 2舵机 + 8路等效力"""
++    """6维动作 -> 2个舵机PD控制 + 4个推进器力控制"""
+ 
+     cfg: "AuvThrusterAllocationActionCfg"
+ 
+@@ -79,12 +51,12 @@ class AuvThrusterAllocationAction(ActionTerm):
+ 
+         # 获取舵机和推进器执行器ID
+         self._servo_actuator_ids = self._entity.find_actuators(cfg.servo_joint_names)[0]      # 形状 (2,)
+-        self._thruster_actuator_ids = self._entity.find_actuators(cfg.thruster_joint_names)[0]  # 形状 (8,)
++        self._thruster_actuator_ids = self._entity.find_actuators(cfg.thruster_joint_names)[0]  # 形状 (4,)
+ 
+         # 存储原始动作和处理后的目标
+         self._raw_actions = torch.zeros(env.num_envs, 6, device=env.device)
+         self._servo_targets = torch.zeros(env.num_envs, 2, device=env.device)    # 舵机角目标
+-        self._thruster_targets = torch.zeros(env.num_envs, 8, device=env.device)  # 推进器力目标
++        self._thruster_targets = torch.zeros(env.num_envs, 4, device=env.device)  # 推进器力目标 (从 8 降至 4)
+ 
+     @property
+     def action_dim(self) -> int:
+@@ -122,9 +94,9 @@ class AuvThrusterAllocationActionCfg(ActionTermCfg):
+ 
+     entity_name: str = "robot"
+     servo_joint_names: list[str] = field(default_factory=list)      # 舵机执行器名称（2个）
+-    thruster_joint_names: list[str] = field(default_factory=list)   # 推进器执行器名称（8个）
++    thruster_joint_names: list[str] = field(default_factory=list)   # 推进器执行器名称（4个）
+     max_servo_angle: float = math.pi / 2
+-    max_thrust: float = 10.0
++    max_thrust: float = 50.0  # 默认推力与之前 XML 的 ctrlrange="-50 50" 对齐
+ 
+     def build(self, env: "ManagerBasedRlEnv") -> "AuvThrusterAllocationAction":
+         return AuvThrusterAllocationAction(self, env)
+\ No newline at end of file

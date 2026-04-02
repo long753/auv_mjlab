@@ -128,7 +128,7 @@ python scripts/train.py Mjlab-Velocity-Flat-CQU-AUV --env.scene.num-envs=并行�
 ```bash
 python scripts/play.py Mjlab-Velocity-Flat-CQU-AUV \
     --checkpoint-file logs/rsl_rl/auv_velocity/时间戳/model_第几个回合.pt \
-    --num-envs 数字 \
+    --num-envs 1 \
     --viewer viser \
     --no-terminations True
 ```

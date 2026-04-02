@@ -8,12 +8,10 @@
 
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Tuple, Sequence
+from typing import TYPE_CHECKING, Tuple
 from mjlab.utils.lab_api.math import (
-    quat_conjugate, 
     quat_apply, 
     quat_apply_inverse,  
-    matrix_from_quat      
 )
 from mjlab.managers.scene_entity_config import SceneEntityCfg
 import numpy as np 
@@ -65,8 +63,8 @@ class HydrodynamicForceModels:
             print(f"root_quats shape: {root_quats_w.shape}, buoyancy_vectors shape: {buoyancy_directions_w.shape}")
 
         # 将浮力方向转换到刚体坐标系
-        # 使用四元数将世界系向量转换到本体系
-        buoyancy_directions_b = quat_apply(root_quats_w, buoyancy_directions_w)
+        # 使用四元数逆变换将世界系向量转换到本体系 (world → body)
+        buoyancy_directions_b = quat_apply_inverse(root_quats_w, buoyancy_directions_w)
 
         # 计算在浮心处的浮力（阿基米德原理）
         # 浮力 = 密度 * 体积 * 重力加速度 * 方向
@@ -227,11 +225,10 @@ class HydrodynamicForceModels:
             g_v: 粘性扭矩 [num_envs, 3]
         """
 
-        # 将速度从世界坐标系转换到刚体坐标系
-        # 使用与浮力计算相同的转换：quat_apply(root_quats_w, v_world)
-        root_linvels_b = quat_apply(root_quats_w, root_linvels_w)
+        # 将速度从世界坐标系转换到刚体坐标系 (world → body)
+        root_linvels_b = quat_apply_inverse(root_quats_w, root_linvels_w)
         # 将角速度转换到本体系
-        root_angvels_b = quat_apply(root_quats_w, root_angvels_w)
+        root_angvels_b = quat_apply_inverse(root_quats_w, root_angvels_w)
   
         # 计算二次阻力（密度相关）
         f_d, g_d = self.calculate_quadratic_drag_forces(root_linvels_b, root_angvels_b, inertias, masses, water_rho)
@@ -241,6 +238,54 @@ class HydrodynamicForceModels:
         return (f_d, g_d, f_v, g_v)
 
 
+# ---------- 模块级缓存，避免每步重复创建张量和模型实例 ----------
+_hydro_cache: dict = {}
+
+
+def _get_or_create_cache(
+    num_envs: int,
+    device: torch.device,
+    mass: float,
+    inertia: tuple[float, float, float],
+    volume: float,
+    com_to_cob_offset: tuple[float, float, float],
+    debug: bool,
+) -> dict:
+    """获取或创建水动力计算所需的缓存张量，避免每步重复分配内存"""
+    key = (num_envs, str(device))
+    if key not in _hydro_cache:
+        _hydro_cache[key] = {
+            "model": HydrodynamicForceModels(num_envs, device, debug=debug),
+            "masses": torch.tensor([[mass]], dtype=torch.float, device=device).expand(num_envs, 1).clone(),
+            "inertias": torch.tensor([list(inertia)], dtype=torch.float, device=device).expand(num_envs, 3).clone(),
+            "volumes": torch.tensor([[volume]], dtype=torch.float, device=device).expand(num_envs, 1).clone(),
+            "cob_offsets": torch.tensor([list(com_to_cob_offset)], dtype=torch.float, device=device).expand(num_envs, 3).clone(),
+            "all_env_ids": torch.arange(num_envs, device=device),
+        }
+    return _hydro_cache[key]
+
+
+def _sanitize_quat(q: torch.Tensor) -> torch.Tensor:
+    """归一化四元数，处理 NaN 和零范数的退化情况"""
+    # NaN → 0
+    q = torch.where(torch.isnan(q), torch.zeros_like(q), q)
+    # 计算范数
+    norms = q.norm(dim=-1, keepdim=True).clamp(min=1e-8)
+    q = q / norms
+    # 范数过小的行（退化四元数）→ 单位四元数 [1,0,0,0]
+    degenerate = (norms.squeeze(-1) < 1e-6)
+    if degenerate.any():
+        identity = torch.tensor([1.0, 0.0, 0.0, 0.0], device=q.device, dtype=q.dtype)
+        q[degenerate] = identity
+    return q
+
+
+def _sanitize_vel(v: torch.Tensor, max_val: float = 20.0) -> torch.Tensor:
+    """清理速度张量：NaN → 0，然后 clamp"""
+    v = torch.where(torch.isnan(v), torch.zeros_like(v), v)
+    return v.clamp(-max_val, max_val)
+
+
 def apply_hydrodynamic_forces(
     env: "ManagerBasedRlEnv",
     env_ids: torch.Tensor | None,
@@ -248,469 +293,227 @@ def apply_hydrodynamic_forces(
     water_viscosity: float = 0.001306,
     volume: float = 0.023,
     com_to_cob_offset: tuple[float, float, float] = (0.0, 0.0, 0.3),
-    mass: float = 100.0,  # 默认质量 (kg)
-    inertia: tuple[float, float, float] = (19.3, 19.3, 1.125),  # 默认惯性 [I_xx, I_yy, I_zz] (kg·m²)
+    mass: float = 100.0,
+    inertia: tuple[float, float, float] = (19.3, 19.3, 1.125),
     asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
-    debug: bool = False
+    max_force_limit: float = 5000.0,
+    max_torque_limit: float = 1000.0,
+    neutral_buoyancy: bool = False,
+    debug: bool = False,
 ) -> None:
-    """应用水动力和扭矩到机器人
-    
-    这是一个MDP事件函数，可以在环境配置中注册为事件。
-    需要在实际使用前完善力施加的具体实现。
-    """
-    # 获取资产（机器人）
-    asset = env.scene[asset_cfg.name]
-    
-    # 获取机器人状态
-    root_quats_w = asset.data.root_link_quat_w
-    root_linvels_w = asset.data.root_link_lin_vel_w
-    root_angvels_w = asset.data.root_link_ang_vel_w
-    # 替换NaN为零
-    root_quats_w = torch.where(torch.isnan(root_quats_w), torch.zeros_like(root_quats_w), root_quats_w)
-    root_linvels_w = torch.where(torch.isnan(root_linvels_w), torch.zeros_like(root_linvels_w), root_linvels_w)
-    root_angvels_w = torch.where(torch.isnan(root_angvels_w), torch.zeros_like(root_angvels_w), root_angvels_w)
-    
-    # 使用传入的质量和惯性参数
-    num_envs = env.num_envs
-    device = torch.device(env.device) if isinstance(env.device, str) else env.device
-    
-    masses = torch.tensor([mass], dtype=torch.float, device=device).reshape(1,1).repeat(num_envs, 1)
-    inertias = torch.tensor([inertia], dtype=torch.float, device=device).reshape(1,3).repeat(num_envs, 1)
-    
-    # 创建水动力模型
-    force_model = HydrodynamicForceModels(num_envs, device, debug=debug)  # type: ignore
-    
-    # 准备体积张量
-    volumes = torch.tensor([volume], dtype=torch.float, device=device).reshape(1,1).repeat(num_envs, 1)
-    com_to_cob_offsets = torch.tensor([com_to_cob_offset], dtype=torch.float, device=device).reshape(1,3).repeat(num_envs, 1)
-    
-    # 计算浮力
-    buoyancy_force, buoyancy_torque = force_model.calculate_buoyancy_forces(
-        root_quats_w, water_density, volumes, 9.81, com_to_cob_offsets
-    )
-    
-    # 计算阻力和粘性力
-    f_d, g_d, f_v, g_v = force_model.calculate_density_and_viscosity_forces(
-        root_quats_w, root_linvels_w, root_angvels_w,
-        inertias, water_viscosity, water_density, masses
-    )
-    
-    # 总力和扭矩
-    total_force = buoyancy_force + f_d + f_v
-    total_torque = buoyancy_torque + g_d + g_v
-    
-    # 检查NaN并打印调试信息
-    if torch.isnan(total_force).any() or torch.isnan(total_torque).any():
-        print(f"[Hydrodynamics] NaN detected in forces/torques")
-        print(f"  buoyancy_force: {buoyancy_force}")
-        print(f"  f_d: {f_d}")
-        print(f"  f_v: {f_v}")
-        print(f"  root_linvels_w: {root_linvels_w}")
-        print(f"  root_angvels_w: {root_angvels_w}")
-        # 将NaN替换为零
-        total_force = torch.where(torch.isnan(total_force), torch.zeros_like(total_force), total_force)
-        total_torque = torch.where(torch.isnan(total_torque), torch.zeros_like(total_torque), total_torque)
-    
-    # 施加外力到机器人
-    # 限制力与扭矩的大小，防止数值爆炸
-    max_force = 5000.0  # N
-    max_torque = 1000.0  # N·m
-    total_force = torch.clamp(total_force, -max_force, max_force)
-    total_torque = torch.clamp(total_torque, -max_torque, max_torque)
-    # 将力和扭矩从刚体坐标系转换到世界坐标系
-    total_force_w = quat_apply(root_quats_w, total_force)
-    total_torque_w = quat_apply(root_quats_w, total_torque)
-    # 添加重力（重量）力（世界坐标系，方向向下）
-    g_mag = 9.81
-    weight_force_w = torch.zeros_like(total_force_w)
-    weight_force_w[:, 2] = -masses.squeeze(1) * g_mag
-    total_force_w += weight_force_w
-    
-    if env_ids is None:
-        env_ids = torch.arange(num_envs, device=device)
-    
-    # 获取机器人实体
-    asset = env.scene[asset_cfg.name]
-    # 确定应用力的身体索引（默认为根身体，索引0）
-    body_ids = asset_cfg.body_ids
-    if body_ids is None:
-        body_ids = [0]
-    
-    # 计算身体数量
-    if isinstance(body_ids, slice):
-        # 如果是slice(None)，应用所有身体
-        num_bodies = asset.data.body_link_pos_w.shape[1]
-    else:
-        num_bodies = len(body_ids)  # type: ignore
-    
-    # 扩展维度以匹配 (num_envs, num_bodies, 3)
-    total_force_w_expanded = total_force_w.unsqueeze(1).repeat(1, num_bodies, 1)
-    total_torque_w_expanded = total_torque_w.unsqueeze(1).repeat(1, num_bodies, 1)
-    
-    # 施加外力到仿真
-    asset.write_external_wrench_to_sim(
-        forces=total_force_w_expanded,
-        torques=total_torque_w_expanded,
-        env_ids=env_ids,
-        body_ids=body_ids
-    )
-    
-    # 调试信息
-    if force_model.debug:
-        print(f"水动力计算完成: 力={total_force.mean(dim=0)}, 扭矩={total_torque.mean(dim=0)}")
-        print(f"世界坐标系力={total_force_w.mean(dim=0)}, 扭矩={total_torque_w.mean(dim=0)}")
+    """计算并施加水动力（浮力 + 二次阻力 + 粘性力）到机器人根 body。
 
+    作为 EventTermCfg(mode="step") 注册，每个仿真步调用一次。
+    所有中间张量通过模块级缓存复用，避免每步分配内存。
 
-def apply_specific_force_torque(
-    env: "ManagerBasedRlEnv",
-    env_ids: torch.Tensor,
-    forces: torch.Tensor,  # [num_envs, 3]
-    torques: torch.Tensor, # [num_envs, 3]
-    asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG
-) -> None:
-    """施加特定的力和扭矩到机器人
-    
-    这是一个辅助函数，用于施加计算得到的水动力。
-    假设输入的力和扭矩已经在世界坐标系中。
-    """
-    # 获取机器人实体
-    asset = env.scene[asset_cfg.name]
-    # 确定应用力的身体索引（默认为根身体，索引0）
-    body_ids = asset_cfg.body_ids
-    if body_ids is None:
-        body_ids = [0]
-    
-    # 计算身体数量
-    if isinstance(body_ids, slice):
-        # 如果是slice(None)，应用所有身体
-        num_bodies = asset.data.body_link_pos_w.shape[1]
-    else:
-        # body_ids is Sequence[int]
-        num_bodies = len(body_ids)  # type: ignore
-    
-    # 扩展维度以匹配 (num_envs, num_bodies, 3)
-    forces_expanded = forces.unsqueeze(1).repeat(1, num_bodies, 1)
-    torques_expanded = torques.unsqueeze(1).repeat(1, num_bodies, 1)
-    
-    # 施加外力到仿真
-    asset.write_external_wrench_to_sim(
-        forces=forces_expanded,
-        torques=torques_expanded,
-        env_ids=env_ids,
-        body_ids=body_ids
-    )
-
-
-def apply_thruster_forces(
-    env: "ManagerBasedRlEnv",
-    env_ids: torch.Tensor | None,
-    asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
-    action_name: str = "thrusters",  # 动作管理器中的推进器动作名称
-    max_thrust: float = 100.0,  # 最大推力（牛顿）
-    debug: bool = False
-) -> None:
-    """计算并施加推进器推力到机器人base
-    
-    基于四个推进器的姿态和动作值，计算推进器推力并施加到机器人base上。
-    推进器推力方向为推进器body局部坐标系的-Z轴（假设推进器向前推）。
-    
     参数:
-        env: RL环境
-        env_ids: 环境ID
-        thrust_actions: 推进器动作值 [num_envs, 4]，顺序为 [up, down, left, right]
-        asset_cfg: 资产配置
-        debug: 调试模式
+        env: ManagerBasedRlEnv 实例
+        env_ids: 需要施力的环境索引，None 表示全部
+        water_density: 水密度 (kg/m³)
+        water_viscosity: 水动力粘度 (Pa·s)
+        volume: AUV 排水体积 (m³)
+        com_to_cob_offset: 质心→浮心偏移 (m)，本体系
+        mass: AUV 质量 (kg)
+        inertia: 主惯性矩 (I_xx, I_yy, I_zz) (kg·m²)
+        asset_cfg: 场景实体配置
+        max_force_limit: 力的 clamp 上限 (N)
+        max_torque_limit: 扭矩的 clamp 上限 (N·m)
+        neutral_buoyancy: 中性浮力模式，开启后浮力精确抵消重力
+        debug: 是否打印调试信息
     """
-    # 获取机器人实体
-    asset = env.scene[asset_cfg.name]
-    
-    # 改为使用舵机body（推力作用点）
-    thruster_body_names = [
-        "body_servo_up",      # 上舵机位置
-        "body_servo_down",    # 下舵机位置  
-        "body_servo_left",    # 左舵机位置
-        "body_servo_right",   # 右舵机位置
-    ]
-    
-    # 获取body索引
-    body_indices = []
-    for body_name in thruster_body_names:
-        # 查找body索引
-        try:
-            idx = asset.spec.body_names.index(body_name)
-            body_indices.append(idx)
-        except ValueError:
-            if debug:
-                print(f"警告: 未找到body '{body_name}'，可用body: {asset.spec.body_names}")
-            # 如果找不到，尝试使用默认索引（假设顺序相同）
-            pass
-    
-    # 如果通过名称找不到，使用假设的索引（0, 1, 2, 3）
-    if len(body_indices) != 4:
-        if debug:
-            print(f"使用默认body索引 [0, 1, 2, 3]")
-        body_indices = [0, 1, 2, 3]  # 假设四个推进器body是前四个
-    
     num_envs = env.num_envs
     device = torch.device(env.device) if isinstance(env.device, str) else env.device
-    
-    if env_ids is None:
-        env_ids = torch.arange(num_envs, device=device)
-    
-    # 获取推进器body的姿态（世界坐标系）
-    # body_link_pos_w: [num_envs, num_bodies, 3]
-    # body_link_quat_w: [num_envs, num_bodies, 4]
-    thruster_pos_w = asset.data.body_link_pos_w[:, body_indices, :]  # [num_envs, 4, 3]
-    thruster_quat_w = asset.data.body_link_quat_w[:, body_indices, :]  # [num_envs, 4, 4]
-    
-    # 从动作管理器获取推进器动作值
-    # 假设推进器动作是完整动作向量的最后4个维度
-    try:
-        # 获取完整动作向量
-        # 注意: env.action_manager.action 应该在process_action之后包含当前动作
-        full_action = env.action_manager.action
-        if full_action is None:
-            if debug:
-                print("警告: 动作管理器中没有动作值，使用零动作")
-            thrust_action_values = torch.zeros((num_envs, 4), device=device)
-        else:
-            # 获取动作维度
-            action_dim = full_action.shape[1]
-            if action_dim >= 4:
-                # 取最后4个元素作为推进器动作
-                thrust_action_values = full_action[:, -4:]
-            else:
-                if debug:
-                    print(f"错误: 动作维度 {action_dim} 小于4，无法提取推进器动作")
-                thrust_action_values = torch.zeros((num_envs, 4), device=device)
-    except Exception as e:
-        if debug:
-            print(f"获取推进器动作值时出错: {e}, 使用零动作")
-        thrust_action_values = torch.zeros((num_envs, 4), device=device)
-    
-    # 推进器推力系数（将动作值转换为牛顿）
-    # 动作值范围假设为 [-1, 1]，对应推力 [-max_thrust, max_thrust]
-    thrust_magnitudes = thrust_action_values * max_thrust  # [num_envs, 4]
-    
-    # 推进器推力方向（推进器局部坐标系中的方向）
-    # 假设推进器推力沿着局部-Z轴方向（向前推）
-    local_thrust_direction = torch.tensor([0.0, 0.0, -1.0], device=device)  # 局部-Z轴
-    local_thrust_direction = local_thrust_direction.unsqueeze(0).unsqueeze(0)  # [1, 1, 3]
-    
-    # 初始化总力和扭矩
-    total_force_w = torch.zeros((num_envs, 3), device=device)
-    total_torque_w = torch.zeros((num_envs, 3), device=device)
-    
-    # 对每个推进器计算力和扭矩
-    for i in range(4):
-        # 获取当前推进器的四元数
-        quat_w = thruster_quat_w[:, i, :]  # [num_envs, 4]
-        
-        # 将推力方向从局部坐标系转换到世界坐标系
-        thrust_dir_w = quat_apply(quat_w, local_thrust_direction)  # [num_envs, 3]
-        
-        # 计算推力向量（世界坐标系）
-        thrust_mag = thrust_magnitudes[:, i].unsqueeze(1)  # [num_envs, 1]
-        thrust_vector_w = thrust_dir_w * thrust_mag  # [num_envs, 3]
-        
-        # 获取推力作用点（世界坐标系）
-        thrust_point_w = thruster_pos_w[:, i, :]  # [num_envs, 3]
-        
-        # 获取base位置（假设base是第一个body）
-        base_pos_w = asset.data.body_link_pos_w[:, 0, :]  # [num_envs, 3]
-        
-        # 计算相对于base的力臂
-        r = thrust_point_w - base_pos_w  # [num_envs, 3]
-        
-        # 计算扭矩：τ = r × F
-        # 使用叉积计算扭矩
-        torque_w = torch.cross(r, thrust_vector_w, dim=1)  # [num_envs, 3]
-        
-        # 累加到总力和扭矩
-        total_force_w += thrust_vector_w
-        total_torque_w += torque_w
-        
-        if debug and i == 0 and env_ids[0] == 0:
-            print(f"推进器 {i}: 动作值={thrust_action_values[0, i]:.3f}, 推力大小={thrust_mag[0, 0]:.1f} N")
-            print(f"  局部推力方向: {local_thrust_direction[0, 0].cpu().numpy()}")
-            print(f"  世界推力方向: {thrust_dir_w[0].cpu().numpy()}")
-            print(f"  推力点位置: {thrust_point_w[0].cpu().numpy()}")
-            print(f"  力臂 r: {r[0].cpu().numpy()}")
-    
-    if debug and env_ids[0] == 0:
-        print(f"总推进器力: {total_force_w[0].cpu().numpy()}")
-        print(f"总推进器扭矩: {total_torque_w[0].cpu().numpy()}")
-    
-    # 施加力和扭矩到base
-    # 扩展维度以匹配 (num_envs, num_bodies, 3)
-    total_force_w_expanded = total_force_w.unsqueeze(1)  # [num_envs, 1, 3]
-    total_torque_w_expanded = total_torque_w.unsqueeze(1)  # [num_envs, 1, 3]
-    
-    # 施加到base（索引0）
-    asset.write_external_wrench_to_sim(
-        forces=total_force_w_expanded,
-        torques=total_torque_w_expanded,
-        env_ids=env_ids,
-        body_ids=[0]  # 施加到base
+
+    # 1. 获取/创建缓存
+    cache = _get_or_create_cache(
+        num_envs, device, mass, inertia, volume, com_to_cob_offset, debug
     )
+    model = cache["model"]
+
+    # 2. 获取机器人实体和状态
+    asset = env.scene[asset_cfg.name]
+    root_quats_w = _sanitize_quat(asset.data.root_link_quat_w)
+    root_linvels_w = _sanitize_vel(asset.data.root_link_lin_vel_w)
+    root_angvels_w = _sanitize_vel(asset.data.root_link_ang_vel_w)
+
+    # 3. 计算水动力（本体系）
+    # 中性浮力模式：用 mass/rho 替代实际体积，使 buoyancy = mass*g = gravity
+    if neutral_buoyancy:
+        neutral_vol = cache["masses"] / water_density  # [N,1]  使 rho*V*g = m*g
+        buoyancy_f, buoyancy_t = model.calculate_buoyancy_forces(
+            root_quats_w, water_density, neutral_vol, 9.81, cache["cob_offsets"]
+        )
+    else:
+        buoyancy_f, buoyancy_t = model.calculate_buoyancy_forces(
+            root_quats_w, water_density, cache["volumes"], 9.81, cache["cob_offsets"]
+        )
+    f_d, g_d, f_v, g_v = model.calculate_density_and_viscosity_forces(
+        root_quats_w, root_linvels_w, root_angvels_w,
+        cache["inertias"], water_viscosity, water_density, cache["masses"]
+    )
+
+    total_force_b = buoyancy_f + f_d + f_v
+    total_torque_b = buoyancy_t + g_d + g_v
+
+    # 4. NaN 安全检查（按环境粒度处理，不影响正常环境）
+    nan_mask = torch.isnan(total_force_b).any(dim=-1) | torch.isnan(total_torque_b).any(dim=-1)
+    if nan_mask.any():
+        if debug:
+            bad_ids = nan_mask.nonzero(as_tuple=False).squeeze(-1)
+            print(f"[Hydrodynamics] NaN in envs {bad_ids.tolist()}, zeroing those envs")
+        total_force_b[nan_mask] = 0.0
+        total_torque_b[nan_mask] = 0.0
+
+    # 5. Clamp 防止数值爆炸
+    total_force_b = total_force_b.clamp(-max_force_limit, max_force_limit)
+    total_torque_b = total_torque_b.clamp(-max_torque_limit, max_torque_limit)
+
+    # 6. 本体系 → 世界系
+    total_force_w = quat_apply(root_quats_w, total_force_b)
+    total_torque_w = quat_apply(root_quats_w, total_torque_b)
+
+    # 7. 施加到根 body（索引 0）
+    if env_ids is None:
+        env_ids = cache["all_env_ids"]
+
+    asset.write_external_wrench_to_sim(
+        forces=total_force_w.unsqueeze(1),    # [N, 1, 3]
+        torques=total_torque_w.unsqueeze(1),  # [N, 1, 3]
+        env_ids=env_ids,
+        body_ids=[0],
+    )
+
+    # 8. 调试输出
+    if debug:
+        mean_f = total_force_b.mean(dim=0)
+        mean_t = total_torque_b.mean(dim=0)
+        print(f"[Hydro] 本体系均值 — 力: [{mean_f[0]:.2f}, {mean_f[1]:.2f}, {mean_f[2]:.2f}] N, "
+              f"扭矩: [{mean_t[0]:.2f}, {mean_t[1]:.2f}, {mean_t[2]:.2f}] N·m")
 
 
 if __name__ == "__main__":
     """单元测试"""
-    # 设置计算设备
+
+    def assert_close(name: str, actual: torch.Tensor, expected: torch.Tensor,
+                     atol: float = 5e-3, rtol: float = 1e-4) -> bool:
+        """比较两个张量，使用混合容差（绝对+相对），打印结果"""
+        passed = torch.allclose(actual, expected, atol=atol, rtol=rtol)
+        if passed:
+            max_diff = (actual - expected).abs().max().item()
+            print(f"  ✓ {name} 通过 (最大差值: {max_diff:.2e})")
+        else:
+            print(f"  ✗ {name} 失败")
+            print(f"    计算值:\n{actual}")
+            print(f"    期望值:\n{expected}")
+            print(f"    差值:\n{actual - expected}")
+        return passed
+
+    # ========== 设置 ==========
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    
-    # 物理参数
-    water_rho = 997.0  # 水密度 (kg/m³)
-    water_beta = 0.001306  # 水粘度 (Pa·s) @ 50°F
-    g_mag = 9.81  # 重力加速度 (m/s²)
-    num_envs = 4  # 测试环境数量
-    com_to_cob_offset = torch.tensor([0.0, 0.0, 0.3], dtype=torch.float, device=device, requires_grad=False).reshape(1,3).repeat(num_envs, 1) 
-    volume = 1.0  # 刚体体积 (m³)，中性浮力
-    volume_tensor = torch.tensor([volume], dtype=torch.float, device=device).reshape(1,1).repeat(num_envs, 1)
+    water_rho = 997.0       # 水密度 (kg/m³)
+    water_beta = 0.001306   # 水粘度 (Pa·s)
+    g_mag = 9.81            # 重力加速度 (m/s²)
+    num_envs = 4
 
-    # 创建水动力模型实例
-    forceModel = HydrodynamicForceModels(num_envs, device, True)
+    com_to_cob_offset = torch.tensor([[0.0, 0.0, 0.3]], dtype=torch.float, device=device).repeat(num_envs, 1)
+    volume = 1.0
+    volume_tensor = torch.tensor([[volume]], dtype=torch.float, device=device).repeat(num_envs, 1)
+    mass = 100.0
+    masses = torch.tensor([[mass]], dtype=torch.float, device=device).repeat(num_envs, 1)
+    inertias = torch.tensor([[19.3, 19.3, 1.125]], dtype=torch.float, device=device).repeat(num_envs, 1)
 
-    # 测试浮力计算的四元数（注意：这里使用[w, x, y, z]格式）
-    # 使用标准旋转四元数
+    model = HydrodynamicForceModels(num_envs, device, debug=False)
+
+    # ========== 测试1: 浮力 ==========
+    print("\n===== 测试1: 浮力计算 (calculate_buoyancy_forces) =====")
+
+    # 四元数 [w, x, y, z]
     root_quats = torch.tensor([
-        [1.0, 0.0, 0.0, 0.0],  # 无旋转（单位四元数）
-        [0.7071068, 0.7071068, 0.0, 0.0],  # 绕X轴90度
-        [0.7071068, 0.0, 0.7071068, 0.0],  # 绕Y轴90度
-        [0.7071068, 0.0, 0.0, 0.7071068],  # 绕Z轴90度
-    ]).to(device)
+        [1.0, 0.0, 0.0, 0.0],              # 无旋转
+        [0.7071068, 0.7071068, 0.0, 0.0],   # 绕X轴90°
+        [0.7071068, 0.0, 0.7071068, 0.0],   # 绕Y轴90°
+        [0.7071068, 0.0, 0.0, 0.7071068],   # 绕Z轴90°
+    ], device=device)
 
-    # 预期的浮力结果（在刚体坐标系中）
-    # 基于标准旋转计算
-    buoyancy_magnitude = volume * water_rho * g_mag
-    true_b_forces = torch.tensor([
-        [0.0, 0.0, buoyancy_magnitude],  # 无旋转：浮力向上 [0,0,1]
-        [0.0, -buoyancy_magnitude, 0.0],  # X旋转90°：浮力在-Y方向 [0,-1,0]
-        [buoyancy_magnitude, 0.0, 0.0],  # Y旋转90°：浮力在+X方向 [1,0,0]
-        [0.0, 0.0, buoyancy_magnitude],  # Z旋转90°：浮力仍向上 [0,0,1]（绕Z轴旋转不影响Z方向）
-    ]).to(device)
+    F = volume * water_rho * g_mag  # 浮力大小
+    T = 0.3 * F                     # 扭矩大小 (r=0.3)
 
-    # 预期的浮力扭矩结果 τ = r × F
-    # r = [0, 0, 0.3] (com_to_cob_offset)
-    torque_magnitude = 0.3 * water_rho * g_mag * volume
-    true_b_torques = torch.tensor([
-        [0.0, 0.0, 0.0],  # 无旋转：r × [0,0,F] = [0,0,0]
-        [torque_magnitude, 0.0, 0.0],  # X旋转90°：r × [0,-F,0] = [0.3*F, 0, 0]
-        [0.0, torque_magnitude, 0.0],  # Y旋转90°：r × [F,0,0] = [0, 0.3*F, 0]
-        [0.0, 0.0, 0.0],  # Z旋转90°：r × [0,0,F] = [0,0,0]
-    ]).to(device)
+    # 期望浮力 (本体系): quat_apply_inverse(q, [0,0,1]) * F
+    expected_forces = torch.tensor([
+        [0.0, 0.0, F],    # 无旋转: [0,0,1]
+        [0.0, F, 0.0],    # X90°: R_x^T * [0,0,1] = [0,1,0]
+        [-F, 0.0, 0.0],   # Y90°: R_y^T * [0,0,1] = [-1,0,0]
+        [0.0, 0.0, F],    # Z90°: R_z^T * [0,0,1] = [0,0,1]
+    ], device=device)
 
-    # 计算浮力
-    b_force, b_torque = forceModel.calculate_buoyancy_forces(root_quats, water_rho, volume_tensor, g_mag, com_to_cob_offset)
+    # 期望扭矩 (本体系): r × F, 其中 r=[0,0,0.3]
+    # [0,0,0.3] × [Fx,Fy,Fz] = [-0.3*Fy, 0.3*Fx, 0]
+    expected_torques = torch.tensor([
+        [0.0, 0.0, 0.0],    # r × [0,0,F] = [0,0,0]
+        [-T, 0.0, 0.0],     # r × [0,F,0] = [-T,0,0]
+        [0.0, -T, 0.0],     # r × [-F,0,0] = [0,-T,0]
+        [0.0, 0.0, 0.0],    # r × [0,0,F] = [0,0,0]
+    ], device=device)
 
-    # 验证浮力计算结果（使用混合误差检查）
-    b_force_np = b_force.cpu().numpy()
-    true_b_forces_np = true_b_forces.cpu().numpy()
-    
-    # 计算绝对误差
-    force_abs_error = np.abs(b_force_np - true_b_forces_np)
-    
-    # 对于期望值接近0的情况，使用绝对误差；否则使用相对误差
-    zero_threshold = 1e-6
-    force_errors = np.zeros_like(force_abs_error)
-    
-    for i in range(force_abs_error.shape[0]):
-        for j in range(force_abs_error.shape[1]):
-            if np.abs(true_b_forces_np[i, j]) > zero_threshold:
-                # 相对误差（百分比）
-                force_errors[i, j] = force_abs_error[i, j] / np.abs(true_b_forces_np[i, j])
-            else:
-                # 绝对误差（当期望值为0时）
-                force_errors[i, j] = force_abs_error[i, j]
-    
-    # 不同的容差：相对误差使用1e-4，绝对误差使用1e-3
-    max_error = force_errors.max()
-    if max_error > 1e-4:  # 检查是否超过相对容差
-        # 但对于期望值为0的情况，使用更宽松的绝对容差
-        zero_mask = np.abs(true_b_forces_np) <= zero_threshold
-        if np.any(zero_mask):
-            # 检查期望值为0的情况的绝对误差
-            zero_abs_errors = force_abs_error[zero_mask]
-            if zero_abs_errors.max() > 1e-3:  # 绝对容差1e-3
-                print(f"浮力计算错误: 最大误差 {max_error:.2e}")
-                print(f"期望值为0处的最大绝对误差: {zero_abs_errors.max():.6e}")
-                print(f"计算值:\n {b_force}")
-                print(f"期望值:\n {true_b_forces}")
-            else:
-                # 期望值为0的情况通过，检查非零值的相对误差
-                non_zero_mask = np.abs(true_b_forces_np) > zero_threshold
-                if np.any(non_zero_mask):
-                    non_zero_rel_errors = force_errors[non_zero_mask]
-                    if non_zero_rel_errors.max() > 1e-4:
-                        print(f"浮力计算错误: 非零期望值处最大相对误差 {non_zero_rel_errors.max():.2%}")
-                        print(f"计算值:\n {b_force}")
-                        print(f"期望值:\n {true_b_forces}")
-                    else:
-                        print(f"浮力测试通过! 非零值最大相对误差: {non_zero_rel_errors.max():.2%}")
-                else:
-                    print(f"浮力测试通过! 最大绝对误差: {zero_abs_errors.max():.6e}")
-        else:
-            print(f"浮力计算错误: 最大相对误差 {max_error:.2%}")
-            print(f"计算值:\n {b_force}")
-            print(f"期望值:\n {true_b_forces}")
+    b_force, b_torque = model.calculate_buoyancy_forces(
+        root_quats, water_rho, volume_tensor, g_mag, com_to_cob_offset
+    )
+    assert_close("浮力", b_force, expected_forces)
+    assert_close("浮力扭矩", b_torque, expected_torques)
+
+    # ========== 测试2: 零速度时阻力为零 ==========
+    print("\n===== 测试2: 零速度阻力 (应为零) =====")
+
+    zero_vel = torch.zeros((num_envs, 3), device=device)
+    identity_quat = torch.tensor([[1.0, 0.0, 0.0, 0.0]], device=device).repeat(num_envs, 1)
+
+    f_d, g_d, f_v, g_v = model.calculate_density_and_viscosity_forces(
+        identity_quat, zero_vel, zero_vel, inertias, water_beta, water_rho, masses
+    )
+    zeros = torch.zeros((num_envs, 3), device=device)
+    assert_close("二次阻力", f_d, zeros)
+    assert_close("二次阻力扭矩", g_d, zeros)
+    assert_close("粘性力", f_v, zeros)
+    assert_close("粘性扭矩", g_v, zeros)
+
+    # ========== 测试3: 阻力方向性 ==========
+    print("\n===== 测试3: 阻力方向性 (力应与速度方向相反) =====")
+
+    forward_vel_w = torch.tensor([[1.0, 0.0, 0.0]], device=device).repeat(num_envs, 1)
+    zero_angvel = torch.zeros((num_envs, 3), device=device)
+
+    f_d, g_d, f_v, g_v = model.calculate_density_and_viscosity_forces(
+        identity_quat, forward_vel_w, zero_angvel, inertias, water_beta, water_rho, masses
+    )
+
+    # 阻力 x 分量应为负（与正向速度相反）
+    drag_x_negative = (f_d[:, 0] < 0).all().item()
+    viscous_x_negative = (f_v[:, 0] < 0).all().item()
+    # y, z 分量应为零（速度只有 x 分量）
+    drag_yz_zero = torch.allclose(f_d[:, 1:], zeros[:, 1:], atol=1e-6)
+    viscous_yz_zero = torch.allclose(f_v[:, 1:], zeros[:, 1:], atol=1e-6)
+
+    if drag_x_negative and drag_yz_zero:
+        print(f"  ✓ 二次阻力方向正确 (f_d_x={f_d[0, 0]:.4f} N)")
     else:
-        print(f"浮力测试通过! 最大误差: {max_error:.2e}")
+        print(f"  ✗ 二次阻力方向错误: {f_d[0]}")
 
-    # 验证扭矩计算结果
-    b_torque_np = b_torque.cpu().numpy()
-    true_b_torques_np = true_b_torques.cpu().numpy()
-    
-    torque_abs_error = np.abs(b_torque_np - true_b_torques_np)
-    
-    torque_errors = np.zeros_like(torque_abs_error)
-    for i in range(torque_abs_error.shape[0]):
-        for j in range(torque_abs_error.shape[1]):
-            if np.abs(true_b_torques_np[i, j]) > zero_threshold:
-                torque_errors[i, j] = torque_abs_error[i, j] / np.abs(true_b_torques_np[i, j])
-            else:
-                torque_errors[i, j] = torque_abs_error[i, j]
-    
-    max_torque_error = torque_errors.max()
-    if max_torque_error > 1e-4:
-        zero_mask = np.abs(true_b_torques_np) <= zero_threshold
-        if np.any(zero_mask):
-            zero_abs_errors = torque_abs_error[zero_mask]
-            if zero_abs_errors.max() > 1e-3:
-                print(f"扭矩计算错误: 最大误差 {max_torque_error:.2e}")
-                print(f"期望值为0处的最大绝对误差: {zero_abs_errors.max():.6e}")
-                print(f"计算值:\n {b_torque}")
-                print(f"期望值:\n {true_b_torques}")
-            else:
-                non_zero_mask = np.abs(true_b_torques_np) > zero_threshold
-                if np.any(non_zero_mask):
-                    non_zero_rel_errors = torque_errors[non_zero_mask]
-                    if non_zero_rel_errors.max() > 1e-4:
-                        print(f"扭矩计算错误: 非零期望值处最大相对误差 {non_zero_rel_errors.max():.2%}")
-                        print(f"计算值:\n {b_torque}")
-                        print(f"期望值:\n {true_b_torques}")
-                    else:
-                        print(f"扭矩测试通过! 非零值最大相对误差: {non_zero_rel_errors.max():.2%}")
-                else:
-                    print(f"扭矩测试通过! 最大绝对误差: {zero_abs_errors.max():.6e}")
-        else:
-            print(f"扭矩计算错误: 最大相对误差 {max_torque_error:.2%}")
-            print(f"计算值:\n {b_torque}")
-            print(f"期望值:\n {true_b_torques}")
+    if viscous_x_negative and viscous_yz_zero:
+        print(f"  ✓ 粘性力方向正确 (f_v_x={f_v[0, 0]:.6f} N)")
     else:
-        print(f"扭矩测试通过! 最大误差: {max_torque_error:.2e}")
+        print(f"  ✗ 粘性力方向错误: {f_v[0]}")
 
-    # 以下是阻力测试的框架（实际测试需要提供惯性张量）
-    root_linvels = torch.tensor([
-        [0.0, 0.0, 0.0],
-        [0.0, 0.0, 0.0],
-    ], device=device).unsqueeze(0)  # 添加批次维度
-    
-    root_angvels = torch.tensor([
-        [0.0, 0.0, 0.0],
-        [0.0, 0.0, 0.0],
-    ], device=device).unsqueeze(0)
-    
-    # 实际测试时需要提供真实的惯性张量
-    # inertias = ... 
-    # f_d, g_d, f_v, g_v = forceModel.calculate_density_and_viscosity_forces(...)
+    # ========== 测试4: body→world→body 往返一致性 ==========
+    print("\n===== 测试4: 坐标变换往返一致性 =====")
+
+    test_vec = torch.tensor([[1.0, 2.0, 3.0]], device=device).repeat(num_envs, 1)
+    for i, label in enumerate(["无旋转", "X90°", "Y90°", "Z90°"]):
+        q = root_quats[i:i+1].repeat(num_envs, 1)
+        # body → world → body 应该还原
+        v_world = quat_apply(q, test_vec)
+        v_body = quat_apply_inverse(q, v_world)
+        ok = torch.allclose(v_body, test_vec, atol=1e-5)
+        status = "✓" if ok else "✗"
+        print(f"  {status} {label}: 往返误差 {(v_body - test_vec).abs().max().item():.2e}")
+
+    print("\n===== 所有测试完成 =====")
