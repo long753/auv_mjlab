@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mujoco>
+<compiler meshdir="assets"/>
+  <asset>
+    <mesh file="auv___base_1_160_tong_yong_fa_lan__1.stl"/>
+    <mesh file="auv___base_1_22000mah_dian_chi__1.stl"/>
+    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__2.stl"/>
+    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__3.stl"/>
+    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__4.stl"/>
+    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__5.stl"/>
+    <mesh file="auv___base_1_m8_50_luo_mu_zhu__1.stl"/>
+    <mesh file="auv___base_1_m8_50_luo_mu_zhu__2.stl"/>
+    <mesh file="auv___base_1_m8_50_luo_mu_zhu__3.stl"/>
+    <mesh file="auv___base_1_m8_50_luo_mu_zhu__4.stl"/>
+    <mesh file="auv___base_1_m8_du_tou_luo_shuan__1.stl"/>
+    <mesh file="auv___base_1_m8_du_tou_luo_shuan__2.stl"/>
+    <mesh file="auv___base_1_m8_du_tou_luo_shuan__3.stl"/>
+    <mesh file="auv___base_1_m8_du_tou_luo_shuan__4.stl"/>
+    <mesh file="auv___base_1_x_zhou_chuan_dong_gan__4.stl"/>
+    <mesh file="auv___base_1_x_zhou_chuan_dong_gan__5.stl"/>
+    <mesh file="auv___base_1_y_zhou_chuan_dong_gan__1.stl"/>
+    <mesh file="auv___base_1__shang_wei_ji__1.stl"/>
+    <mesh file="auv___base_1__shang_wei_ji__2.stl"/>
+    <mesh file="auv___base_1__xia_wei_ji_stm32_2.stl"/>
+    <mesh file="auv___base_1__xia_wei_ji_stm32_3.stl"/>
+    <mesh file="auv___base_1__dong_li_zhuang_zhi_wai_ke____zhong_jian__1.stl"/>
+    <mesh file="auv___base_1__dong_li_zhuang_zhi_wai_ke____di_bu__1.stl"/>
+    <mesh file="auv___base_1__ban_yuan_cang_gai__3.stl"/>
+    <mesh file="auv___base_1__shuang_mu_she_xiang_tou_ke_dong_zhi_jia__2.stl"/>
+    <mesh file="auv___base_1__shuang_mu_xiang_ji___xiao___1.stl"/>
+    <mesh file="auv___base_1__shuang_lian_chi_lun__1.stl"/>
+    <mesh file="auv___base_1__yuan_zhu_chi_lun_45_1_4.stl"/>
+    <mesh file="auv___base_1__yuan_zhu_chi_lun_45_1_5.stl"/>
+    <mesh file="auv___base_1__yuan_zhu_chi_lun_45_1_6.stl"/>
+    <mesh file="auv___base_1__yuan_zhui_chi_lun_20_1_5_4.stl"/>
+    <mesh file="auv___base_1__yuan_zhui_chi_lun_20_1_5_5.stl"/>
+    <mesh file="auv___base_1__mi_feng_fa_lan_3_1.stl"/>
+    <mesh file="auv___base_1__di_ban__1.stl"/>
+    <mesh file="auv___base_1__tui_jin_qi_zhi_jia__1.stl"/>
+    <mesh file="auv___base_1__she_xiang_tou_duo_ji__2.stl"/>
+    <mesh file="auv___base_1__she_xiang_tou_lian_jie_jian__2.stl"/>
+    <mesh file="auv___base_1__ban_zi_lian_jie_jia__1.stl"/>
+    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__10.stl"/>
+    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__7.stl"/>
+    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__8.stl"/>
+    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__9.stl"/>
+    <mesh file="auv___base_1__dian_kong_cang_1_hao_ban__1.stl"/>
+    <mesh file="auv___base_1__dian_kong_cang_2_hao_ban__1.stl"/>
+    <mesh file="auv___base_1__dian_kong_cang_3_hao_ban__1.stl"/>
+    <mesh file="auv___base_1__dian_kong_cang_wai_ke__2.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__1.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__10.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__11.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__12.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__13.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__2.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__3.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__4.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__7.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__8.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__9.stl"/>
+    <mesh file="auv___base_1__duo_ji_zhi_jia___qian___1.stl"/>
+    <mesh file="auv___base_1__duo_ji_zhi_jia___hou___1.stl"/>
+    <mesh file="auv___base_1__duo_ji_lian_jie_jian__1.stl"/>
+    <mesh file="auv___base_1__duo_ji_lian_jie_jian__3.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_10.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_11.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_12.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_7.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_8.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_9.stl"/>
+    <mesh file="auv___base_1__fang_shui_duo_ji__2.stl"/>
+    <mesh file="auv___base_1__fang_shui_duo_ji__5.stl"/>
+  </asset>
+
+  <default>
+  <default class="base_default">
+  <geom contype="0" conaffinity="0"/>
+  </default>
+  </default>
+
+  <worldbody>
+  <body name="base_body" pos="0 0 0">
+    <geom type="mesh" mesh="auv___base_1_160_tong_yong_fa_lan__1" mass="0.1608" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_22000mah_dian_chi__1" mass="1.8800" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__2" mass="0.0121" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__3" mass="0.0121" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__4" mass="0.0121" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__5" mass="0.0121" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__1" mass="0.0457" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__2" mass="0.0457" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__3" mass="0.0457" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__4" mass="0.0457" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__1" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__2" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__3" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__4" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_x_zhou_chuan_dong_gan__4" mass="0.0612" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_x_zhou_chuan_dong_gan__5" mass="0.0612" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1_y_zhou_chuan_dong_gan__1" mass="0.2310" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__shang_wei_ji__1" mass="0.0001" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__shang_wei_ji__2" mass="0.0001" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__xia_wei_ji_stm32_2" mass="0.0001" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__xia_wei_ji_stm32_3" mass="0.0001" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__dong_li_zhuang_zhi_wai_ke____zhong_jian__1" mass="0.2570" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__dong_li_zhuang_zhi_wai_ke____di_bu__1" mass="0.3023" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__ban_yuan_cang_gai__3" mass="0.1454" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__shuang_mu_she_xiang_tou_ke_dong_zhi_jia__2" mass="0.0095" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__shuang_mu_xiang_ji___xiao___1" mass="0.2000" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__shuang_lian_chi_lun__1" mass="0.1537" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_4" mass="0.1210" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_5" mass="0.1210" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_6" mass="0.1210" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__yuan_zhui_chi_lun_20_1_5_4" mass="0.0532" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__yuan_zhui_chi_lun_20_1_5_5" mass="0.0532" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__mi_feng_fa_lan_3_1" mass="0.0811" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__di_ban__1" mass="0.2018" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__tui_jin_qi_zhi_jia__1" mass="0.7490" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__she_xiang_tou_duo_ji__2" mass="0.1000" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__she_xiang_tou_lian_jie_jian__2" mass="0.0088" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__ban_zi_lian_jie_jia__1" mass="0.0684" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__10" mass="0.0622" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__7" mass="0.0622" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__8" mass="0.0622" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__9" mass="0.0622" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__dian_kong_cang_1_hao_ban__1" mass="0.0224" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__dian_kong_cang_2_hao_ban__1" mass="0.0210" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__dian_kong_cang_3_hao_ban__1" mass="0.0361" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__dian_kong_cang_wai_ke__2" mass="0.9952" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__chuan_cang_luo_si__1" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__chuan_cang_luo_si__10" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__chuan_cang_luo_si__11" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__chuan_cang_luo_si__12" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__chuan_cang_luo_si__13" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__chuan_cang_luo_si__2" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__chuan_cang_luo_si__3" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__chuan_cang_luo_si__4" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__chuan_cang_luo_si__7" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__chuan_cang_luo_si__8" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__chuan_cang_luo_si__9" mass="0.0500" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__duo_ji_zhi_jia___qian___1" mass="0.0639" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__duo_ji_zhi_jia___hou___1" mass="0.0853" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__duo_ji_lian_jie_jian__1" mass="0.2223" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__duo_ji_lian_jie_jian__3" mass="0.2223" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__zhou_cheng_6001_10" mass="0.0326" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__zhou_cheng_6001_11" mass="0.0326" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__zhou_cheng_6001_12" mass="0.0326" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__zhou_cheng_6001_7" mass="0.0326" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__zhou_cheng_6001_8" mass="0.0326" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__zhou_cheng_6001_9" mass="0.0326" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__fang_shui_duo_ji__2" mass="0.3600" class="base_default"/>
+    <geom type="mesh" mesh="auv___base_1__fang_shui_duo_ji__5" mass="0.3600" class="base_default"/>
+  </body>
+  </worldbody>
+</mujoco>

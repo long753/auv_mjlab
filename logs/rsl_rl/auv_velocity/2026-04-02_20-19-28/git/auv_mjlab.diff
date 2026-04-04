@@ -1,0 +1,104 @@
+--- git commit ---
+8bdfc49f66d537f77842097b5e5ae729fc505cc5
+
+
+--- git status ---
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   src/auv_mjlab/assets/robots/auv/auv_constants.py
+	modified:   src/auv_mjlab/assets/robots/auv/xmls/auv.xml
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	logs/rsl_rl/auv_velocity/2026-04-02_20-19-28/
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/src/auv_mjlab/assets/robots/auv/auv_constants.py b/src/auv_mjlab/assets/robots/auv/auv_constants.py
+index 3b6db1c..3857970 100644
+--- a/src/auv_mjlab/assets/robots/auv/auv_constants.py
++++ b/src/auv_mjlab/assets/robots/auv/auv_constants.py
+@@ -15,7 +15,7 @@ from mjlab.entity import EntityArticulationInfoCfg, EntityCfg
+ from mjlab.utils.os import update_assets
+ from mjlab.actuator.actuator import TransmissionType
+ 
+-# 1. 路径与资产配置
++# 1. 导入模型文件
+ AUV_XML: Path = SRC_PATH / "assets" / "robots" / "auv" / "xmls" / "auv.xml"
+ assert AUV_XML.exists(), f"未找到模型文件: {AUV_XML}"
+ 
+@@ -30,12 +30,12 @@ def get_spec() -> mujoco.MjSpec:
+     spec.assets = get_assets(spec.meshdir)
+     return spec
+ 
+-# 2. 执行器配置 (Actuator config)
++# 2. 执行器配置
+ # --- 舵机配置 (位置控制) ---
+ AUV_ACTUATOR_SERVOS = BuiltinPositionActuatorCfg(
+     target_names_expr=(
+-        "joint_servo_up",
+-        "joint_servo_left",
++        "joint_servo_up",    # 上下舵机转角
++        "joint_servo_left",  # 左右舵机转角
+     ),
+     stiffness=20.0,
+     damping=4.0,
+@@ -43,7 +43,7 @@ AUV_ACTUATOR_SERVOS = BuiltinPositionActuatorCfg(
+     armature=0.03,
+ )
+ 
+-# --- 推进器配置 (电机/推力控制) ---
++# --- 推进器配置 (推力控制) ---
+ AUV_ACTUATOR_THRUSTERS = BuiltinMotorActuatorCfg(
+     target_names_expr=(
+         "thrust_up_site",
+@@ -62,12 +62,11 @@ INIT_STATE = EntityCfg.InitialStateCfg(
+     joint_pos={
+         "joint_servo_up": 0.0,
+         "joint_servo_left": 0.0,
+-        # 推进器叶片关节被 range="0 0" 锁定，不需要初始化位姿
+     },
+     joint_vel={".*": 0.0},
+ )
+ 
+-# Hydrodynamic parameters
++# 水动力学参数
+ AUV_VOLUME = 0.106  # m³
+ AUV_MASS = 100.0  # kg
+ AUV_INERTIA = np.array([19.3, 19.3, 1.125])  # [I_xx, I_yy, I_zz]
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/auv.xml b/src/auv_mjlab/assets/robots/auv/xmls/auv.xml
+index 0a73fa1..b37e628 100644
+--- a/src/auv_mjlab/assets/robots/auv/xmls/auv.xml
++++ b/src/auv_mjlab/assets/robots/auv/xmls/auv.xml
+@@ -211,8 +211,8 @@
+   </worldbody>
+ 
+   <equality>
+-    <joint joint1="joint_servo_down" joint2="joint_servo_up" polycoef="0 -1 0 0 0"/>
+-    <joint joint1="joint_servo_right" joint2="joint_servo_left" polycoef="0 1 0 0 0"/>
++    <joint joint1="joint_servo_down" joint2="joint_servo_up" polycoef="0 1 0 0 0"/>
++    <joint joint1="joint_servo_right" joint2="joint_servo_left" polycoef="0 -1 0 0 0"/>
+   </equality>
+ 
+   <contact>
+@@ -221,12 +221,5 @@
+     <exclude body1="base" body2="body_servo_up"/>
+     <exclude body1="base" body2="body_servo_down"/>
+   </contact>
+-
+-  <!-- <actuator>
+-    <motor name="act_thruster_up" site="thrust_up_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
+-    <motor name="act_thruster_down" site="thrust_down_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
+-    <motor name="act_thruster_left" site="thrust_left_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
+-    <motor name="act_thruster_right" site="thrust_right_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
+-  </actuator> -->
+-
++  
+ </mujoco>
+\ No newline at end of file

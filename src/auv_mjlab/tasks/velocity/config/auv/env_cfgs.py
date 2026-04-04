@@ -21,12 +21,14 @@ from mjlab.envs.mdp.actions import JointPositionActionCfg
 from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
 import src.auv_mjlab.tasks.velocity.mdp as mdp
 from src.auv_mjlab.assets.robots import get_auv_robot_cfg
-from src.auv_mjlab.assets.robots.auv.auv_constants import (
-    AUV_VOLUME,
-    AUV_MASS,
-    AUV_INERTIA,
-    AUV_COM_TO_COB_OFFSET,
-)
+from src.auv_mjlab.assets.robots.auv.auv_constants import AUV_MAX_SERVO_ANGLE, get_auv_physical_params
+
+# 从模型中动态获取水动力参数
+_phys = get_auv_physical_params()
+AUV_MASS = _phys["mass"]
+AUV_VOLUME = _phys["volume"]
+AUV_INERTIA = list(_phys["inertia"])
+AUV_COM_TO_COB_OFFSET = list(_phys["com_to_cob_offset"])
 
 
 def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
@@ -55,7 +57,7 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
                 "thrust_left_site",
                 "thrust_right_site",
             ],
-            max_servo_angle=math.pi/2, 
+            max_servo_angle=AUV_MAX_SERVO_ANGLE, 
             max_thrust=50.0,
         )
     }
@@ -97,12 +99,11 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
                 'joint_servo_up','joint_servo_left'
             ))},
         ),
-        # 观测所有活动关节的速度（包含舵机和螺旋桨叶片）
+        # 观测所有活动关节的速度
         "joint_vel": ObservationTermCfg(                
             func=mdp.joint_vel_rel,
             params={"asset_cfg": SceneEntityCfg("robot", joint_names=(
-                'joint_servo_up','joint_servo_left',
-                'joint_prop_up','joint_prop_down','joint_prop_left','joint_prop_right'
+                'joint_servo_up','joint_servo_down','joint_servo_left','joint_servo_right'
             ))},
         ),
     }
@@ -139,6 +140,19 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     # 6. 事件 (Events) 
     # ==========================
     events = {
+        # 根body重置（给初速度扰动以测试水阻力）
+        # "reset_root_state": EventTermCfg(
+        #     func=mdp.reset_root_state_uniform,
+        #     mode="reset",
+        #     params={
+        #         "pose_range": {},  # 位置不扰动，使用初始状态
+        #         "velocity_range": {
+        #             "x": (-0.5, 0.5),
+        #             "y": (-0.5, 0.5),
+        #             "z": (-0.3, 0.3),
+        #         },
+        #     },
+        # ),
         # 关节重置
         "reset_robot_joints": EventTermCfg(
             func=mdp.reset_joints_by_offset,
@@ -146,27 +160,24 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
             params={
                 "position_range": (0.0, 0.0),
                 "velocity_range": (0.0, 0.0),
-                # 使用正则表达式匹配所有的舵机关节(包含上下左右)和推进器关节
-                "asset_cfg": SceneEntityCfg("robot", joint_names=("joint_servo_.*", "joint_prop_.*")),
+                # 使用正则表达式匹配所有的舵机关节(包含上下左右)
+                "asset_cfg": SceneEntityCfg("robot", joint_names=("joint_servo_.*",)),
             },
         ),
-        # 水动力学
-        # "hydrodynamic_forces": EventTermCfg(
-        #     func=mdp.apply_hydrodynamic_forces,
-        #     mode="step",
-        #     params={
-        #         "water_density": 1000.0,
-        #         "water_viscosity": 0.0009,
-        #         "volume": AUV_VOLUME,
-        #         "com_to_cob_offset": tuple(AUV_COM_TO_COB_OFFSET.tolist()),
-        #         "mass": AUV_MASS,
-        #         "inertia": tuple(AUV_INERTIA.tolist()),
-        #         "max_force_limit": 5000.0,
-        #         "max_torque_limit": 1000.0,
-        #         "neutral_buoyancy": False,
-        #         "debug": False,
-        #     },
-        # ),
+        # 水动力学（浮力 + 水阻力）
+        "hydrodynamic_forces": EventTermCfg(
+            func=mdp.apply_hydrodynamic_forces,
+            mode="step",
+            params={
+                "water_density": 1000.0,
+                "water_viscosity": 0.0009,
+                "mass": AUV_MASS,
+                "inertia": tuple(AUV_INERTIA),
+                "max_force_limit": 5000.0,
+                "max_torque_limit": 1000.0,
+                "debug": True,
+            },
+        ),
     }
 
     # ==========================

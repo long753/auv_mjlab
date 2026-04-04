@@ -33,47 +33,104 @@
   </default>
 
   <asset>
-    <mesh file="ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__gu_ding_huan__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__gu_ding_huan__2.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__gu_ding_huan__3.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__gu_ding_huan__4.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__jian_xiu_gai__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2.stl"/>
-    <mesh file="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10.stl"/>
-    <mesh file="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____up_1__tui_jin_qi__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____down_1__tui_jin_qi__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____left_1__tui_jin_qi__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1.stl"/>
-    <mesh file="ji_chu_zhuang_pei____right_1__tui_jin_qi__1.stl"/>
+    <mesh file="auv___base_1_160_tong_yong_fa_lan__1.stl"/>
+    <mesh file="auv___base_1_22000mah_dian_chi__1.stl"/>
+    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__2.stl"/>
+    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__3.stl"/>
+    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__4.stl"/>
+    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__5.stl"/>
+    <mesh file="auv___base_1_m8_50_luo_mu_zhu__1.stl"/>
+    <mesh file="auv___base_1_m8_50_luo_mu_zhu__2.stl"/>
+    <mesh file="auv___base_1_m8_50_luo_mu_zhu__3.stl"/>
+    <mesh file="auv___base_1_m8_50_luo_mu_zhu__4.stl"/>
+    <mesh file="auv___base_1_m8_du_tou_luo_shuan__1.stl"/>
+    <mesh file="auv___base_1_m8_du_tou_luo_shuan__2.stl"/>
+    <mesh file="auv___base_1_m8_du_tou_luo_shuan__3.stl"/>
+    <mesh file="auv___base_1_m8_du_tou_luo_shuan__4.stl"/>
+    <mesh file="auv___base_1_x_zhou_chuan_dong_gan__4.stl"/>
+    <mesh file="auv___base_1_x_zhou_chuan_dong_gan__5.stl"/>
+    <mesh file="auv___base_1_y_zhou_chuan_dong_gan__1.stl"/>
+    <mesh file="auv___base_1__shang_wei_ji__1.stl"/>
+    <mesh file="auv___base_1__shang_wei_ji__2.stl"/>
+    <mesh file="auv___base_1__xia_wei_ji_stm32_2.stl"/>
+    <mesh file="auv___base_1__xia_wei_ji_stm32_3.stl"/>
+    <mesh file="auv___base_1__dong_li_zhuang_zhi_wai_ke____zhong_jian__1.stl"/>
+    <mesh file="auv___base_1__dong_li_zhuang_zhi_wai_ke____di_bu__1.stl"/>
+    <mesh file="auv___base_1__ban_yuan_cang_gai__3.stl"/>
+    <mesh file="auv___base_1__shuang_mu_she_xiang_tou_ke_dong_zhi_jia__2.stl"/>
+    <mesh file="auv___base_1__shuang_mu_xiang_ji___xiao___1.stl"/>
+    <mesh file="auv___base_1__shuang_lian_chi_lun__1.stl"/>
+    <mesh file="auv___base_1__yuan_zhu_chi_lun_45_1_4.stl"/>
+    <mesh file="auv___base_1__yuan_zhu_chi_lun_45_1_5.stl"/>
+    <mesh file="auv___base_1__yuan_zhu_chi_lun_45_1_6.stl"/>
+    <mesh file="auv___base_1__yuan_zhui_chi_lun_20_1_5_4.stl"/>
+    <mesh file="auv___base_1__yuan_zhui_chi_lun_20_1_5_5.stl"/>
+    <mesh file="auv___base_1__mi_feng_fa_lan_3_1.stl"/>
+    <mesh file="auv___base_1__di_ban__1.stl"/>
+    <mesh file="auv___base_1__tui_jin_qi_zhi_jia__1.stl"/>
+    <mesh file="auv___base_1__she_xiang_tou_duo_ji__2.stl"/>
+    <mesh file="auv___base_1__she_xiang_tou_lian_jie_jian__2.stl"/>
+    <mesh file="auv___base_1__ban_zi_lian_jie_jia__1.stl"/>
+    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__10.stl"/>
+    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__7.stl"/>
+    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__8.stl"/>
+    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__9.stl"/>
+    <mesh file="auv___base_1__dian_kong_cang_1_hao_ban__1.stl"/>
+    <mesh file="auv___base_1__dian_kong_cang_2_hao_ban__1.stl"/>
+    <mesh file="auv___base_1__dian_kong_cang_3_hao_ban__1.stl"/>
+    <mesh file="auv___base_1__dian_kong_cang_wai_ke__2.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__1.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__10.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__11.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__12.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__13.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__2.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__3.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__4.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__7.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__8.stl"/>
+    <mesh file="auv___base_1__chuan_cang_luo_si__9.stl"/>
+    <mesh file="auv___base_1__duo_ji_zhi_jia___qian___1.stl"/>
+    <mesh file="auv___base_1__duo_ji_zhi_jia___hou___1.stl"/>
+    <mesh file="auv___base_1__duo_ji_lian_jie_jian__1.stl"/>
+    <mesh file="auv___base_1__duo_ji_lian_jie_jian__3.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_10.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_11.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_12.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_7.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_8.stl"/>
+    <mesh file="auv___base_1__zhou_cheng_6001_9.stl"/>
+    <mesh file="auv___base_1__fang_shui_duo_ji__2.stl"/>
+    <mesh file="auv___base_1__fang_shui_duo_ji__5.stl"/>
+    <mesh file="auv___up_thruster_1__tui_jin_qi_di_zuo__1.stl"/>
+    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl"/>
+    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl"/>
+    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl"/>
+    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl"/>
+    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl"/>
+    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi_di_zuo__1.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl"/>
+    <mesh file="auv___left_thruster_1__tui_jin_qi_di_zuo__1.stl"/>
+    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl"/>
+    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl"/>
+    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl"/>
+    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl"/>
+    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl"/>
+    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl"/>
+    <mesh file="auv___right_thruster_1__tui_jin_qi_di_zuo__1.stl"/>
+    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl"/>
+    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl"/>
+    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl"/>
+    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl"/>
+    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl"/>
+    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl"/>
+
     
     <texture name="sky" type="skybox" file="assets/desert.png" gridsize="3 4" gridlayout=".U..LFRB.D.."/>
     <texture name="ground" type="2d" builtin="checker" rgb1="0.1 0.1 0.1" rgb2="0.9 0.9 0.9" width="256" height="256" mark="cross" markrgb="0.8 0.8 0.8"/>
@@ -83,6 +140,14 @@
     <material name="carbon_fiber" texture="carbon_texture" texuniform="true" texrepeat="8 4" rgba="0.1 0.1 0.1 1" specular="0.9" shininess="0.8" reflectance="0.4"/>
     <material name="carbon_fiber_glossy" texture="carbon_texture" texuniform="true" texrepeat="16 8" rgba="0.12 0.12 0.12 1" specular="1.0" shininess="0.9" reflectance="0.6"/>
     <material name="carbon_fiber_matte" texture="carbon_texture" texuniform="true" texrepeat="12 6" rgba="0.15 0.15 0.15 1" specular="0.4" shininess="0.5" reflectance="0.1"/>
+    <material name="metal_silver" rgba="0.7 0.72 0.75 1" specular="0.7" shininess="0.6"/>
+    <material name="metal_dark" rgba="0.35 0.35 0.38 1" specular="0.5" shininess="0.4"/>
+    <material name="plastic_white" rgba="0.7 0.7 0.75 1" specular="0.4" shininess="0.3"/>
+    <material name="plastic_grey" rgba="0.55 0.55 0.58 1" specular="0.4" shininess="0.3"/>
+    <material name="metal_bronze" rgba="0.65 0.5 0.35 1" specular="0.6" shininess="0.5"/>
+    <material name="rubber_black" rgba="0.12 0.12 0.14 1" specular="0.2" shininess="0.15"/>
+    <material name="pcb_green" rgba="0.15 0.45 0.25 1" specular="0.5" shininess="0.4"/>
+    <material name="copper" rgba="0.72 0.45 0.2 1" specular="0.7" shininess="0.6"/>
   </asset>
 
   <worldbody>
@@ -93,126 +158,244 @@
     <body name="base" pos="0 0 1" childclass="auv_base">
       <freejoint name="base"/>
 
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3" mass="0.0158"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1" mass="0.094174"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2" mass="1" material="acrylic_hull"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2" material="acrylic_hull"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1" mass="0.118807" material="carbon_fiber_matte"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1" material="carbon_fiber_matte"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1" mass="0.18051" material="acrylic_hull"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1" material="acrylic_hull"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__1" mass="0.0682515" material="carbon_fiber"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__1" material="carbon_fiber"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__2" mass="0.0682515" material="carbon_fiber"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__2" material="carbon_fiber"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__3" mass="0.0682515" material="carbon_fiber"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__3" material="carbon_fiber"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__4" mass="0.0682515" material="carbon_fiber"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__4" material="carbon_fiber"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1" mass="0.6" material="acrylic_hull"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1" material="acrylic_hull"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1" mass="0.053667608"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4" mass="0.053667608"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5" mass="0.053667608"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6" mass="0.053667608"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7" mass="0.053667608"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2" mass="0.135"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1" mass="0.00155358"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1" mass="0.120"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2" mass="0.120"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jian_xiu_gai__1" mass="0.02507244" rgba="0.65 0.65 0.68 1"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jian_xiu_gai__1" rgba="0.65 0.65 0.68 1"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1" mass="0.03"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2" mass="0.03"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1" mass="0.032"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2" mass="0.032"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3" mass="0.032"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4" mass="0.032"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1" mass="0.032"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2" mass="0.032"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1" mass="0.03"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2" mass="0.03"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1" mass="0.36"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2" mass="0.36"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2"/>
-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10" mass="0.36" rgba="0.0 0.75 1.0 1"/>
-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10" rgba="0.0 0.75 1.0 1"/>
+      <!-- Base body geoms with mass parameters from output_base.xml -->
+      <geom class="collision" type="mesh" mesh="auv___base_1_160_tong_yong_fa_lan__1" mass="0.1608" material="carbon_fiber"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_160_tong_yong_fa_lan__1" material="carbon_fiber"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_22000mah_dian_chi__1" mass="1.8800" material="metal_dark"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_22000mah_dian_chi__1" material="metal_dark"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__2" mass="0.0121"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__2"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__3" mass="0.0121"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__3"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__4" mass="0.0121"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__4"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__5" mass="0.0121"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__5"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__1" mass="0.0457"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__1"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__2" mass="0.0457"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__2"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__3" mass="0.0457"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__3"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__4" mass="0.0457"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__4"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__1" mass="0.0500"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__1"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__2" mass="0.0500"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__2"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__3" mass="0.0500"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__3"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__4" mass="0.0500"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__4"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_x_zhou_chuan_dong_gan__4" mass="0.0612"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_x_zhou_chuan_dong_gan__4"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_x_zhou_chuan_dong_gan__5" mass="0.0612"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_x_zhou_chuan_dong_gan__5"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1_y_zhou_chuan_dong_gan__1" mass="0.2310"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1_y_zhou_chuan_dong_gan__1"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__shang_wei_ji__1" mass="0.0001"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__shang_wei_ji__1"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__shang_wei_ji__2" mass="0.0001"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__shang_wei_ji__2"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__xia_wei_ji_stm32_2" mass="0.0001"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__xia_wei_ji_stm32_2"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__xia_wei_ji_stm32_3" mass="0.0001"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__xia_wei_ji_stm32_3"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__dong_li_zhuang_zhi_wai_ke____zhong_jian__1" mass="0.2570" material="acrylic_hull"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__dong_li_zhuang_zhi_wai_ke____zhong_jian__1" material="acrylic_hull"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__dong_li_zhuang_zhi_wai_ke____di_bu__1" mass="0.3023" material="acrylic_hull"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__dong_li_zhuang_zhi_wai_ke____di_bu__1" material="acrylic_hull"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__ban_yuan_cang_gai__3" mass="0.1454" material="acrylic_hull"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__ban_yuan_cang_gai__3" material="acrylic_hull"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__shuang_mu_she_xiang_tou_ke_dong_zhi_jia__2" mass="0.0095" material="metal_silver"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__shuang_mu_she_xiang_tou_ke_dong_zhi_jia__2" material="metal_silver"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__shuang_mu_xiang_ji___xiao___1" mass="0.2000" material="rubber_black"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__shuang_mu_xiang_ji___xiao___1" material="rubber_black"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__shuang_lian_chi_lun__1" mass="0.1537" material="copper"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__shuang_lian_chi_lun__1" material="copper"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_4" mass="0.1210" material="metal_silver"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_4" material="metal_silver"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_5" mass="0.1210" material="metal_silver"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_5" material="metal_silver"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_6" mass="0.1210" material="metal_silver"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_6" material="metal_silver"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__yuan_zhui_chi_lun_20_1_5_4" mass="0.0532" material="copper"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__yuan_zhui_chi_lun_20_1_5_4" material="copper"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__yuan_zhui_chi_lun_20_1_5_5" mass="0.0532" material="copper"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__yuan_zhui_chi_lun_20_1_5_5" material="copper"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__mi_feng_fa_lan_3_1" mass="0.0811" material="metal_silver"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__mi_feng_fa_lan_3_1" material="metal_silver"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__di_ban__1" mass="0.2018" material="carbon_fiber_matte"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__di_ban__1" material="carbon_fiber_matte"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__tui_jin_qi_zhi_jia__1" mass="0.7490" material="metal_dark"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__tui_jin_qi_zhi_jia__1" material="metal_dark"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__she_xiang_tou_duo_ji__2" mass="0.1000"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__she_xiang_tou_duo_ji__2"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__she_xiang_tou_lian_jie_jian__2" mass="0.0088"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__she_xiang_tou_lian_jie_jian__2"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__ban_zi_lian_jie_jia__1" mass="0.0684"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__ban_zi_lian_jie_jia__1"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__10" mass="0.0622" material="plastic_white"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__10" material="plastic_white"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__7" mass="0.0622" material="plastic_white"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__7" material="plastic_white"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__8" mass="0.0622" material="plastic_white"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__8" material="plastic_white"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__9" mass="0.0622" material="plastic_white"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__9" material="plastic_white"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__dian_kong_cang_1_hao_ban__1" mass="0.0224" material="pcb_green"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__dian_kong_cang_1_hao_ban__1" material="pcb_green"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__dian_kong_cang_2_hao_ban__1" mass="0.0210" material="pcb_green"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__dian_kong_cang_2_hao_ban__1" material="pcb_green"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__dian_kong_cang_3_hao_ban__1" mass="0.0361" material="pcb_green"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__dian_kong_cang_3_hao_ban__1" material="pcb_green"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__dian_kong_cang_wai_ke__2" mass="0.9952" material="acrylic_hull"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__dian_kong_cang_wai_ke__2" material="acrylic_hull"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__1" mass="0.0500" material="metal_bronze"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__1" material="metal_bronze"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__10" mass="0.0500" material="metal_bronze"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__10" material="metal_bronze"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__11" mass="0.0500" material="metal_bronze"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__11" material="metal_bronze"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__12" mass="0.0500" material="metal_bronze"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__12" material="metal_bronze"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__13" mass="0.0500" material="metal_bronze"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__13" material="metal_bronze"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__2" mass="0.0500" material="metal_bronze"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__2" material="metal_bronze"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__3" mass="0.0500" material="metal_bronze"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__3" material="metal_bronze"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__4" mass="0.0500" material="metal_bronze"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__4" material="metal_bronze"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__7" mass="0.0500" material="metal_bronze"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__7" material="metal_bronze"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__8" mass="0.0500" material="metal_bronze"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__8" material="metal_bronze"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__9" mass="0.0500" material="metal_bronze"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__9" material="metal_bronze"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__duo_ji_zhi_jia___qian___1" mass="0.0639"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__duo_ji_zhi_jia___qian___1"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__duo_ji_zhi_jia___hou___1" mass="0.0853"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__duo_ji_zhi_jia___hou___1"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__duo_ji_lian_jie_jian__1" mass="0.2223"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__duo_ji_lian_jie_jian__1"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__duo_ji_lian_jie_jian__3" mass="0.2223"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__duo_ji_lian_jie_jian__3"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_10" mass="0.0326"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_10"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_11" mass="0.0326"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_11"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_12" mass="0.0326"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_12"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_7" mass="0.0326"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_7"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_8" mass="0.0326"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_8"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_9" mass="0.0326"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_9"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__fang_shui_duo_ji__2" mass="0.3600" material="acrylic_hull"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__fang_shui_duo_ji__2" material="acrylic_hull"/>
+      <geom class="collision" type="mesh" mesh="auv___base_1__fang_shui_duo_ji__5" mass="0.3600" material="acrylic_hull"/>
+      <geom class="visual" type="mesh" mesh="auv___base_1__fang_shui_duo_ji__5" material="acrylic_hull"/>
 
-      <body name="body_servo_up" pos="0.07629058 0.00222789 -0.11788090" euler="0 1.570796326795 0" childclass="auv_base">
-        <joint name="joint_servo_up" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
-        <site name="thrust_up_site" pos="0 0 0" type="sphere" size="0.01" rgba="1 0 0 0.5"/>
-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
-        <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1"/>
+      <body name="body_servo_up" pos="0.08 0 0" euler="1.57079632679 3.14159265359 1.57079632679" childclass="auv_base">
+        <joint name="joint_servo_up" type="hinge" axis="0 1 0" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
+        <site name="thrust_up_site" pos="-0.046 0.041 0" type="sphere" size="0.01" rgba="1 0 0 0.5"/>
+        <!-- Thruster geoms with mass from output_up_thruster.xml -->
+        <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi_di_zuo__1" mass="0.0405"/>
+        <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi_di_zuo__1"/>
+        <!-- Propeller body -->
         <body name="body_servo_up_prop" pos="0 0 0" childclass="auv_base">
-          <joint name="joint_prop_up" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____up_1__tui_jin_qi__1" mass="0.01"/>
-          <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____up_1__tui_jin_qi__1"/>
+          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1"/>
+          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2"/>
+          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3"/>
+          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4"/>
+          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1" mass="0.1950"/>
+          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1"/>
+          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1" mass="0.03072"/>
+          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1"/>
         </body>
       </body>
 
-      <body name="body_servo_down" pos="-0.07365844 0.00168283 -0.11788090" euler="0 -1.570796326795 -3.1415926" childclass="auv_base">
-        <joint name="joint_servo_down" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
-        <site name="thrust_down_site" pos="0 0 0" type="sphere" size="0.01" rgba="0 1 0 0.5"/>
-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
-        <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1"/>
+      <body name="body_servo_down" pos="-0.08 0 0" euler="1.57079632679 0 1.57079632679" childclass="auv_base">
+        <joint name="joint_servo_down" type="hinge" axis="0 1 0" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
+        <site name="thrust_down_site" pos="-0.046 0.041 0" type="sphere" size="0.01" rgba="0 1 0 0.5"/>
+        <!-- Thruster geoms with mass from output_down_thruster.xml -->
+        <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi_di_zuo__1" mass="0.0405"/>
+        <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi_di_zuo__1"/>
+        <!-- Propeller body -->
         <body name="body_servo_down_prop" pos="0 0 0" childclass="auv_base">
-          <joint name="joint_prop_down" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____down_1__tui_jin_qi__1" mass="0.01"/>
-          <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____down_1__tui_jin_qi__1"/>
+          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1"/>
+          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2"/>
+          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3"/>
+          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4"/>
+          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1" mass="0.1950"/>
+          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1"/>
+          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1" mass="0.03072"/>
+          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1"/>
         </body>
       </body>
 
-      <body name="body_servo_left" pos="0.00063929 0.07524704 -0.11788090" euler="-1.570796326795 0 1.570796326795" childclass="auv_base">
+      <body name="body_servo_left" pos="0 0.08 0" euler="1.57079632679 3.14159265359 1.57079632679" childclass="auv_base">
         <joint name="joint_servo_left" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
-        <site name="thrust_left_site" pos="0 0 0" type="sphere" size="0.01" rgba="0 0 1 0.5"/>
-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
-        <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1"/>
+        <site name="thrust_left_site" pos="-0.046 0.0 0.041" type="sphere" size="0.01" rgba="0 0 1 0.5"/>
+        <!-- Thruster geoms with mass from output_left_thruster.xml -->
+        <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi_di_zuo__1" mass="0.0405"/>
+        <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi_di_zuo__1"/>
+        <!-- Propeller body -->
         <body name="body_servo_left_prop" pos="0 0 0" childclass="auv_base">
-          <joint name="joint_prop_left" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____left_1__tui_jin_qi__1" mass="0.01"/>
-          <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____left_1__tui_jin_qi__1"/>
+          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1"/>
+          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2"/>
+          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3"/>
+          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4"/>
+          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1" mass="0.1950"/>
+          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1"/>
+          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1" mass="0.03072"/>
+          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1"/>
         </body>
       </body>
 
-      <body name="body_servo_right" pos="0.00327143 -0.07470197 -0.11788090" euler="1.570796326795 0 -1.570796326795" childclass="auv_base">
+      <body name="body_servo_right" pos="0 -0.08 0" euler="-1.57079632679 3.14159265359 -1.57079632679" childclass="auv_base">
         <joint name="joint_servo_right" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
-        <site name="thrust_right_site" pos="0 0 0" type="sphere" size="0.01" rgba="1 1 0 0.5"/>
-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
-        <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1"/>
+        <site name="thrust_right_site" pos="-0.046 0 0.041" type="sphere" size="0.01" rgba="1 1 0 0.5"/>
+        <!-- Thruster geoms with mass from output_right_thruster.xml -->
+        <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi_di_zuo__1" mass="0.0405"/>
+        <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi_di_zuo__1"/>
+        <!-- Propeller body -->
         <body name="body_servo_right_prop" pos="0 0 0" childclass="auv_base">
-          <joint name="joint_prop_right" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____right_1__tui_jin_qi__1" mass="0.01"/>
-          <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____right_1__tui_jin_qi__1"/>
+          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1"/>
+          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2"/>
+          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3"/>
+          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4" mass="0.0001"/>
+          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4"/>
+          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1" mass="0.1950"/>
+          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1"/>
+          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1" mass="0.03072"/>
+          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1"/>
         </body>
       </body>
     </body>
   </worldbody>
 
+  <!-- Equality constraints: preserve the joint rotation logic -->
   <equality>
-    <joint joint1="joint_servo_down" joint2="joint_servo_up" polycoef="0 -1 0 0 0"/>
-    <joint joint1="joint_servo_right" joint2="joint_servo_left" polycoef="0 1 0 0 0"/>
+    <joint joint1="joint_servo_down" joint2="joint_servo_up" polycoef="0 1 0 0 0"/>
+    <joint joint1="joint_servo_right" joint2="joint_servo_left" polycoef="0 -1 0 0 0"/>
   </equality>
 
   <contact>
@@ -221,12 +404,5 @@
     <exclude body1="base" body2="body_servo_up"/>
     <exclude body1="base" body2="body_servo_down"/>
   </contact>
-
-  <!-- <actuator>
-    <motor name="act_thruster_up" site="thrust_up_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
-    <motor name="act_thruster_down" site="thrust_down_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
-    <motor name="act_thruster_left" site="thrust_left_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
-    <motor name="act_thruster_right" site="thrust_right_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
-  </actuator> -->
-
+  
 </mujoco>

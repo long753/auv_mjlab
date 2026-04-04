@@ -261,6 +261,7 @@ def _get_or_create_cache(
             "volumes": torch.tensor([[volume]], dtype=torch.float, device=device).expand(num_envs, 1).clone(),
             "cob_offsets": torch.tensor([list(com_to_cob_offset)], dtype=torch.float, device=device).expand(num_envs, 3).clone(),
             "all_env_ids": torch.arange(num_envs, device=device),
+            "body_masses": None,  # 延迟初始化，需要 asset 信息
         }
     return _hydro_cache[key]
 
@@ -286,22 +287,39 @@ def _sanitize_vel(v: torch.Tensor, max_val: float = 20.0) -> torch.Tensor:
     return v.clamp(-max_val, max_val)
 
 
+def _get_body_masses_from_model(asset_cfg_name: str) -> list[float]:
+    """从 MuJoCo 模型中提取每个 body 的质量（跳过 world body）。
+
+    返回:
+        body 质量列表，顺序与 Entity.body_names / body_ids 一致。
+    """
+    import mujoco as _mj
+    from src.auv_mjlab.assets.robots.auv.auv_constants import get_spec
+
+    spec = get_spec()
+    model = spec.compile()
+    # Entity 的 body 列表是 spec.bodies[1:]（跳过 world）
+    bodies = spec.bodies[1:]
+    return [float(model.body_mass[b.id]) for b in bodies]
+
+
 def apply_hydrodynamic_forces(
     env: "ManagerBasedRlEnv",
     env_ids: torch.Tensor | None,
     water_density: float = 997.0,
     water_viscosity: float = 0.001306,
-    volume: float = 0.023,
-    com_to_cob_offset: tuple[float, float, float] = (0.0, 0.0, 0.3),
     mass: float = 100.0,
     inertia: tuple[float, float, float] = (19.3, 19.3, 1.125),
     asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
     max_force_limit: float = 5000.0,
     max_torque_limit: float = 1000.0,
-    neutral_buoyancy: bool = False,
     debug: bool = False,
 ) -> None:
-    """计算并施加水动力（浮力 + 二次阻力 + 粘性力）到机器人根 body。
+    """计算并施加水动力（浮力 + 二次阻力 + 粘性力）到机器人。
+
+    浮力：对每个 body 分别施加 F_i = [0, 0, m_i * g]（世界系竖直向上），
+    精确抵消该 body 自身的重力，实现整体中性浮力。
+    阻力：仅施加在根 body 上（基于整体质量和惯性计算）。
 
     作为 EventTermCfg(mode="step") 注册，每个仿真步调用一次。
     所有中间张量通过模块级缓存复用，避免每步分配内存。
@@ -311,14 +329,11 @@ def apply_hydrodynamic_forces(
         env_ids: 需要施力的环境索引，None 表示全部
         water_density: 水密度 (kg/m³)
         water_viscosity: 水动力粘度 (Pa·s)
-        volume: AUV 排水体积 (m³)
-        com_to_cob_offset: 质心→浮心偏移 (m)，本体系
-        mass: AUV 质量 (kg)
+        mass: AUV 总质量 (kg)，用于阻力计算
         inertia: 主惯性矩 (I_xx, I_yy, I_zz) (kg·m²)
         asset_cfg: 场景实体配置
         max_force_limit: 力的 clamp 上限 (N)
         max_torque_limit: 扭矩的 clamp 上限 (N·m)
-        neutral_buoyancy: 中性浮力模式，开启后浮力精确抵消重力
         debug: 是否打印调试信息
     """
     num_envs = env.num_envs
@@ -326,9 +341,9 @@ def apply_hydrodynamic_forces(
 
     # 1. 获取/创建缓存
     cache = _get_or_create_cache(
-        num_envs, device, mass, inertia, volume, com_to_cob_offset, debug
+        num_envs, device, mass, inertia, 0.0, (0.0, 0.0, 0.0), debug
     )
-    model = cache["model"]
+    hydro_model = cache["model"]
 
     # 2. 获取机器人实体和状态
     asset = env.scene[asset_cfg.name]
@@ -336,59 +351,76 @@ def apply_hydrodynamic_forces(
     root_linvels_w = _sanitize_vel(asset.data.root_link_lin_vel_w)
     root_angvels_w = _sanitize_vel(asset.data.root_link_ang_vel_w)
 
-    # 3. 计算水动力（本体系）
-    # 中性浮力模式：用 mass/rho 替代实际体积，使 buoyancy = mass*g = gravity
-    if neutral_buoyancy:
-        neutral_vol = cache["masses"] / water_density  # [N,1]  使 rho*V*g = m*g
-        buoyancy_f, buoyancy_t = model.calculate_buoyancy_forces(
-            root_quats_w, water_density, neutral_vol, 9.81, cache["cob_offsets"]
-        )
-    else:
-        buoyancy_f, buoyancy_t = model.calculate_buoyancy_forces(
-            root_quats_w, water_density, cache["volumes"], 9.81, cache["cob_offsets"]
-        )
-    f_d, g_d, f_v, g_v = model.calculate_density_and_viscosity_forces(
+    # 3. 计算水阻力（本体系，基于根 body 速度和整体参数）
+    f_d, g_d, f_v, g_v = hydro_model.calculate_density_and_viscosity_forces(
         root_quats_w, root_linvels_w, root_angvels_w,
         cache["inertias"], water_viscosity, water_density, cache["masses"]
     )
 
-    total_force_b = buoyancy_f + f_d + f_v
-    total_torque_b = buoyancy_t + g_d + g_v
+    # ---- 根 body 阻力处理 ----
+    drag_force_b = f_d + f_v
+    drag_torque_b = g_d + g_v
 
-    # 4. NaN 安全检查（按环境粒度处理，不影响正常环境）
-    nan_mask = torch.isnan(total_force_b).any(dim=-1) | torch.isnan(total_torque_b).any(dim=-1)
+    # NaN 安全检查
+    nan_mask = torch.isnan(drag_force_b).any(dim=-1) | torch.isnan(drag_torque_b).any(dim=-1)
     if nan_mask.any():
         if debug:
             bad_ids = nan_mask.nonzero(as_tuple=False).squeeze(-1)
             print(f"[Hydrodynamics] NaN in envs {bad_ids.tolist()}, zeroing those envs")
-        total_force_b[nan_mask] = 0.0
-        total_torque_b[nan_mask] = 0.0
+        drag_force_b[nan_mask] = 0.0
+        drag_torque_b[nan_mask] = 0.0
 
-    # 5. Clamp 防止数值爆炸
-    total_force_b = total_force_b.clamp(-max_force_limit, max_force_limit)
-    total_torque_b = total_torque_b.clamp(-max_torque_limit, max_torque_limit)
+    # Clamp 防止数值爆炸
+    drag_force_b = drag_force_b.clamp(-max_force_limit, max_force_limit)
+    drag_torque_b = drag_torque_b.clamp(-max_torque_limit, max_torque_limit)
 
-    # 6. 本体系 → 世界系
-    total_force_w = quat_apply(root_quats_w, total_force_b)
-    total_torque_w = quat_apply(root_quats_w, total_torque_b)
+    # 本体系 → 世界系
+    drag_force_w = quat_apply(root_quats_w, drag_force_b)
+    drag_torque_w = quat_apply(root_quats_w, drag_torque_b)
 
-    # 7. 施加到根 body（索引 0）
+    # ---- 浮力：给每个 body 施加与其自身重力等大反向的力 ----
+    # 延迟初始化每个 body 的质量缓存
+    if cache["body_masses"] is None:
+        body_mass_list = _get_body_masses_from_model(asset_cfg.name)
+        cache["body_masses"] = torch.tensor(body_mass_list, dtype=torch.float, device=device)
+        cache["num_bodies"] = len(body_mass_list)
+        cache["all_body_ids"] = list(range(len(body_mass_list)))
+        if debug:
+            print(f"[Hydro] 初始化各 body 质量: {body_mass_list}")
+            print(f"[Hydro] 总质量: {sum(body_mass_list):.4f} kg, body 数量: {len(body_mass_list)}")
+
+    num_bodies = cache["num_bodies"]
+    body_masses = cache["body_masses"]  # [num_bodies]
+
+    g_mag = 9.81
+    # 构造每个 body 的浮力：世界系中 [0, 0, m_i * g]
+    # 形状: [num_envs, num_bodies, 3]
+    buoyancy_forces_w = torch.zeros((num_envs, num_bodies, 3), device=device, dtype=torch.float)
+    buoyancy_forces_w[:, :, 2] = body_masses.unsqueeze(0) * g_mag  # 广播到所有环境
+    buoyancy_torques_w = torch.zeros((num_envs, num_bodies, 3), device=device, dtype=torch.float)
+
+    # ---- 合并：根 body 的力 = 阻力 + 浮力，其他 body 只有浮力 ----
+    # 将阻力加到根 body（索引 0）的浮力上
+    buoyancy_forces_w[:, 0, :] += drag_force_w
+    buoyancy_torques_w[:, 0, :] += drag_torque_w
+
+    # 施加到所有 body
     if env_ids is None:
         env_ids = cache["all_env_ids"]
 
     asset.write_external_wrench_to_sim(
-        forces=total_force_w.unsqueeze(1),    # [N, 1, 3]
-        torques=total_torque_w.unsqueeze(1),  # [N, 1, 3]
+        forces=buoyancy_forces_w,     # [N, num_bodies, 3]
+        torques=buoyancy_torques_w,   # [N, num_bodies, 3]
         env_ids=env_ids,
-        body_ids=[0],
+        body_ids=cache["all_body_ids"],
     )
 
-    # 8. 调试输出
+    # 调试输出
     if debug:
-        mean_f = total_force_b.mean(dim=0)
-        mean_t = total_torque_b.mean(dim=0)
-        print(f"[Hydro] 本体系均值 — 力: [{mean_f[0]:.2f}, {mean_f[1]:.2f}, {mean_f[2]:.2f}] N, "
-              f"扭矩: [{mean_t[0]:.2f}, {mean_t[1]:.2f}, {mean_t[2]:.2f}] N·m")
+        total_buoyancy = (body_masses * g_mag).sum().item()
+        mean_drag = drag_force_b.mean(dim=0)
+        print(f"[Hydro] 各body浮力总和: {total_buoyancy:.4f} N (应等于总重力), "
+              f"根body阻力(本体系): [{mean_drag[0]:.6f}, {mean_drag[1]:.6f}, {mean_drag[2]:.6f}] N")
 
 
 if __name__ == "__main__":

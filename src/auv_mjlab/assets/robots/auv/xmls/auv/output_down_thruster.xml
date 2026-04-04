@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mujoco>
+<compiler meshdir="assets"/>
+  <asset>
+    <mesh file="auv___down_thruster_1__tui_jin_qi_di_zuo__1.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl"/>
+    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl"/>
+  </asset>
+
+  <default>
+  <default class="down_thruster_default">
+  <geom contype="0" conaffinity="0"/>
+  </default>
+  </default>
+
+  <worldbody>
+  <body name="down_thruster_body" pos="0 0 0">
+    <geom type="mesh" mesh="auv___down_thruster_1__tui_jin_qi_di_zuo__1" mass="0.0405" class="down_thruster_default"/>
+    <geom type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1" mass="0.0001" class="down_thruster_default"/>
+    <geom type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2" mass="0.0001" class="down_thruster_default"/>
+    <geom type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3" mass="0.0001" class="down_thruster_default"/>
+    <geom type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4" mass="0.0001" class="down_thruster_default"/>
+    <geom type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1" mass="0.1950" class="down_thruster_default"/>
+    <geom type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1" mass="0.7490" class="down_thruster_default"/>
+  </body>
+  </worldbody>
+</mujoco>

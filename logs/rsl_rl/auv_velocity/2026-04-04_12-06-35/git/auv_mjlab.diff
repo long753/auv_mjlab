@@ -1,0 +1,1440 @@
+--- git commit ---
+8bdfc49f66d537f77842097b5e5ae729fc505cc5
+
+
+--- git status ---
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   MUJOCO_LOG.TXT
+	modified:   src/auv_mjlab/assets/robots/auv/auv_constants.py
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__2.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__3.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__4.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jian_xiu_gai__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____down_1__tui_jin_qi__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____left_1__tui_jin_qi__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____right_1__tui_jin_qi__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____up_1__tui_jin_qi__1.stl
+	deleted:    src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1.stl
+	modified:   src/auv_mjlab/assets/robots/auv/xmls/auv.xml
+	modified:   src/auv_mjlab/tasks/velocity/config/auv/env_cfgs.py
+	modified:   src/auv_mjlab/tasks/velocity/mdp/hydrodynamics.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	logs/rsl_rl/auv_velocity/2026-04-02_20-19-28/
+	logs/rsl_rl/auv_velocity/2026-04-04_03-02-18/
+	logs/rsl_rl/auv_velocity/2026-04-04_03-04-06/
+	logs/rsl_rl/auv_velocity/2026-04-04_03-05-18/
+	logs/rsl_rl/auv_velocity/2026-04-04_03-08-30/
+	logs/rsl_rl/auv_velocity/2026-04-04_11-55-43/
+	logs/rsl_rl/auv_velocity/2026-04-04_12-02-02/
+	logs/rsl_rl/auv_velocity/2026-04-04_12-06-35/
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_160_tong_yong_fa_lan__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_22000mah_dian_chi__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__ban_yuan_cang_gai__3.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__ban_zi_lian_jie_jia__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__chuan_cang_luo_si__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__chuan_cang_luo_si__10.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__chuan_cang_luo_si__11.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__chuan_cang_luo_si__12.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__chuan_cang_luo_si__13.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__chuan_cang_luo_si__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__chuan_cang_luo_si__3.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__chuan_cang_luo_si__4.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__chuan_cang_luo_si__7.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__chuan_cang_luo_si__8.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__chuan_cang_luo_si__9.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__di_ban__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__dian_kong_cang_1_hao_ban__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__dian_kong_cang_2_hao_ban__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__dian_kong_cang_3_hao_ban__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__dian_kong_cang_wai_ke__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__dong_li_zhuang_zhi_wai_ke____di_bu__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__dong_li_zhuang_zhi_wai_ke____zhong_jian__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__du_li_mo_kuai_gai_zi__10.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__du_li_mo_kuai_gai_zi__7.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__du_li_mo_kuai_gai_zi__8.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__du_li_mo_kuai_gai_zi__9.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__duo_ji_lian_jie_jian__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__duo_ji_lian_jie_jian__3.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__duo_ji_zhi_jia___hou___1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__duo_ji_zhi_jia___qian___1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__fang_shui_duo_ji__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__fang_shui_duo_ji__5.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__mi_feng_fa_lan_3_1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__shang_wei_ji__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__shang_wei_ji__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__she_xiang_tou_duo_ji__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__she_xiang_tou_lian_jie_jian__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__shuang_lian_chi_lun__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__shuang_mu_she_xiang_tou_ke_dong_zhi_jia__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__shuang_mu_xiang_ji___xiao___1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__tui_jin_qi_zhi_jia__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__xia_wei_ji_stm32_2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__xia_wei_ji_stm32_3.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__yuan_zhu_chi_lun_45_1_4.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__yuan_zhu_chi_lun_45_1_5.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__yuan_zhu_chi_lun_45_1_6.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__yuan_zhui_chi_lun_20_1_5_4.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__yuan_zhui_chi_lun_20_1_5_5.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__zhou_cheng_6001_10.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__zhou_cheng_6001_11.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__zhou_cheng_6001_12.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__zhou_cheng_6001_7.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__zhou_cheng_6001_8.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1__zhou_cheng_6001_9.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m2_5_170_luo_mu_zhu__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m2_5_170_luo_mu_zhu__3.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m2_5_170_luo_mu_zhu__4.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m2_5_170_luo_mu_zhu__5.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m8_50_luo_mu_zhu__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m8_50_luo_mu_zhu__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m8_50_luo_mu_zhu__3.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m8_50_luo_mu_zhu__4.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m8_du_tou_luo_shuan__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m8_du_tou_luo_shuan__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m8_du_tou_luo_shuan__3.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_m8_du_tou_luo_shuan__4.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_x_zhou_chuan_dong_gan__4.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_x_zhou_chuan_dong_gan__5.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___base_1_y_zhou_chuan_dong_gan__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___down_thruster_1__tui_jin_qi_di_zuo__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___left_thruster_1__tui_jin_qi_di_zuo__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___right_thruster_1__tui_jin_qi_di_zuo__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl
+	src/auv_mjlab/assets/robots/auv/xmls/assets/auv___up_thruster_1__tui_jin_qi_di_zuo__1.stl
+	src/auv_mjlab/assets/robots/auv/xmls/auv/
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/MUJOCO_LOG.TXT b/MUJOCO_LOG.TXT
+index 7992d82..569d28c 100644
+--- a/MUJOCO_LOG.TXT
++++ b/MUJOCO_LOG.TXT
+@@ -16,3 +16,12 @@ ERROR: could not initialize GLFW
+ Thu Apr  2 19:05:19 2026
+ ERROR: could not initialize GLFW
+ 
++Fri Apr  3 23:17:09 2026
++ERROR: could not initialize GLFW
++
++Fri Apr  3 23:47:50 2026
++ERROR: could not initialize GLFW
++
++Sat Apr  4 01:30:21 2026
++ERROR: could not initialize GLFW
++
+diff --git a/src/auv_mjlab/assets/robots/auv/auv_constants.py b/src/auv_mjlab/assets/robots/auv/auv_constants.py
+index 3b6db1c..a3bdcda 100644
+--- a/src/auv_mjlab/assets/robots/auv/auv_constants.py
++++ b/src/auv_mjlab/assets/robots/auv/auv_constants.py
+@@ -1,8 +1,12 @@
+-"""AUV constants (mjlab style)."""
++"""AUV CONSTANTS"""
++
+ import sys
++import math
+ from pathlib import Path
+-import numpy as np
+ import mujoco
++
++AUV_MAX_SERVO_ANGLE = math.pi / 2
++
+ current_dir = Path(__file__).parent
+ project_root = Path(__file__).resolve().parents[5]
+ 
+@@ -15,10 +19,15 @@ from mjlab.entity import EntityArticulationInfoCfg, EntityCfg
+ from mjlab.utils.os import update_assets
+ from mjlab.actuator.actuator import TransmissionType
+ 
+-# 1. 路径与资产配置
++
++# ==========================
++# 1. 导入模型文件
++# ==========================
++
+ AUV_XML: Path = SRC_PATH / "assets" / "robots" / "auv" / "xmls" / "auv.xml"
+ assert AUV_XML.exists(), f"未找到模型文件: {AUV_XML}"
+ 
++
+ def get_assets(meshdir: str) -> dict[str, bytes]:
+     assets: dict[str, bytes] = {}
+     update_assets(assets, AUV_XML.parent / "assets", meshdir)
+@@ -30,20 +39,24 @@ def get_spec() -> mujoco.MjSpec:
+     spec.assets = get_assets(spec.meshdir)
+     return spec
+ 
+-# 2. 执行器配置 (Actuator config)
++
++# ==========================
++# 2. 执行器配置
++# ==========================
++
+ # --- 舵机配置 (位置控制) ---
+ AUV_ACTUATOR_SERVOS = BuiltinPositionActuatorCfg(
+     target_names_expr=(
+-        "joint_servo_up",
+-        "joint_servo_left",
++        "joint_servo_up",    # 上下舵机转角
++        "joint_servo_left",  # 左右舵机转角
+     ),
+     stiffness=20.0,
+     damping=4.0,
+-    effort_limit=10.0,    
++    effort_limit=10.0,
+     armature=0.03,
+ )
+ 
+-# --- 推进器配置 (电机/推力控制) ---
++# --- 推进器配置 (推力控制) ---
+ AUV_ACTUATOR_THRUSTERS = BuiltinMotorActuatorCfg(
+     target_names_expr=(
+         "thrust_up_site",
+@@ -51,29 +64,30 @@ AUV_ACTUATOR_THRUSTERS = BuiltinMotorActuatorCfg(
+         "thrust_left_site",
+         "thrust_right_site",
+     ),
+-    transmission_type=TransmissionType.SITE,  
+-    effort_limit=50.0,
+-    gear=1.0,   
++    transmission_type=TransmissionType.SITE,
++    effort_limit=40.0,
++    gear=1.0,
+ )
+ 
++
++# ==========================
+ # 3. 初始状态
++# ==========================
++
+ INIT_STATE = EntityCfg.InitialStateCfg(
+-    pos=(0.0, 0.0, 0.5),
++    pos=(0.0, 0.0, 1.0),
+     joint_pos={
+         "joint_servo_up": 0.0,
+         "joint_servo_left": 0.0,
+-        # 推进器叶片关节被 range="0 0" 锁定，不需要初始化位姿
+     },
+     joint_vel={".*": 0.0},
+ )
+ 
+-# Hydrodynamic parameters
+-AUV_VOLUME = 0.106  # m³
+-AUV_MASS = 100.0  # kg
+-AUV_INERTIA = np.array([19.3, 19.3, 1.125])  # [I_xx, I_yy, I_zz]
+-AUV_COM_TO_COB_OFFSET = np.array([0.0, 0.0, 0.05])  # m, 质心到浮心的偏移
+ 
+-# 4. 关节与执行器聚合
++# ==========================
++# 4. 实体组装
++# ==========================
++
+ AUV_ARTICULATION = EntityArticulationInfoCfg(
+     actuators=(
+         AUV_ACTUATOR_SERVOS,
+@@ -82,86 +96,86 @@ AUV_ARTICULATION = EntityArticulationInfoCfg(
+     soft_joint_pos_limit_factor=1.0,
+ )
+ 
++
+ def get_auv_robot_cfg() -> EntityCfg:
++    """返回供 RL 环境调用的 AUV 实体配置。"""
+     return EntityCfg(
+         init_state=INIT_STATE,
+-        collisions=(), # AUV 外壳碰撞未精细定义前先置空
++        collisions=(),  # AUV 外壳碰撞未精细定义前先置空
+         spec_fn=get_spec,
+         articulation=AUV_ARTICULATION,
+     )
+ 
++
++# ==========================
++# 5. 从模型中提取物理参数
++# ==========================
++
++def get_auv_physical_params() -> dict:
++    """从MuJoCo模型中提取AUV的物理参数。
++
++    返回:
++        dict: 包含以下键值:
++            - mass: float, 总质量 (kg)
++            - volume: float, 排水体积 (m³)
++            - inertia: tuple[float, float, float], 主转动惯量 (I_xx, I_yy, I_zz)
++            - com_to_cob_offset: tuple[float, float, float], 质心到浮心偏移 (m)
++    """
++    spec = get_spec()
++    model = spec.compile()
++    data = mujoco.MjData(model)
++    mujoco.mj_step(model, data)
++
++    # base body id
++    base_body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, "base")
++
++    # 总质量
++    total_mass = float(model.body_subtreemass[base_body_id])
++
++    # 转动惯量: 仅使用 base body 自身的惯性 (model.body_inertia)
++    base_inertia = model.body_inertia[base_body_id]
++    I_xx, I_yy, I_zz = float(base_inertia[0]), float(base_inertia[1]), float(base_inertia[2])
++
++    # 排水体积 ,先占位，目前不考虑不重合
++    water_density = model.opt.density if model.opt.density > 0 else 1000.0
++    volume = total_mass / water_density
++
++    # 质心到浮心偏移 (暂时不考虑，假设重心和浮心重合)
++    com_to_cob_offset = (0.0, 0.0, 0.0)
++
++    return {
++        "mass": total_mass,
++        "volume": volume,
++        "inertia": (I_xx, I_yy, I_zz),
++        "com_to_cob_offset": com_to_cob_offset,
++    }
++
++
+ if __name__ == "__main__":
+     import time
+     import mujoco.viewer as viewer
+     from mjlab.entity.entity import Entity
+-    import torch
+-    from src.auv_mjlab.tasks.velocity.mdp.hydrodynamics import HydrodynamicForceModels
+-    from mjlab.utils.lab_api.math import quat_apply, quat_apply_inverse
+-    
++
++    # 打印从模型提取的物理参数
++    params = get_auv_physical_params()
++    print("=" * 50)
++    print("AUV 物理参数 (从MuJoCo模型提取)")
++    print("=" * 50)
++    print(f"  总质量:        {params['mass']:.4f} kg")
++    print(f"  转动惯量 Ixx:  {params['inertia'][0]:.6f} kg·m²")
++    print(f"  转动惯量 Iyy:  {params['inertia'][1]:.6f} kg·m²")
++    print(f"  转动惯量 Izz:  {params['inertia'][2]:.6f} kg·m²")
++    print("=" * 50)
++
+     # 创建机器人实体
+     robot = Entity(get_auv_robot_cfg())
+     model = robot.spec.compile()
+     data = mujoco.MjData(model)
+-    
+-    # 水动力参数
+-    water_density = 1000.0  # kg/m³
+-    water_viscosity = 0.0009  # Pa·s
+-    g_mag = 9.81  # 重力加速度
+-    
+-    device = torch.device('cpu')
+-    force_model = HydrodynamicForceModels(num_envs=1, device=device, debug=True)
+-    
+-    volume_tensor = torch.tensor([[AUV_VOLUME]], dtype=torch.float32, device=device)
+-    mass_tensor = torch.tensor([[AUV_MASS]], dtype=torch.float32, device=device)
+-    inertia_tensor = torch.tensor([AUV_INERTIA], dtype=torch.float32, device=device)
+-    com_to_cob_offset_tensor = torch.tensor([AUV_COM_TO_COB_OFFSET], dtype=torch.float32, device=device)
+-    
++
+     root_body_id = 0
+-    
++
+     with viewer.launch_passive(model, data) as v:
+-        step_count = 0
+         while v.is_running():
+-            # MuJoCo 四元数格式为 (w, x, y, z)，与 mjlab 一致，无需重排
+-            mujoco_quat = data.xquat[root_body_id].copy()  
+-            quat_w = torch.tensor([mujoco_quat], dtype=torch.float32, device=device)
+-            
+-            linvel_w = torch.tensor([data.cvel[root_body_id][3:6]], dtype=torch.float32, device=device)
+-            angvel_w = torch.tensor([data.cvel[root_body_id][0:3]], dtype=torch.float32, device=device)
+-            
+-            buoyancy_force, buoyancy_torque = force_model.calculate_buoyancy_forces(
+-                quat_w, water_density, volume_tensor, g_mag, com_to_cob_offset_tensor
+-            )
+-            
+-            f_d, g_d, f_v, g_v = force_model.calculate_density_and_viscosity_forces(
+-                quat_w, linvel_w, angvel_w,
+-                inertia_tensor, water_viscosity, water_density, mass_tensor
+-            )
+-            
+-            total_force_b = buoyancy_force + f_d + f_v
+-            total_torque_b = buoyancy_torque + g_d + g_v
+-            
+-            # 将力和扭矩从刚体坐标系转换到世界坐标系 (body → world)
+-            # xfrc_applied 需要世界坐标系的力和扭矩
+-            total_force_w = quat_apply(quat_w, total_force_b)
+-            total_torque_w = quat_apply(quat_w, total_torque_b)
+-            # 注意：不再手动添加重力，MuJoCo 已自动施加重力
+-            
+-            total_force_np = total_force_w[0].cpu().numpy()
+-            total_torque_np = total_torque_w[0].cpu().numpy()
+-            
+-            data.xfrc_applied[root_body_id][:3] = total_force_np
+-            data.xfrc_applied[root_body_id][3:6] = total_torque_np
+-            
+-            if step_count % 100 == 0:
+-                print(f"Step {step_count}:")
+-                print(f"  姿态四元数: {mujoco_quat}")
+-                print(f"  线速度: {linvel_w[0].cpu().numpy()}")
+-                print(f"  角速度: {angvel_w[0].cpu().numpy()}")
+-                print(f"  总力 (世界系): {total_force_np}")
+-                print(f"  总扭矩 (世界系): {total_torque_np}")
+-                print(f"  位置 z: {data.xpos[root_body_id][2]:.3f}\n")
+-            
+             mujoco.mj_step(model, data)
+             v.sync()
+             time.sleep(model.opt.timestep)
+-            step_count += 1
+\ No newline at end of file
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3.stl
+deleted file mode 100644
+index e20399a..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1.stl
+deleted file mode 100644
+index 305cede..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1.stl
+deleted file mode 100644
+index 7396668..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2.stl
+deleted file mode 100644
+index 012d698..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1.stl
+deleted file mode 100644
+index ba7776e..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2.stl
+deleted file mode 100644
+index 5f2d673..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1.stl
+deleted file mode 100644
+index 2a10e26..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2.stl
+deleted file mode 100644
+index 3d1ad0a..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10.stl
+deleted file mode 100644
+index 200da20..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__1.stl
+deleted file mode 100644
+index 36a8e07..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__2.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__2.stl
+deleted file mode 100644
+index 52c30b6..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__2.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__3.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__3.stl
+deleted file mode 100644
+index cbdf229..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__3.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__4.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__4.stl
+deleted file mode 100644
+index 749eb89..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__gu_ding_huan__4.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2.stl
+deleted file mode 100644
+index 7f73ee0..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1.stl
+deleted file mode 100644
+index 9569e61..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jian_xiu_gai__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jian_xiu_gai__1.stl
+deleted file mode 100644
+index fc3f8ae..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__jian_xiu_gai__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1.stl
+deleted file mode 100644
+index 125e5d8..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2.stl
+deleted file mode 100644
+index 1c78860..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1.stl
+deleted file mode 100644
+index d7d14c4..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1.stl
+deleted file mode 100644
+index 7314636..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4.stl
+deleted file mode 100644
+index 3f813b4..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5.stl
+deleted file mode 100644
+index 829ceda..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6.stl
+deleted file mode 100644
+index a966967..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7.stl
+deleted file mode 100644
+index 2183081..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1.stl
+deleted file mode 100644
+index e1e7608..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2.stl
+deleted file mode 100644
+index 7a5bfb6..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3.stl
+deleted file mode 100644
+index c4823d7..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4.stl
+deleted file mode 100644
+index ef54655..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1.stl
+deleted file mode 100644
+index 766b15d..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2.stl
+deleted file mode 100644
+index 741ad29..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1.stl
+deleted file mode 100644
+index f90c307..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2.stl
+deleted file mode 100644
+index 1f4dde4..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1.stl
+deleted file mode 100644
+index 26f7c56..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____down_1__tui_jin_qi__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____down_1__tui_jin_qi__1.stl
+deleted file mode 100644
+index 3da8567..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____down_1__tui_jin_qi__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1.stl
+deleted file mode 100644
+index ac4832e..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____left_1__tui_jin_qi__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____left_1__tui_jin_qi__1.stl
+deleted file mode 100644
+index fb0d3af..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____left_1__tui_jin_qi__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1.stl
+deleted file mode 100644
+index 4057e6d..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____right_1__tui_jin_qi__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____right_1__tui_jin_qi__1.stl
+deleted file mode 100644
+index 06f6dcc..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____right_1__tui_jin_qi__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1.stl
+deleted file mode 100644
+index e226c74..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____up_1__tui_jin_qi__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____up_1__tui_jin_qi__1.stl
+deleted file mode 100644
+index 9f88509..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____up_1__tui_jin_qi__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1.stl b/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1.stl
+deleted file mode 100644
+index fd32ac2..0000000
+Binary files a/src/auv_mjlab/assets/robots/auv/xmls/assets/ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1.stl and /dev/null differ
+diff --git a/src/auv_mjlab/assets/robots/auv/xmls/auv.xml b/src/auv_mjlab/assets/robots/auv/xmls/auv.xml
+index 0a73fa1..4800397 100644
+--- a/src/auv_mjlab/assets/robots/auv/xmls/auv.xml
++++ b/src/auv_mjlab/assets/robots/auv/xmls/auv.xml
+@@ -33,47 +33,104 @@
+   </default>
+ 
+   <asset>
+-    <mesh file="ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__gu_ding_huan__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__gu_ding_huan__2.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__gu_ding_huan__3.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__gu_ding_huan__4.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__jian_xiu_gai__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____up_1__tui_jin_qi__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____down_1__tui_jin_qi__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____left_1__tui_jin_qi__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1.stl"/>
+-    <mesh file="ji_chu_zhuang_pei____right_1__tui_jin_qi__1.stl"/>
++    <mesh file="auv___base_1_160_tong_yong_fa_lan__1.stl"/>
++    <mesh file="auv___base_1_22000mah_dian_chi__1.stl"/>
++    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__2.stl"/>
++    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__3.stl"/>
++    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__4.stl"/>
++    <mesh file="auv___base_1_m2_5_170_luo_mu_zhu__5.stl"/>
++    <mesh file="auv___base_1_m8_50_luo_mu_zhu__1.stl"/>
++    <mesh file="auv___base_1_m8_50_luo_mu_zhu__2.stl"/>
++    <mesh file="auv___base_1_m8_50_luo_mu_zhu__3.stl"/>
++    <mesh file="auv___base_1_m8_50_luo_mu_zhu__4.stl"/>
++    <mesh file="auv___base_1_m8_du_tou_luo_shuan__1.stl"/>
++    <mesh file="auv___base_1_m8_du_tou_luo_shuan__2.stl"/>
++    <mesh file="auv___base_1_m8_du_tou_luo_shuan__3.stl"/>
++    <mesh file="auv___base_1_m8_du_tou_luo_shuan__4.stl"/>
++    <mesh file="auv___base_1_x_zhou_chuan_dong_gan__4.stl"/>
++    <mesh file="auv___base_1_x_zhou_chuan_dong_gan__5.stl"/>
++    <mesh file="auv___base_1_y_zhou_chuan_dong_gan__1.stl"/>
++    <mesh file="auv___base_1__shang_wei_ji__1.stl"/>
++    <mesh file="auv___base_1__shang_wei_ji__2.stl"/>
++    <mesh file="auv___base_1__xia_wei_ji_stm32_2.stl"/>
++    <mesh file="auv___base_1__xia_wei_ji_stm32_3.stl"/>
++    <mesh file="auv___base_1__dong_li_zhuang_zhi_wai_ke____zhong_jian__1.stl"/>
++    <mesh file="auv___base_1__dong_li_zhuang_zhi_wai_ke____di_bu__1.stl"/>
++    <mesh file="auv___base_1__ban_yuan_cang_gai__3.stl"/>
++    <mesh file="auv___base_1__shuang_mu_she_xiang_tou_ke_dong_zhi_jia__2.stl"/>
++    <mesh file="auv___base_1__shuang_mu_xiang_ji___xiao___1.stl"/>
++    <mesh file="auv___base_1__shuang_lian_chi_lun__1.stl"/>
++    <mesh file="auv___base_1__yuan_zhu_chi_lun_45_1_4.stl"/>
++    <mesh file="auv___base_1__yuan_zhu_chi_lun_45_1_5.stl"/>
++    <mesh file="auv___base_1__yuan_zhu_chi_lun_45_1_6.stl"/>
++    <mesh file="auv___base_1__yuan_zhui_chi_lun_20_1_5_4.stl"/>
++    <mesh file="auv___base_1__yuan_zhui_chi_lun_20_1_5_5.stl"/>
++    <mesh file="auv___base_1__mi_feng_fa_lan_3_1.stl"/>
++    <mesh file="auv___base_1__di_ban__1.stl"/>
++    <mesh file="auv___base_1__tui_jin_qi_zhi_jia__1.stl"/>
++    <mesh file="auv___base_1__she_xiang_tou_duo_ji__2.stl"/>
++    <mesh file="auv___base_1__she_xiang_tou_lian_jie_jian__2.stl"/>
++    <mesh file="auv___base_1__ban_zi_lian_jie_jia__1.stl"/>
++    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__10.stl"/>
++    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__7.stl"/>
++    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__8.stl"/>
++    <mesh file="auv___base_1__du_li_mo_kuai_gai_zi__9.stl"/>
++    <mesh file="auv___base_1__dian_kong_cang_1_hao_ban__1.stl"/>
++    <mesh file="auv___base_1__dian_kong_cang_2_hao_ban__1.stl"/>
++    <mesh file="auv___base_1__dian_kong_cang_3_hao_ban__1.stl"/>
++    <mesh file="auv___base_1__dian_kong_cang_wai_ke__2.stl"/>
++    <mesh file="auv___base_1__chuan_cang_luo_si__1.stl"/>
++    <mesh file="auv___base_1__chuan_cang_luo_si__10.stl"/>
++    <mesh file="auv___base_1__chuan_cang_luo_si__11.stl"/>
++    <mesh file="auv___base_1__chuan_cang_luo_si__12.stl"/>
++    <mesh file="auv___base_1__chuan_cang_luo_si__13.stl"/>
++    <mesh file="auv___base_1__chuan_cang_luo_si__2.stl"/>
++    <mesh file="auv___base_1__chuan_cang_luo_si__3.stl"/>
++    <mesh file="auv___base_1__chuan_cang_luo_si__4.stl"/>
++    <mesh file="auv___base_1__chuan_cang_luo_si__7.stl"/>
++    <mesh file="auv___base_1__chuan_cang_luo_si__8.stl"/>
++    <mesh file="auv___base_1__chuan_cang_luo_si__9.stl"/>
++    <mesh file="auv___base_1__duo_ji_zhi_jia___qian___1.stl"/>
++    <mesh file="auv___base_1__duo_ji_zhi_jia___hou___1.stl"/>
++    <mesh file="auv___base_1__duo_ji_lian_jie_jian__1.stl"/>
++    <mesh file="auv___base_1__duo_ji_lian_jie_jian__3.stl"/>
++    <mesh file="auv___base_1__zhou_cheng_6001_10.stl"/>
++    <mesh file="auv___base_1__zhou_cheng_6001_11.stl"/>
++    <mesh file="auv___base_1__zhou_cheng_6001_12.stl"/>
++    <mesh file="auv___base_1__zhou_cheng_6001_7.stl"/>
++    <mesh file="auv___base_1__zhou_cheng_6001_8.stl"/>
++    <mesh file="auv___base_1__zhou_cheng_6001_9.stl"/>
++    <mesh file="auv___base_1__fang_shui_duo_ji__2.stl"/>
++    <mesh file="auv___base_1__fang_shui_duo_ji__5.stl"/>
++    <mesh file="auv___up_thruster_1__tui_jin_qi_di_zuo__1.stl"/>
++    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl"/>
++    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl"/>
++    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl"/>
++    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl"/>
++    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl"/>
++    <mesh file="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl"/>
++    <mesh file="auv___down_thruster_1__tui_jin_qi_di_zuo__1.stl"/>
++    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl"/>
++    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl"/>
++    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl"/>
++    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl"/>
++    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl"/>
++    <mesh file="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl"/>
++    <mesh file="auv___left_thruster_1__tui_jin_qi_di_zuo__1.stl"/>
++    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl"/>
++    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl"/>
++    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl"/>
++    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl"/>
++    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl"/>
++    <mesh file="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl"/>
++    <mesh file="auv___right_thruster_1__tui_jin_qi_di_zuo__1.stl"/>
++    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1.stl"/>
++    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2.stl"/>
++    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3.stl"/>
++    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4.stl"/>
++    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1.stl"/>
++    <mesh file="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1.stl"/>
++
+     
+     <texture name="sky" type="skybox" file="assets/desert.png" gridsize="3 4" gridlayout=".U..LFRB.D.."/>
+     <texture name="ground" type="2d" builtin="checker" rgb1="0.1 0.1 0.1" rgb2="0.9 0.9 0.9" width="256" height="256" mark="cross" markrgb="0.8 0.8 0.8"/>
+@@ -83,6 +140,14 @@
+     <material name="carbon_fiber" texture="carbon_texture" texuniform="true" texrepeat="8 4" rgba="0.1 0.1 0.1 1" specular="0.9" shininess="0.8" reflectance="0.4"/>
+     <material name="carbon_fiber_glossy" texture="carbon_texture" texuniform="true" texrepeat="16 8" rgba="0.12 0.12 0.12 1" specular="1.0" shininess="0.9" reflectance="0.6"/>
+     <material name="carbon_fiber_matte" texture="carbon_texture" texuniform="true" texrepeat="12 6" rgba="0.15 0.15 0.15 1" specular="0.4" shininess="0.5" reflectance="0.1"/>
++    <material name="metal_silver" rgba="0.7 0.72 0.75 1" specular="0.7" shininess="0.6"/>
++    <material name="metal_dark" rgba="0.35 0.35 0.38 1" specular="0.5" shininess="0.4"/>
++    <material name="plastic_white" rgba="0.7 0.7 0.75 1" specular="0.4" shininess="0.3"/>
++    <material name="plastic_grey" rgba="0.55 0.55 0.58 1" specular="0.4" shininess="0.3"/>
++    <material name="metal_bronze" rgba="0.65 0.5 0.35 1" specular="0.6" shininess="0.5"/>
++    <material name="rubber_black" rgba="0.12 0.12 0.14 1" specular="0.2" shininess="0.15"/>
++    <material name="pcb_green" rgba="0.15 0.45 0.25 1" specular="0.5" shininess="0.4"/>
++    <material name="copper" rgba="0.72 0.45 0.2 1" specular="0.7" shininess="0.6"/>
+   </asset>
+ 
+   <worldbody>
+@@ -93,126 +158,244 @@
+     <body name="base" pos="0 0 1" childclass="auv_base">
+       <freejoint name="base"/>
+ 
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3" mass="0.0158"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1_2_hao_duo_ji_zhi_jia__3"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1" mass="0.094174"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1_y_zhou_chuan_dong_gan__1"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2" mass="1" material="acrylic_hull"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____shang_gai__2" material="acrylic_hull"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1" mass="0.118807" material="carbon_fiber_matte"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__dong_li_zhuang_zhi_wai_ke____di_ban__1" material="carbon_fiber_matte"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1" mass="0.18051" material="acrylic_hull"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__ban_yuan_cang_gai__1" material="acrylic_hull"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__1" mass="0.0682515" material="carbon_fiber"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__1" material="carbon_fiber"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__2" mass="0.0682515" material="carbon_fiber"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__2" material="carbon_fiber"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__3" mass="0.0682515" material="carbon_fiber"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__3" material="carbon_fiber"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__4" mass="0.0682515" material="carbon_fiber"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__gu_ding_huan__4" material="carbon_fiber"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1" mass="0.6" material="acrylic_hull"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_tong_xiang_ti__1" material="acrylic_hull"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1" mass="0.053667608"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_1"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4" mass="0.053667608"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_4"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5" mass="0.053667608"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_5"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6" mass="0.053667608"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_6"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7" mass="0.053667608"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__yuan_zhui_chi_lun_20_1_5_7"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2" mass="0.135"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou__2"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1" mass="0.00155358"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jia_zhao_chuan_dong_zhou_lian_jie_jian__1"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1" mass="0.120"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__1"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2" mass="0.120"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__xuan_bi_liang_zhi_cheng__2"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jian_xiu_gai__1" mass="0.02507244" rgba="0.65 0.65 0.68 1"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__jian_xiu_gai__1" rgba="0.65 0.65 0.68 1"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1" mass="0.03"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__1"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2" mass="0.03"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__duo_ji___zhou_lian_jie_jian__2"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1" mass="0.032"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_1"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2" mass="0.032"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_2"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3" mass="0.032"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_3"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4" mass="0.032"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6200_4"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1" mass="0.032"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_1"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2" mass="0.032"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_6202_2"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1" mass="0.03"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_1"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2" mass="0.03"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__zhou_cheng_nei_10_wai_15_hou_4_2"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1" mass="0.36"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__1"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2" mass="0.36"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji__2"/>
+-      <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10" mass="0.36" rgba="0.0 0.75 1.0 1"/>
+-      <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____base_1__fang_shui_duo_ji___yi_ban__10" rgba="0.0 0.75 1.0 1"/>
++      <!-- Base body geoms with mass parameters from output_base.xml -->
++      <geom class="collision" type="mesh" mesh="auv___base_1_160_tong_yong_fa_lan__1" mass="0.1608" material="carbon_fiber"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_160_tong_yong_fa_lan__1" material="carbon_fiber"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_22000mah_dian_chi__1" mass="1.8800" material="metal_dark"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_22000mah_dian_chi__1" material="metal_dark"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__2" mass="0.0121"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__2"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__3" mass="0.0121"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__3"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__4" mass="0.0121"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__4"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__5" mass="0.0121"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m2_5_170_luo_mu_zhu__5"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__1" mass="0.0457"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__1"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__2" mass="0.0457"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__2"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__3" mass="0.0457"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__3"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__4" mass="0.0457"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m8_50_luo_mu_zhu__4"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__1" mass="0.0500"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__1"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__2" mass="0.0500"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__2"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__3" mass="0.0500"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__3"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__4" mass="0.0500"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_m8_du_tou_luo_shuan__4"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_x_zhou_chuan_dong_gan__4" mass="0.0612"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_x_zhou_chuan_dong_gan__4"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_x_zhou_chuan_dong_gan__5" mass="0.0612"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_x_zhou_chuan_dong_gan__5"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1_y_zhou_chuan_dong_gan__1" mass="0.2310"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1_y_zhou_chuan_dong_gan__1"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__shang_wei_ji__1" mass="0.0001"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__shang_wei_ji__1"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__shang_wei_ji__2" mass="0.0001"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__shang_wei_ji__2"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__xia_wei_ji_stm32_2" mass="0.0001"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__xia_wei_ji_stm32_2"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__xia_wei_ji_stm32_3" mass="0.0001"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__xia_wei_ji_stm32_3"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__dong_li_zhuang_zhi_wai_ke____zhong_jian__1" mass="0.2570" material="acrylic_hull"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__dong_li_zhuang_zhi_wai_ke____zhong_jian__1" material="acrylic_hull"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__dong_li_zhuang_zhi_wai_ke____di_bu__1" mass="0.3023" material="acrylic_hull"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__dong_li_zhuang_zhi_wai_ke____di_bu__1" material="acrylic_hull"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__ban_yuan_cang_gai__3" mass="0.1454" material="acrylic_hull"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__ban_yuan_cang_gai__3" material="acrylic_hull"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__shuang_mu_she_xiang_tou_ke_dong_zhi_jia__2" mass="0.0095" material="metal_silver"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__shuang_mu_she_xiang_tou_ke_dong_zhi_jia__2" material="metal_silver"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__shuang_mu_xiang_ji___xiao___1" mass="0.2000" material="rubber_black"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__shuang_mu_xiang_ji___xiao___1" material="rubber_black"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__shuang_lian_chi_lun__1" mass="0.1537" material="copper"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__shuang_lian_chi_lun__1" material="copper"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_4" mass="0.1210" material="metal_silver"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_4" material="metal_silver"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_5" mass="0.1210" material="metal_silver"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_5" material="metal_silver"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_6" mass="0.1210" material="metal_silver"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__yuan_zhu_chi_lun_45_1_6" material="metal_silver"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__yuan_zhui_chi_lun_20_1_5_4" mass="0.0532" material="copper"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__yuan_zhui_chi_lun_20_1_5_4" material="copper"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__yuan_zhui_chi_lun_20_1_5_5" mass="0.0532" material="copper"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__yuan_zhui_chi_lun_20_1_5_5" material="copper"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__mi_feng_fa_lan_3_1" mass="0.0811" material="metal_silver"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__mi_feng_fa_lan_3_1" material="metal_silver"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__di_ban__1" mass="0.2018" material="carbon_fiber_matte"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__di_ban__1" material="carbon_fiber_matte"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__tui_jin_qi_zhi_jia__1" mass="0.7490" material="metal_dark"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__tui_jin_qi_zhi_jia__1" material="metal_dark"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__she_xiang_tou_duo_ji__2" mass="0.1000"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__she_xiang_tou_duo_ji__2"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__she_xiang_tou_lian_jie_jian__2" mass="0.0088"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__she_xiang_tou_lian_jie_jian__2"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__ban_zi_lian_jie_jia__1" mass="0.0684"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__ban_zi_lian_jie_jia__1"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__10" mass="0.0622" material="plastic_white"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__10" material="plastic_white"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__7" mass="0.0622" material="plastic_white"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__7" material="plastic_white"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__8" mass="0.0622" material="plastic_white"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__8" material="plastic_white"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__9" mass="0.0622" material="plastic_white"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__du_li_mo_kuai_gai_zi__9" material="plastic_white"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__dian_kong_cang_1_hao_ban__1" mass="0.0224" material="pcb_green"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__dian_kong_cang_1_hao_ban__1" material="pcb_green"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__dian_kong_cang_2_hao_ban__1" mass="0.0210" material="pcb_green"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__dian_kong_cang_2_hao_ban__1" material="pcb_green"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__dian_kong_cang_3_hao_ban__1" mass="0.0361" material="pcb_green"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__dian_kong_cang_3_hao_ban__1" material="pcb_green"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__dian_kong_cang_wai_ke__2" mass="0.9952" material="acrylic_hull"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__dian_kong_cang_wai_ke__2" material="acrylic_hull"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__1" mass="0.0500" material="metal_bronze"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__1" material="metal_bronze"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__10" mass="0.0500" material="metal_bronze"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__10" material="metal_bronze"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__11" mass="0.0500" material="metal_bronze"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__11" material="metal_bronze"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__12" mass="0.0500" material="metal_bronze"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__12" material="metal_bronze"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__13" mass="0.0500" material="metal_bronze"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__13" material="metal_bronze"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__2" mass="0.0500" material="metal_bronze"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__2" material="metal_bronze"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__3" mass="0.0500" material="metal_bronze"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__3" material="metal_bronze"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__4" mass="0.0500" material="metal_bronze"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__4" material="metal_bronze"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__7" mass="0.0500" material="metal_bronze"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__7" material="metal_bronze"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__8" mass="0.0500" material="metal_bronze"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__8" material="metal_bronze"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__9" mass="0.0500" material="metal_bronze"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__chuan_cang_luo_si__9" material="metal_bronze"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__duo_ji_zhi_jia___qian___1" mass="0.0639"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__duo_ji_zhi_jia___qian___1"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__duo_ji_zhi_jia___hou___1" mass="0.0853"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__duo_ji_zhi_jia___hou___1"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__duo_ji_lian_jie_jian__1" mass="0.2223"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__duo_ji_lian_jie_jian__1"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__duo_ji_lian_jie_jian__3" mass="0.2223"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__duo_ji_lian_jie_jian__3"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_10" mass="0.0326"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_10"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_11" mass="0.0326"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_11"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_12" mass="0.0326"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_12"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_7" mass="0.0326"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_7"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_8" mass="0.0326"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_8"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__zhou_cheng_6001_9" mass="0.0326"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__zhou_cheng_6001_9"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__fang_shui_duo_ji__2" mass="0.3600" material="acrylic_hull"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__fang_shui_duo_ji__2" material="acrylic_hull"/>
++      <geom class="collision" type="mesh" mesh="auv___base_1__fang_shui_duo_ji__5" mass="0.3600" material="acrylic_hull"/>
++      <geom class="visual" type="mesh" mesh="auv___base_1__fang_shui_duo_ji__5" material="acrylic_hull"/>
+ 
+-      <body name="body_servo_up" pos="0.07629058 0.00222789 -0.11788090" euler="0 1.570796326795 0" childclass="auv_base">
+-        <joint name="joint_servo_up" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
+-        <site name="thrust_up_site" pos="0 0 0" type="sphere" size="0.01" rgba="1 0 0 0.5"/>
+-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+-        <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____up_1_x_zhou_tui_jin_qi_zhi_jia__1"/>
++      <body name="body_servo_up" pos="0.08 0 0" euler="1.57079632679 3.14159265359 1.57079632679" childclass="auv_base">
++        <joint name="joint_servo_up" type="hinge" axis="0 1 0" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
++        <site name="thrust_up_site" pos="-0.046 0.041 0" type="sphere" size="0.01" rgba="1 0 0 0.5"/>
++        <!-- Thruster geoms with mass from output_up_thruster.xml -->
++        <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi_di_zuo__1" mass="0.0405"/>
++        <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi_di_zuo__1"/>
++        <!-- Propeller body -->
+         <body name="body_servo_up_prop" pos="0 0 0" childclass="auv_base">
+-          <joint name="joint_prop_up" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
+-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____up_1__tui_jin_qi__1" mass="0.01"/>
+-          <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____up_1__tui_jin_qi__1"/>
++          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1"/>
++          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2"/>
++          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3"/>
++          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4"/>
++          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1" mass="0.1950"/>
++          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1"/>
++          <geom class="collision" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1" mass="0.03072"/>
++          <geom class="visual" type="mesh" mesh="auv___up_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1"/>
+         </body>
+       </body>
+ 
+-      <body name="body_servo_down" pos="-0.07365844 0.00168283 -0.11788090" euler="0 -1.570796326795 -3.1415926" childclass="auv_base">
+-        <joint name="joint_servo_down" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
+-        <site name="thrust_down_site" pos="0 0 0" type="sphere" size="0.01" rgba="0 1 0 0.5"/>
+-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+-        <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____down_1_x_zhou_tui_jin_qi_zhi_jia__1"/>
++      <body name="body_servo_down" pos="-0.08 0 0" euler="1.57079632679 0 1.57079632679" childclass="auv_base">
++        <joint name="joint_servo_down" type="hinge" axis="0 1 0" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
++        <site name="thrust_down_site" pos="-0.046 0.041 0" type="sphere" size="0.01" rgba="0 1 0 0.5"/>
++        <!-- Thruster geoms with mass from output_down_thruster.xml -->
++        <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi_di_zuo__1" mass="0.0405"/>
++        <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi_di_zuo__1"/>
++        <!-- Propeller body -->
+         <body name="body_servo_down_prop" pos="0 0 0" childclass="auv_base">
+-          <joint name="joint_prop_down" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
+-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____down_1__tui_jin_qi__1" mass="0.01"/>
+-          <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____down_1__tui_jin_qi__1"/>
++          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1"/>
++          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2"/>
++          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3"/>
++          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4"/>
++          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1" mass="0.1950"/>
++          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1"/>
++          <geom class="collision" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1" mass="0.03072"/>
++          <geom class="visual" type="mesh" mesh="auv___down_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1"/>
+         </body>
+       </body>
+ 
+-      <body name="body_servo_left" pos="0.00063929 0.07524704 -0.11788090" euler="-1.570796326795 0 1.570796326795" childclass="auv_base">
++      <body name="body_servo_left" pos="0 0.08 0" euler="1.57079632679 3.14159265359 1.57079632679" childclass="auv_base">
+         <joint name="joint_servo_left" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
+-        <site name="thrust_left_site" pos="0 0 0" type="sphere" size="0.01" rgba="0 0 1 0.5"/>
+-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+-        <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____left_1_y_zhou_tui_jin_qi_zhi_jia__1"/>
++        <site name="thrust_left_site" pos="-0.046 0.0 0.041" type="sphere" size="0.01" rgba="0 0 1 0.5"/>
++        <!-- Thruster geoms with mass from output_left_thruster.xml -->
++        <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi_di_zuo__1" mass="0.0405"/>
++        <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi_di_zuo__1"/>
++        <!-- Propeller body -->
+         <body name="body_servo_left_prop" pos="0 0 0" childclass="auv_base">
+-          <joint name="joint_prop_left" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
+-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____left_1__tui_jin_qi__1" mass="0.01"/>
+-          <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____left_1__tui_jin_qi__1"/>
++          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1"/>
++          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2"/>
++          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3"/>
++          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4"/>
++          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1" mass="0.1950"/>
++          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1"/>
++          <geom class="collision" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1" mass="0.03072"/>
++          <geom class="visual" type="mesh" mesh="auv___left_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1"/>
+         </body>
+       </body>
+ 
+-      <body name="body_servo_right" pos="0.00327143 -0.07470197 -0.11788090" euler="1.570796326795 0 -1.570796326795" childclass="auv_base">
++      <body name="body_servo_right" pos="0 -0.08 0" euler="-1.57079632679 3.14159265359 -1.57079632679" childclass="auv_base">
+         <joint name="joint_servo_right" type="hinge" axis="0 0 1" range="-1.57079632679 1.57079632679" damping="0.1" armature="0.01"/>
+-        <site name="thrust_right_site" pos="0 0 0" type="sphere" size="0.01" rgba="1 1 0 0.5"/>
+-        <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1" mass="0.1"/>
+-        <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____right_1_y_zhou_tui_jin_qi_zhi_jia__1"/>
++        <site name="thrust_right_site" pos="-0.046 0 0.041" type="sphere" size="0.01" rgba="1 1 0 0.5"/>
++        <!-- Thruster geoms with mass from output_right_thruster.xml -->
++        <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi_di_zuo__1" mass="0.0405"/>
++        <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi_di_zuo__1"/>
++        <!-- Propeller body -->
+         <body name="body_servo_right_prop" pos="0 0 0" childclass="auv_base">
+-          <joint name="joint_prop_right" type="hinge" axis="0 0 1" range="0 0" damping="0.01" armature="0.001"/>
+-          <geom class="collision" type="mesh" mesh="ji_chu_zhuang_pei____right_1__tui_jin_qi__1" mass="0.01"/>
+-          <geom class="visual" type="mesh" mesh="ji_chu_zhuang_pei____right_1__tui_jin_qi__1"/>
++          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__1"/>
++          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__2"/>
++          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__3"/>
++          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4" mass="0.0001"/>
++          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1_m2_5_25_luo_shuan__4"/>
++          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1" mass="0.1950"/>
++          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi___wu_zhi_jia___1"/>
++          <geom class="collision" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1" mass="0.03072"/>
++          <geom class="visual" type="mesh" mesh="auv___right_thruster_1__tui_jin_qi___xiu_zheng_ban___1__tui_jin_qi_zhi_jia___gai_jin_ban___1"/>
+         </body>
+       </body>
+     </body>
+   </worldbody>
+ 
++  <!-- Equality constraints: preserve the joint rotation logic -->
+   <equality>
+-    <joint joint1="joint_servo_down" joint2="joint_servo_up" polycoef="0 -1 0 0 0"/>
+-    <joint joint1="joint_servo_right" joint2="joint_servo_left" polycoef="0 1 0 0 0"/>
++    <joint joint1="joint_servo_down" joint2="joint_servo_up" polycoef="0 1 0 0 0"/>
++    <joint joint1="joint_servo_right" joint2="joint_servo_left" polycoef="0 -1 0 0 0"/>
+   </equality>
+ 
+   <contact>
+@@ -221,12 +404,5 @@
+     <exclude body1="base" body2="body_servo_up"/>
+     <exclude body1="base" body2="body_servo_down"/>
+   </contact>
+-
+-  <!-- <actuator>
+-    <motor name="act_thruster_up" site="thrust_up_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
+-    <motor name="act_thruster_down" site="thrust_down_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
+-    <motor name="act_thruster_left" site="thrust_left_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
+-    <motor name="act_thruster_right" site="thrust_right_site" gear="0 0 1 0 0 0" ctrlrange="-50 50"/>
+-  </actuator> -->
+-
++  
+ </mujoco>
+\ No newline at end of file
+diff --git a/src/auv_mjlab/tasks/velocity/config/auv/env_cfgs.py b/src/auv_mjlab/tasks/velocity/config/auv/env_cfgs.py
+index 604b166..c29cf5a 100644
+--- a/src/auv_mjlab/tasks/velocity/config/auv/env_cfgs.py
++++ b/src/auv_mjlab/tasks/velocity/config/auv/env_cfgs.py
+@@ -21,12 +21,14 @@ from mjlab.envs.mdp.actions import JointPositionActionCfg
+ from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
+ import src.auv_mjlab.tasks.velocity.mdp as mdp
+ from src.auv_mjlab.assets.robots import get_auv_robot_cfg
+-from src.auv_mjlab.assets.robots.auv.auv_constants import (
+-    AUV_VOLUME,
+-    AUV_MASS,
+-    AUV_INERTIA,
+-    AUV_COM_TO_COB_OFFSET,
+-)
++from src.auv_mjlab.assets.robots.auv.auv_constants import AUV_MAX_SERVO_ANGLE, get_auv_physical_params
++
++# 从模型中动态获取水动力参数
++_phys = get_auv_physical_params()
++AUV_MASS = _phys["mass"]
++AUV_VOLUME = _phys["volume"]
++AUV_INERTIA = list(_phys["inertia"])
++AUV_COM_TO_COB_OFFSET = list(_phys["com_to_cob_offset"])
+ 
+ 
+ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+@@ -55,7 +57,7 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+                 "thrust_left_site",
+                 "thrust_right_site",
+             ],
+-            max_servo_angle=math.pi/2, 
++            max_servo_angle=AUV_MAX_SERVO_ANGLE, 
+             max_thrust=50.0,
+         )
+     }
+@@ -97,12 +99,11 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+                 'joint_servo_up','joint_servo_left'
+             ))},
+         ),
+-        # 观测所有活动关节的速度（包含舵机和螺旋桨叶片）
++        # 观测所有活动关节的速度
+         "joint_vel": ObservationTermCfg(                
+             func=mdp.joint_vel_rel,
+             params={"asset_cfg": SceneEntityCfg("robot", joint_names=(
+-                'joint_servo_up','joint_servo_left',
+-                'joint_prop_up','joint_prop_down','joint_prop_left','joint_prop_right'
++                'joint_servo_up','joint_servo_down','joint_servo_left','joint_servo_right'
+             ))},
+         ),
+     }
+@@ -139,6 +140,19 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+     # 6. 事件 (Events) 
+     # ==========================
+     events = {
++        # 根body重置（给初速度扰动以测试水阻力）
++        # "reset_root_state": EventTermCfg(
++        #     func=mdp.reset_root_state_uniform,
++        #     mode="reset",
++        #     params={
++        #         "pose_range": {},  # 位置不扰动，使用初始状态
++        #         "velocity_range": {
++        #             "x": (-0.5, 0.5),
++        #             "y": (-0.5, 0.5),
++        #             "z": (-0.3, 0.3),
++        #         },
++        #     },
++        # ),
+         # 关节重置
+         "reset_robot_joints": EventTermCfg(
+             func=mdp.reset_joints_by_offset,
+@@ -146,27 +160,24 @@ def cqu_auv_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
+             params={
+                 "position_range": (0.0, 0.0),
+                 "velocity_range": (0.0, 0.0),
+-                # 使用正则表达式匹配所有的舵机关节(包含上下左右)和推进器关节
+-                "asset_cfg": SceneEntityCfg("robot", joint_names=("joint_servo_.*", "joint_prop_.*")),
++                # 使用正则表达式匹配所有的舵机关节(包含上下左右)
++                "asset_cfg": SceneEntityCfg("robot", joint_names=("joint_servo_.*",)),
++            },
++        ),
++        # 水动力学（浮力 + 水阻力）
++        "hydrodynamic_forces": EventTermCfg(
++            func=mdp.apply_hydrodynamic_forces,
++            mode="step",
++            params={
++                "water_density": 1000.0,
++                "water_viscosity": 0.0009,
++                "mass": AUV_MASS,
++                "inertia": tuple(AUV_INERTIA),
++                "max_force_limit": 5000.0,
++                "max_torque_limit": 1000.0,
++                "debug": True,
+             },
+         ),
+-        # 水动力学
+-        # "hydrodynamic_forces": EventTermCfg(
+-        #     func=mdp.apply_hydrodynamic_forces,
+-        #     mode="step",
+-        #     params={
+-        #         "water_density": 1000.0,
+-        #         "water_viscosity": 0.0009,
+-        #         "volume": AUV_VOLUME,
+-        #         "com_to_cob_offset": tuple(AUV_COM_TO_COB_OFFSET.tolist()),
+-        #         "mass": AUV_MASS,
+-        #         "inertia": tuple(AUV_INERTIA.tolist()),
+-        #         "max_force_limit": 5000.0,
+-        #         "max_torque_limit": 1000.0,
+-        #         "neutral_buoyancy": False,
+-        #         "debug": False,
+-        #     },
+-        # ),
+     }
+ 
+     # ==========================
+diff --git a/src/auv_mjlab/tasks/velocity/mdp/hydrodynamics.py b/src/auv_mjlab/tasks/velocity/mdp/hydrodynamics.py
+index 53220fa..70953e4 100644
+--- a/src/auv_mjlab/tasks/velocity/mdp/hydrodynamics.py
++++ b/src/auv_mjlab/tasks/velocity/mdp/hydrodynamics.py
+@@ -261,6 +261,7 @@ def _get_or_create_cache(
+             "volumes": torch.tensor([[volume]], dtype=torch.float, device=device).expand(num_envs, 1).clone(),
+             "cob_offsets": torch.tensor([list(com_to_cob_offset)], dtype=torch.float, device=device).expand(num_envs, 3).clone(),
+             "all_env_ids": torch.arange(num_envs, device=device),
++            "body_masses": None,  # 延迟初始化，需要 asset 信息
+         }
+     return _hydro_cache[key]
+ 
+@@ -286,22 +287,39 @@ def _sanitize_vel(v: torch.Tensor, max_val: float = 20.0) -> torch.Tensor:
+     return v.clamp(-max_val, max_val)
+ 
+ 
++def _get_body_masses_from_model(asset_cfg_name: str) -> list[float]:
++    """从 MuJoCo 模型中提取每个 body 的质量（跳过 world body）。
++
++    返回:
++        body 质量列表，顺序与 Entity.body_names / body_ids 一致。
++    """
++    import mujoco as _mj
++    from src.auv_mjlab.assets.robots.auv.auv_constants import get_spec
++
++    spec = get_spec()
++    model = spec.compile()
++    # Entity 的 body 列表是 spec.bodies[1:]（跳过 world）
++    bodies = spec.bodies[1:]
++    return [float(model.body_mass[b.id]) for b in bodies]
++
++
+ def apply_hydrodynamic_forces(
+     env: "ManagerBasedRlEnv",
+     env_ids: torch.Tensor | None,
+     water_density: float = 997.0,
+     water_viscosity: float = 0.001306,
+-    volume: float = 0.023,
+-    com_to_cob_offset: tuple[float, float, float] = (0.0, 0.0, 0.3),
+     mass: float = 100.0,
+     inertia: tuple[float, float, float] = (19.3, 19.3, 1.125),
+     asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+     max_force_limit: float = 5000.0,
+     max_torque_limit: float = 1000.0,
+-    neutral_buoyancy: bool = False,
+     debug: bool = False,
+ ) -> None:
+-    """计算并施加水动力（浮力 + 二次阻力 + 粘性力）到机器人根 body。
++    """计算并施加水动力（浮力 + 二次阻力 + 粘性力）到机器人。
++
++    浮力：对每个 body 分别施加 F_i = [0, 0, m_i * g]（世界系竖直向上），
++    精确抵消该 body 自身的重力，实现整体中性浮力。
++    阻力：仅施加在根 body 上（基于整体质量和惯性计算）。
+ 
+     作为 EventTermCfg(mode="step") 注册，每个仿真步调用一次。
+     所有中间张量通过模块级缓存复用，避免每步分配内存。
+@@ -311,14 +329,11 @@ def apply_hydrodynamic_forces(
+         env_ids: 需要施力的环境索引，None 表示全部
+         water_density: 水密度 (kg/m³)
+         water_viscosity: 水动力粘度 (Pa·s)
+-        volume: AUV 排水体积 (m³)
+-        com_to_cob_offset: 质心→浮心偏移 (m)，本体系
+-        mass: AUV 质量 (kg)
++        mass: AUV 总质量 (kg)，用于阻力计算
+         inertia: 主惯性矩 (I_xx, I_yy, I_zz) (kg·m²)
+         asset_cfg: 场景实体配置
+         max_force_limit: 力的 clamp 上限 (N)
+         max_torque_limit: 扭矩的 clamp 上限 (N·m)
+-        neutral_buoyancy: 中性浮力模式，开启后浮力精确抵消重力
+         debug: 是否打印调试信息
+     """
+     num_envs = env.num_envs
+@@ -326,9 +341,9 @@ def apply_hydrodynamic_forces(
+ 
+     # 1. 获取/创建缓存
+     cache = _get_or_create_cache(
+-        num_envs, device, mass, inertia, volume, com_to_cob_offset, debug
++        num_envs, device, mass, inertia, 0.0, (0.0, 0.0, 0.0), debug
+     )
+-    model = cache["model"]
++    hydro_model = cache["model"]
+ 
+     # 2. 获取机器人实体和状态
+     asset = env.scene[asset_cfg.name]
+@@ -336,59 +351,76 @@ def apply_hydrodynamic_forces(
+     root_linvels_w = _sanitize_vel(asset.data.root_link_lin_vel_w)
+     root_angvels_w = _sanitize_vel(asset.data.root_link_ang_vel_w)
+ 
+-    # 3. 计算水动力（本体系）
+-    # 中性浮力模式：用 mass/rho 替代实际体积，使 buoyancy = mass*g = gravity
+-    if neutral_buoyancy:
+-        neutral_vol = cache["masses"] / water_density  # [N,1]  使 rho*V*g = m*g
+-        buoyancy_f, buoyancy_t = model.calculate_buoyancy_forces(
+-            root_quats_w, water_density, neutral_vol, 9.81, cache["cob_offsets"]
+-        )
+-    else:
+-        buoyancy_f, buoyancy_t = model.calculate_buoyancy_forces(
+-            root_quats_w, water_density, cache["volumes"], 9.81, cache["cob_offsets"]
+-        )
+-    f_d, g_d, f_v, g_v = model.calculate_density_and_viscosity_forces(
++    # 3. 计算水阻力（本体系，基于根 body 速度和整体参数）
++    f_d, g_d, f_v, g_v = hydro_model.calculate_density_and_viscosity_forces(
+         root_quats_w, root_linvels_w, root_angvels_w,
+         cache["inertias"], water_viscosity, water_density, cache["masses"]
+     )
+ 
+-    total_force_b = buoyancy_f + f_d + f_v
+-    total_torque_b = buoyancy_t + g_d + g_v
++    # ---- 根 body 阻力处理 ----
++    drag_force_b = f_d + f_v
++    drag_torque_b = g_d + g_v
+ 
+-    # 4. NaN 安全检查（按环境粒度处理，不影响正常环境）
+-    nan_mask = torch.isnan(total_force_b).any(dim=-1) | torch.isnan(total_torque_b).any(dim=-1)
++    # NaN 安全检查
++    nan_mask = torch.isnan(drag_force_b).any(dim=-1) | torch.isnan(drag_torque_b).any(dim=-1)
+     if nan_mask.any():
+         if debug:
+             bad_ids = nan_mask.nonzero(as_tuple=False).squeeze(-1)
+             print(f"[Hydrodynamics] NaN in envs {bad_ids.tolist()}, zeroing those envs")
+-        total_force_b[nan_mask] = 0.0
+-        total_torque_b[nan_mask] = 0.0
++        drag_force_b[nan_mask] = 0.0
++        drag_torque_b[nan_mask] = 0.0
++
++    # Clamp 防止数值爆炸
++    drag_force_b = drag_force_b.clamp(-max_force_limit, max_force_limit)
++    drag_torque_b = drag_torque_b.clamp(-max_torque_limit, max_torque_limit)
++
++    # 本体系 → 世界系
++    drag_force_w = quat_apply(root_quats_w, drag_force_b)
++    drag_torque_w = quat_apply(root_quats_w, drag_torque_b)
++
++    # ---- 浮力：给每个 body 施加与其自身重力等大反向的力 ----
++    # 延迟初始化每个 body 的质量缓存
++    if cache["body_masses"] is None:
++        body_mass_list = _get_body_masses_from_model(asset_cfg.name)
++        cache["body_masses"] = torch.tensor(body_mass_list, dtype=torch.float, device=device)
++        cache["num_bodies"] = len(body_mass_list)
++        cache["all_body_ids"] = list(range(len(body_mass_list)))
++        if debug:
++            print(f"[Hydro] 初始化各 body 质量: {body_mass_list}")
++            print(f"[Hydro] 总质量: {sum(body_mass_list):.4f} kg, body 数量: {len(body_mass_list)}")
++
++    num_bodies = cache["num_bodies"]
++    body_masses = cache["body_masses"]  # [num_bodies]
+ 
+-    # 5. Clamp 防止数值爆炸
+-    total_force_b = total_force_b.clamp(-max_force_limit, max_force_limit)
+-    total_torque_b = total_torque_b.clamp(-max_torque_limit, max_torque_limit)
++    g_mag = 9.81
++    # 构造每个 body 的浮力：世界系中 [0, 0, m_i * g]
++    # 形状: [num_envs, num_bodies, 3]
++    buoyancy_forces_w = torch.zeros((num_envs, num_bodies, 3), device=device, dtype=torch.float)
++    buoyancy_forces_w[:, :, 2] = body_masses.unsqueeze(0) * g_mag  # 广播到所有环境
++    buoyancy_torques_w = torch.zeros((num_envs, num_bodies, 3), device=device, dtype=torch.float)
+ 
+-    # 6. 本体系 → 世界系
+-    total_force_w = quat_apply(root_quats_w, total_force_b)
+-    total_torque_w = quat_apply(root_quats_w, total_torque_b)
++    # ---- 合并：根 body 的力 = 阻力 + 浮力，其他 body 只有浮力 ----
++    # 将阻力加到根 body（索引 0）的浮力上
++    buoyancy_forces_w[:, 0, :] += drag_force_w
++    buoyancy_torques_w[:, 0, :] += drag_torque_w
+ 
+-    # 7. 施加到根 body（索引 0）
++    # 施加到所有 body
+     if env_ids is None:
+         env_ids = cache["all_env_ids"]
+ 
+     asset.write_external_wrench_to_sim(
+-        forces=total_force_w.unsqueeze(1),    # [N, 1, 3]
+-        torques=total_torque_w.unsqueeze(1),  # [N, 1, 3]
++        forces=buoyancy_forces_w,     # [N, num_bodies, 3]
++        torques=buoyancy_torques_w,   # [N, num_bodies, 3]
+         env_ids=env_ids,
+-        body_ids=[0],
++        body_ids=cache["all_body_ids"],
+     )
+ 
+-    # 8. 调试输出
++    # 调试输出
+     if debug:
+-        mean_f = total_force_b.mean(dim=0)
+-        mean_t = total_torque_b.mean(dim=0)
+-        print(f"[Hydro] 本体系均值 — 力: [{mean_f[0]:.2f}, {mean_f[1]:.2f}, {mean_f[2]:.2f}] N, "
+-              f"扭矩: [{mean_t[0]:.2f}, {mean_t[1]:.2f}, {mean_t[2]:.2f}] N·m")
++        total_buoyancy = (body_masses * g_mag).sum().item()
++        mean_drag = drag_force_b.mean(dim=0)
++        print(f"[Hydro] 各body浮力总和: {total_buoyancy:.4f} N (应等于总重力), "
++              f"根body阻力(本体系): [{mean_drag[0]:.6f}, {mean_drag[1]:.6f}, {mean_drag[2]:.6f}] N")
+ 
+ 
+ if __name__ == "__main__":
